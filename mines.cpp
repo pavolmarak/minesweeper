@@ -156,7 +156,7 @@ void Mines::on_tableWidget_itemClicked(QTableWidgetItem *item)
         if(this->grid[item->row()+1][item->column()+1]==MINE){
             qDebug() << "MINE";
             QLabel* wi = new QLabel();
-            wi->setPixmap(QPixmap("icon.png"));
+            wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/icon.png"));
             wi->setScaledContents(true);
             ui->tableWidget->setCellWidget(item->row(),item->column(),wi);
             qApp->processEvents();

@@ -22,7 +22,7 @@ void MyTable::mousePressEvent(QMouseEvent *e)
         else{
             QLabel* wi;
             wi = new QLabel();
-            wi->setPixmap(QPixmap("flag.png"));
+            wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/flag.png"));
             wi->setScaledContents(true);
             this->setCellWidget(itClicked->row(),itClicked->column(),wi);
             itClicked->setWhatsThis("true");
