@@ -1,0 +1,49 @@
+#ifndef MINES_H
+#define MINES_H
+
+#include <QMainWindow>
+#include <QTableWidget>
+#include <QLabel>
+#include <QPoint>
+#include <QDebug>
+#include <QSet>
+#include <QMouseEvent>
+#include <QMessageBox>
+
+#define GRID_WIDTH 10
+#define GRID_HEIGHT 10
+
+#define MINE 999
+
+namespace Ui {
+class Mines;
+}
+
+class Mines : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit Mines(QWidget *parent = 0);
+    ~Mines();
+
+private slots:
+    void on_tableWidget_itemClicked(QTableWidgetItem *item);
+
+    void on_start_game_button_clicked();
+
+private:
+    Ui::Mines *ui;
+    void placeMines(int count);
+    void placeMineNumbers();
+    int countNearbyMines(int row, int col);
+    void clearVisibleGrid();
+    void revealEmptyArea(int row, int col);
+    void makeItemVisible(int row, int col);
+    // mines are modelled as QPoints
+    QSet<QPoint> mines;
+    int grid[GRID_HEIGHT+2][GRID_WIDTH+2] = {{-1}};
+    bool ready;
+};
+
+#endif // MINES_H
