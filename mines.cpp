@@ -230,10 +230,16 @@ void Mines::flagCounterIncreasedSlot()
 {
     this->flagCnt++;
     ui->flag_counter->setText(QString::number(this->flagCnt) + "/" + QString::number(ui->noMinesSpinBox->value()));
+    if(this->flagCnt > ui->noMinesSpinBox->value()){
+        ui->flag_counter->setStyleSheet("color:red;font-weight: bold;");
+    }
 }
 
 void Mines::flagCounterDecreasedSlot()
 {
     this->flagCnt--;
     ui->flag_counter->setText(QString::number(this->flagCnt) + "/" + QString::number(ui->noMinesSpinBox->value()));
+    if(this->flagCnt <= ui->noMinesSpinBox->value()){
+        ui->flag_counter->setStyleSheet("color:auto;font-weight: auto;");
+    }
 }
