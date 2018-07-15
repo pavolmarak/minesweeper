@@ -12,6 +12,8 @@ Mines::Mines(QWidget *parent) :
 {
     ui->setupUi(this);
     this->flagCnt=0;
+    ui->time->setText("0 ms");
+    ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
     ui->tableWidget->setEnabled(false);
     ui->flag_counter->setText(QString::number(this->flagCnt) + "/" + QString::number(ui->noMinesSpinBox->value()));
 
@@ -216,6 +218,7 @@ void Mines::on_tableWidget_itemClicked(QTableWidgetItem *item)
 // function to start the game
 void Mines::on_start_game_button_clicked()
 {
+    ui->time->setText("0 ms");
     ui->tableWidget->mineCounter=0;
     ui->tableWidget->noMineCounter=GRID_HEIGHT*GRID_WIDTH;
     ui->tableWidget->congratsShown=false;
@@ -227,8 +230,9 @@ void Mines::on_start_game_button_clicked()
     this->flagCnt=0;
     ui->flag_counter->setText(QString::number(this->flagCnt) + "/" + QString::number(ui->noMinesSpinBox->value()));
     ui->statusBar->showMessage("New game started.",3000);
-    ui->tableWidget->timer.start(1000);
-    ui->tableWidget->elap_timer.start();
+    ui->tableWidget->timer.start(1);
+    ui->tableWidget->elap_timer.restart();
+    qApp->processEvents();
 }
 
 void Mines::flagCounterIncreasedSlot()
@@ -251,5 +255,6 @@ void Mines::flagCounterDecreasedSlot()
 
 void Mines::updateTime()
 {
-    ui->time->setText(QString::number(ui->tableWidget->elap_timer.elapsed()/1000) + " s");
+    ui->time->setText(QString::number(ui->tableWidget->elap_timer.elapsed()) + " ms");
+    qApp->processEvents();
 }

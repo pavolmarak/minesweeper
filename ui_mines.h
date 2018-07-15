@@ -182,6 +182,9 @@ public:
 
         time = new QLabel(gameinfo_groupbox);
         time->setObjectName(QStringLiteral("time"));
+        time->setMinimumSize(QSize(0, 0));
+        time->setScaledContents(false);
+        time->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout_3->addWidget(time);
 
@@ -303,7 +306,7 @@ public:
         flagcounter_label->setText(QApplication::translate("Mines", "Flag counter:", nullptr));
         flag_counter->setText(QString());
         time_label->setText(QApplication::translate("Mines", "Time:", nullptr));
-        time->setText(QString());
+        time->setText(QApplication::translate("Mines", "<html><head/><body><p align=\"right\"><br/></p></body></html>", nullptr));
         config_groupbox->setTitle(QApplication::translate("Mines", "Configuration", nullptr));
         no_mines_label->setText(QApplication::translate("Mines", "Number of mines:", nullptr));
         start_game_button->setText(QApplication::translate("Mines", "Start game", nullptr));
