@@ -30,11 +30,13 @@ void MyTable::mousePressEvent(QMouseEvent *event)
         if(itClicked->whatsThis() == "flag-nomine-novisit"){
             this->removeCellWidget(itClicked->row(),itClicked->column());
             itClicked->setWhatsThis("noflag-nomine-novisit");
+            emit flagCounterDecreased();
         }
         else if(itClicked->whatsThis() == "flag-mine-novisit"){
             this->removeCellWidget(itClicked->row(),itClicked->column());
             itClicked->setWhatsThis("noflag-mine-novisit");
             this->mineCounter--;
+            emit flagCounterDecreased();
         }
         else if(itClicked->whatsThis() == "noflag-nomine-novisit"){
             QLabel* wi;
@@ -43,6 +45,7 @@ void MyTable::mousePressEvent(QMouseEvent *event)
             wi->setScaledContents(true);
             this->setCellWidget(itClicked->row(),itClicked->column(),wi);
             itClicked->setWhatsThis("flag-nomine-novisit");
+            emit flagCounterIncreased();
         }
         // user detected a mine in the field
         else if(itClicked->whatsThis() == "noflag-mine-novisit"){
@@ -53,6 +56,7 @@ void MyTable::mousePressEvent(QMouseEvent *event)
             this->setCellWidget(itClicked->row(),itClicked->column(),wi);
             itClicked->setWhatsThis("flag-mine-novisit");
             this->mineCounter++;
+            emit flagCounterIncreased();
         }
     }
     if(this->mineCounter == this->noMineCounter && this->congratsShown==false){

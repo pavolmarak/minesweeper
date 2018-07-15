@@ -32,6 +32,9 @@ signals:
 private slots:
     void on_tableWidget_itemClicked(QTableWidgetItem *item);
     void on_start_game_button_clicked();
+public slots:
+    void flagCounterIncreasedSlot();
+    void flagCounterDecreasedSlot();
 
 private:
     Ui::Mines *ui;
@@ -47,6 +50,7 @@ private:
     QSet<QPoint> flags;
     int grid[GRID_HEIGHT+2][GRID_WIDTH+2] = {{-1}}; // extra borders for problem-free indexing
     bool ready;
+    int flagCnt;
 };
 
 #endif // MINES_H

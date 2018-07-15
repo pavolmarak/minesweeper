@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -34,9 +35,17 @@ public:
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
     MyTable *tableWidget;
+    QGroupBox *gameinfo_groupbox;
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *flagcounter_label;
+    QLabel *flag_counter;
+    QSpacerItem *horizontalSpacer_3;
+    QGroupBox *config_groupbox;
+    QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer;
-    QLabel *label;
+    QLabel *no_mines_label;
     QSpinBox *noMinesSpinBox;
     QPushButton *start_game_button;
     QSpacerItem *horizontalSpacer_2;
@@ -48,7 +57,7 @@ public:
     {
         if (Mines->objectName().isEmpty())
             Mines->setObjectName(QStringLiteral("Mines"));
-        Mines->resize(534, 615);
+        Mines->resize(520, 731);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -113,8 +122,11 @@ public:
         tableWidget->setVerticalHeaderItem(9, __qtablewidgetitem19);
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
         tableWidget->setEnabled(false);
-        sizePolicy.setHeightForWidth(tableWidget->sizePolicy().hasHeightForWidth());
-        tableWidget->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(tableWidget->sizePolicy().hasHeightForWidth());
+        tableWidget->setSizePolicy(sizePolicy1);
         tableWidget->setMinimumSize(QSize(500, 500));
         tableWidget->setMaximumSize(QSize(99999, 99999));
         tableWidget->setMouseTracking(true);
@@ -133,6 +145,41 @@ public:
 
         verticalLayout->addWidget(tableWidget);
 
+        gameinfo_groupbox = new QGroupBox(centralWidget);
+        gameinfo_groupbox->setObjectName(QStringLiteral("gameinfo_groupbox"));
+        verticalLayout_3 = new QVBoxLayout(gameinfo_groupbox);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        flagcounter_label = new QLabel(gameinfo_groupbox);
+        flagcounter_label->setObjectName(QStringLiteral("flagcounter_label"));
+
+        horizontalLayout_3->addWidget(flagcounter_label);
+
+        flag_counter = new QLabel(gameinfo_groupbox);
+        flag_counter->setObjectName(QStringLiteral("flag_counter"));
+
+        horizontalLayout_3->addWidget(flag_counter);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_3);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_3);
+
+
+        verticalLayout->addWidget(gameinfo_groupbox);
+
+        config_groupbox = new QGroupBox(centralWidget);
+        config_groupbox->setObjectName(QStringLiteral("config_groupbox"));
+        verticalLayout_2 = new QVBoxLayout(config_groupbox);
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
@@ -140,12 +187,12 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer);
 
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
+        no_mines_label = new QLabel(config_groupbox);
+        no_mines_label->setObjectName(QStringLiteral("no_mines_label"));
 
-        horizontalLayout_2->addWidget(label);
+        horizontalLayout_2->addWidget(no_mines_label);
 
-        noMinesSpinBox = new QSpinBox(centralWidget);
+        noMinesSpinBox = new QSpinBox(config_groupbox);
         noMinesSpinBox->setObjectName(QStringLiteral("noMinesSpinBox"));
         noMinesSpinBox->setMinimum(0);
         noMinesSpinBox->setMaximum(100);
@@ -153,7 +200,7 @@ public:
 
         horizontalLayout_2->addWidget(noMinesSpinBox);
 
-        start_game_button = new QPushButton(centralWidget);
+        start_game_button = new QPushButton(config_groupbox);
         start_game_button->setObjectName(QStringLiteral("start_game_button"));
 
         horizontalLayout_2->addWidget(start_game_button);
@@ -163,7 +210,10 @@ public:
         horizontalLayout_2->addItem(horizontalSpacer_2);
 
 
-        verticalLayout->addLayout(horizontalLayout_2);
+        verticalLayout_2->addLayout(horizontalLayout_2);
+
+
+        verticalLayout->addWidget(config_groupbox);
 
 
         horizontalLayout->addLayout(verticalLayout);
@@ -171,7 +221,7 @@ public:
         Mines->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Mines);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 534, 22));
+        menuBar->setGeometry(QRect(0, 0, 520, 22));
         Mines->setMenuBar(menuBar);
         mainToolBar = new QToolBar(Mines);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -228,7 +278,11 @@ public:
         ___qtablewidgetitem18->setText(QApplication::translate("Mines", "New Row", nullptr));
         QTableWidgetItem *___qtablewidgetitem19 = tableWidget->verticalHeaderItem(9);
         ___qtablewidgetitem19->setText(QApplication::translate("Mines", "New Row", nullptr));
-        label->setText(QApplication::translate("Mines", "Number of mines:", nullptr));
+        gameinfo_groupbox->setTitle(QApplication::translate("Mines", "Game info", nullptr));
+        flagcounter_label->setText(QApplication::translate("Mines", "Flag counter:", nullptr));
+        flag_counter->setText(QString());
+        config_groupbox->setTitle(QApplication::translate("Mines", "Configuration", nullptr));
+        no_mines_label->setText(QApplication::translate("Mines", "Number of mines:", nullptr));
         start_game_button->setText(QApplication::translate("Mines", "Start game", nullptr));
     } // retranslateUi
 

@@ -11,13 +11,16 @@ Mines::Mines(QWidget *parent) :
     ui(new Ui::Mines)
 {
     ui->setupUi(this);
+    ui->tableWidget->setEnabled(false);
     QObject::connect(this,
                      SIGNAL(cellsRevealedAutomatically(int)),
                      ui->tableWidget,
                      SLOT(cellsRevealedAutomaticallySlot(int)));
+    QObject::connect(ui->tableWidget, SIGNAL(flagCounterIncreased()), this, SLOT(flagCounterIncreasedSlot()));
+    QObject::connect(ui->tableWidget, SIGNAL(flagCounterDecreased()), this, SLOT(flagCounterDecreasedSlot()));
 
-    ui->tableWidget->setVisible(false);
     this->ready = false;
+    this->flagCnt=0;
     for(int j=0; j< ui->tableWidget->rowCount();j++){
         ui->tableWidget->setRowHeight(j,50);
     }
@@ -217,7 +220,20 @@ void Mines::on_start_game_button_clicked()
     this->placeMines(ui->noMinesSpinBox->value());
     this->placeMineNumbers();
     ui->tableWidget->setEnabled(true);
-    ui->tableWidget->setVisible(true);
     this->ready = true;
-    ui->statusBar->showMessage("Game started...",3000);
+    this->flagCnt=0;
+    ui->flag_counter->setText(QString::number(this->flagCnt) + "/" + QString::number(ui->noMinesSpinBox->value()));
+    ui->statusBar->showMessage("New game started.",3000);
+}
+
+void Mines::flagCounterIncreasedSlot()
+{
+    this->flagCnt++;
+    ui->flag_counter->setText(QString::number(this->flagCnt) + "/" + QString::number(ui->noMinesSpinBox->value()));
+}
+
+void Mines::flagCounterDecreasedSlot()
+{
+    this->flagCnt--;
+    ui->flag_counter->setText(QString::number(this->flagCnt) + "/" + QString::number(ui->noMinesSpinBox->value()));
 }

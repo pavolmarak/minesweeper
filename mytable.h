@@ -29,6 +29,9 @@ private slots:
     void mouseReleaseEvent(QMouseEvent *event);
 public slots:
     void cellsRevealedAutomaticallySlot(int);
+signals:
+    void flagCounterIncreased();
+    void flagCounterDecreased();
 };
 
 #endif // MYTABLE_H
