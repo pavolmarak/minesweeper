@@ -12,6 +12,10 @@ MyTable::~MyTable()
 
 }
 
+void MyTable::leaderboardDialog()
+{
+}
+
 void MyTable::mousePressEvent(QMouseEvent *event)
 {
     QTableWidgetItem * itClicked = this->itemAt(event->pos());
@@ -63,10 +67,9 @@ void MyTable::mousePressEvent(QMouseEvent *event)
     if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
         this->timer.stop();
         qDebug() << "Congratulations, you made it.";
-        QMessageBox::about(this,"Congratulations", "You made it.");
         this->congratsShown = true;
         this->setEnabled(false);
-
+        this->leaderboardDialog();
     }
 }
 
@@ -88,9 +91,8 @@ void MyTable::cellsRevealedAutomaticallySlot(int number)
     if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
         this->timer.stop();
         qDebug() << "Congratulations, you made it.";
-        QMessageBox::about(this,"Congratulations", "You made it.");
         this->congratsShown = true;
         this->setEnabled(false);
-
+        this->leaderboardDialog();
     }
 }

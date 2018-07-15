@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mines.cpp \
-    mytable.cpp
+    mytable.cpp \
+    leaderdialog.cpp
 
 HEADERS += \
         mines.h \
-    mytable.h
+    mytable.h \
+    leaderdialog.h
 
 FORMS += \
         mines.ui
