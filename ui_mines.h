@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -40,6 +41,9 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QLabel *flagcounter_label;
     QLabel *flag_counter;
+    QFrame *line;
+    QLabel *time_label;
+    QLabel *time;
     QSpacerItem *horizontalSpacer_3;
     QGroupBox *config_groupbox;
     QVBoxLayout *verticalLayout_2;
@@ -64,7 +68,7 @@ public:
         sizePolicy.setHeightForWidth(Mines->sizePolicy().hasHeightForWidth());
         Mines->setSizePolicy(sizePolicy);
         Mines->setMinimumSize(QSize(0, 0));
-        Mines->setMaximumSize(QSize(99999, 99999));
+        Mines->setMaximumSize(QSize(520, 99999));
         centralWidget = new QWidget(Mines);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -128,7 +132,7 @@ public:
         sizePolicy1.setHeightForWidth(tableWidget->sizePolicy().hasHeightForWidth());
         tableWidget->setSizePolicy(sizePolicy1);
         tableWidget->setMinimumSize(QSize(500, 500));
-        tableWidget->setMaximumSize(QSize(99999, 99999));
+        tableWidget->setMaximumSize(QSize(500, 500));
         tableWidget->setMouseTracking(true);
         tableWidget->setTabletTracking(true);
         tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -163,6 +167,23 @@ public:
         flag_counter->setObjectName(QStringLiteral("flag_counter"));
 
         horizontalLayout_3->addWidget(flag_counter);
+
+        line = new QFrame(gameinfo_groupbox);
+        line->setObjectName(QStringLiteral("line"));
+        line->setFrameShape(QFrame::VLine);
+        line->setFrameShadow(QFrame::Sunken);
+
+        horizontalLayout_3->addWidget(line);
+
+        time_label = new QLabel(gameinfo_groupbox);
+        time_label->setObjectName(QStringLiteral("time_label"));
+
+        horizontalLayout_3->addWidget(time_label);
+
+        time = new QLabel(gameinfo_groupbox);
+        time->setObjectName(QStringLiteral("time"));
+
+        horizontalLayout_3->addWidget(time);
 
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -281,6 +302,8 @@ public:
         gameinfo_groupbox->setTitle(QApplication::translate("Mines", "Game info", nullptr));
         flagcounter_label->setText(QApplication::translate("Mines", "Flag counter:", nullptr));
         flag_counter->setText(QString());
+        time_label->setText(QApplication::translate("Mines", "Time:", nullptr));
+        time->setText(QString());
         config_groupbox->setTitle(QApplication::translate("Mines", "Configuration", nullptr));
         no_mines_label->setText(QApplication::translate("Mines", "Number of mines:", nullptr));
         start_game_button->setText(QApplication::translate("Mines", "Start game", nullptr));

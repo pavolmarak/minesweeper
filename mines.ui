@@ -24,7 +24,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>99999</width>
+    <width>520</width>
     <height>99999</height>
    </size>
   </property>
@@ -57,8 +57,8 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>99999</width>
-          <height>99999</height>
+          <width>500</width>
+          <height>500</height>
          </size>
         </property>
         <property name="mouseTracking">
@@ -219,6 +219,27 @@
            </item>
            <item>
             <widget class="QLabel" name="flag_counter">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="time_label">
+             <property name="text">
+              <string>Time:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="time">
              <property name="text">
               <string/>
              </property>

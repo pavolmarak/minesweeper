@@ -10,6 +10,8 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QAbstractItemView>
+#include <QElapsedTimer>
+#include <QTimer>
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 10
@@ -23,6 +25,8 @@ public:
     int mineCounter;
     int noMineCounter;
     bool congratsShown;
+    QTimer timer;
+    QElapsedTimer elap_timer;
 private slots:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent *event);

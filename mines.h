@@ -9,6 +9,8 @@
 #include <QSet>
 #include <QMouseEvent>
 #include <QMessageBox>
+#include <QElapsedTimer>
+#include <QTimer>
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 10
@@ -35,6 +37,7 @@ private slots:
 public slots:
     void flagCounterIncreasedSlot();
     void flagCounterDecreasedSlot();
+    void updateTime();
 
 private:
     Ui::Mines *ui;

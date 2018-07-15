@@ -15,12 +15,13 @@ MyTable::~MyTable()
 void MyTable::mousePressEvent(QMouseEvent *event)
 {
     QTableWidgetItem * itClicked = this->itemAt(event->pos());
+    itClicked->setSelected(false);
     if(event->button()==Qt::LeftButton){
-        itClicked->setSelected(false);
         if(itClicked->whatsThis() == "noflag-nomine-novisit"){
             emit itemClicked(itClicked);
         }
         else if(itClicked->whatsThis() == "noflag-mine-novisit"){
+            this->timer.stop();
             itClicked->setWhatsThis("noflag-mine-visit");
             emit itemClicked(itClicked);
         }
@@ -60,10 +61,12 @@ void MyTable::mousePressEvent(QMouseEvent *event)
         }
     }
     if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
+        this->timer.stop();
         qDebug() << "Congratulations, you made it.";
         QMessageBox::about(this,"Congratulations", "You made it.");
         this->congratsShown = true;
         this->setEnabled(false);
+
     }
 }
 
@@ -83,9 +86,11 @@ void MyTable::cellsRevealedAutomaticallySlot(int number)
 {
     this->noMineCounter-=number;
     if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
+        this->timer.stop();
         qDebug() << "Congratulations, you made it.";
         QMessageBox::about(this,"Congratulations", "You made it.");
         this->congratsShown = true;
         this->setEnabled(false);
+
     }
 }
