@@ -275,12 +275,15 @@ void Mines::timerStopSlot()
 void Mines::on_pause_time_button_clicked(bool checked)
 {
     qDebug() << checked;
+
     if(checked){
         this->save_time += ui->tableWidget->elap_timer.elapsed();
         ui->tableWidget->timer.stop();
         ui->pause_time_button->setChecked(true);
+        ui->tableWidget->setVisible(false);
     }
     else{
+        ui->tableWidget->setVisible(true);
         ui->tableWidget->timer.start(1);
         ui->tableWidget->elap_timer.restart();
         ui->pause_time_button->setChecked(false);

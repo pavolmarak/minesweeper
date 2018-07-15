@@ -35,6 +35,7 @@ public:
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer;
     MyTable *tableWidget;
     QGroupBox *gameinfo_groupbox;
     QVBoxLayout *verticalLayout_3;
@@ -80,6 +81,10 @@ public:
         verticalLayout->setSpacing(6);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer);
+
         tableWidget = new MyTable(centralWidget);
         if (tableWidget->columnCount() < 10)
             tableWidget->setColumnCount(10);
