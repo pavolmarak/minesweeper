@@ -48,7 +48,7 @@ public:
     {
         if (Mines->objectName().isEmpty())
             Mines->setObjectName(QStringLiteral("Mines"));
-        Mines->resize(534, 614);
+        Mines->resize(534, 615);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -122,7 +122,7 @@ public:
         tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         tableWidget->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
-        tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+        tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
         tableWidget->setSelectionBehavior(QAbstractItemView::SelectItems);
         tableWidget->setTextElideMode(Qt::ElideNone);
         tableWidget->setCornerButtonEnabled(false);

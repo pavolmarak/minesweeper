@@ -26,6 +26,8 @@ class Mines : public QMainWindow
 public:
     explicit Mines(QWidget *parent = 0);
     ~Mines();
+signals:
+    void cellsRevealedAutomatically(int number);
 
 private slots:
     void on_tableWidget_itemClicked(QTableWidgetItem *item);
@@ -40,8 +42,10 @@ private:
     void clearVisibleGrid();
     void revealEmptyArea(int row, int col);
     void makeItemVisible(int row, int col);
-    // mines are modelled as QPoints
+    void clearEverything();
+    // mines and flags are represented as QPoints
     QSet<QPoint> mines;
+    QSet<QPoint> flags;
     int grid[GRID_HEIGHT+2][GRID_WIDTH+2] = {{-1}};
     bool ready;
 };
