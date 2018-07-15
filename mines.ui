@@ -232,6 +232,25 @@
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="pause_time_button">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="mouseTracking">
+              <bool>true</bool>
+             </property>
+             <property name="text">
+              <string>Pause</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoRepeat">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QLabel" name="time_label">
              <property name="text">
               <string>Time:</string>

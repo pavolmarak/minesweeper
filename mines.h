@@ -33,7 +33,9 @@ signals:
 
 private slots:
     void on_tableWidget_itemClicked(QTableWidgetItem *item);
-    void on_start_game_button_clicked();
+    void on_start_game_button_clicked();    
+    void on_pause_time_button_clicked(bool checked);
+
 public slots:
     void flagCounterIncreasedSlot();
     void flagCounterDecreasedSlot();
@@ -54,6 +56,7 @@ private:
     int grid[GRID_HEIGHT+2][GRID_WIDTH+2] = {{-1}}; // extra borders for problem-free indexing
     bool ready;
     int flagCnt;
+    quint64 save_time;
 };
 
 #endif // MINES_H

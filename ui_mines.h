@@ -42,6 +42,7 @@ public:
     QLabel *flagcounter_label;
     QLabel *flag_counter;
     QFrame *line;
+    QPushButton *pause_time_button;
     QLabel *time_label;
     QLabel *time;
     QSpacerItem *horizontalSpacer_3;
@@ -175,6 +176,15 @@ public:
 
         horizontalLayout_3->addWidget(line);
 
+        pause_time_button = new QPushButton(gameinfo_groupbox);
+        pause_time_button->setObjectName(QStringLiteral("pause_time_button"));
+        pause_time_button->setEnabled(false);
+        pause_time_button->setMouseTracking(true);
+        pause_time_button->setCheckable(true);
+        pause_time_button->setAutoRepeat(false);
+
+        horizontalLayout_3->addWidget(pause_time_button);
+
         time_label = new QLabel(gameinfo_groupbox);
         time_label->setObjectName(QStringLiteral("time_label"));
 
@@ -305,6 +315,7 @@ public:
         gameinfo_groupbox->setTitle(QApplication::translate("Mines", "Game info", nullptr));
         flagcounter_label->setText(QApplication::translate("Mines", "Flag counter:", nullptr));
         flag_counter->setText(QString());
+        pause_time_button->setText(QApplication::translate("Mines", "Pause", nullptr));
         time_label->setText(QApplication::translate("Mines", "Time:", nullptr));
         time->setText(QApplication::translate("Mines", "<html><head/><body><p align=\"right\"><br/></p></body></html>", nullptr));
         config_groupbox->setTitle(QApplication::translate("Mines", "Configuration", nullptr));

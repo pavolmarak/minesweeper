@@ -11,6 +11,7 @@ Mines::Mines(QWidget *parent) :
     ui(new Ui::Mines)
 {
     ui->setupUi(this);
+    this->save_time=0;
     this->flagCnt=0;
     ui->time->setText("0 ms");
     ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -218,6 +219,7 @@ void Mines::on_tableWidget_itemClicked(QTableWidgetItem *item)
 // function to start the game
 void Mines::on_start_game_button_clicked()
 {
+    this->save_time=0;
     ui->time->setText("0 ms");
     ui->tableWidget->mineCounter=0;
     ui->tableWidget->noMineCounter=GRID_HEIGHT*GRID_WIDTH;
@@ -232,6 +234,8 @@ void Mines::on_start_game_button_clicked()
     ui->statusBar->showMessage("New game started.",3000);
     ui->tableWidget->timer.start(1);
     ui->tableWidget->elap_timer.restart();
+    ui->pause_time_button->setEnabled(true);
+    ui->pause_time_button->setChecked(false);
     qApp->processEvents();
 }
 
@@ -255,6 +259,22 @@ void Mines::flagCounterDecreasedSlot()
 
 void Mines::updateTime()
 {
-    ui->time->setText(QString::number(ui->tableWidget->elap_timer.elapsed()) + " ms");
+    ui->time->setText(QString::number(this->save_time+ui->tableWidget->elap_timer.elapsed()) + " ms");
     qApp->processEvents();
 }
+
+void Mines::on_pause_time_button_clicked(bool checked)
+{
+    qDebug() << checked;
+    if(checked){
+        this->save_time += ui->tableWidget->elap_timer.elapsed();
+        ui->tableWidget->timer.stop();
+        ui->pause_time_button->setChecked(true);
+    }
+    else{
+        ui->tableWidget->timer.start(1);
+        ui->tableWidget->elap_timer.restart();
+        ui->pause_time_button->setChecked(false);
+    }
+}
+
