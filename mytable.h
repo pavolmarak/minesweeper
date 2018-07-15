@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QDir>
 #include <QMessageBox>
+#include <QAbstractItemView>
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 10

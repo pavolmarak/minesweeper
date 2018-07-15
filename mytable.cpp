@@ -59,6 +59,7 @@ void MyTable::mousePressEvent(QMouseEvent *event)
         qDebug() << "Congratulations, you made it.";
         QMessageBox::about(this,"Congratulations", "You made it.");
         this->congratsShown = true;
+        this->setEnabled(false);
     }
 }
 
@@ -81,5 +82,6 @@ void MyTable::cellsRevealedAutomaticallySlot(int number)
         qDebug() << "Congratulations, you made it.";
         QMessageBox::about(this,"Congratulations", "You made it.");
         this->congratsShown = true;
+        this->setEnabled(false);
     }
 }
