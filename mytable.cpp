@@ -14,6 +14,7 @@ MyTable::~MyTable()
 
 void MyTable::leaderboardDialog()
 {
+    QMessageBox::about(this,"Congratulations" ,"You won.");
 }
 
 void MyTable::mousePressEvent(QMouseEvent *event)
