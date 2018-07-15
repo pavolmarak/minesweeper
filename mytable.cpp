@@ -4,6 +4,7 @@ MyTable::MyTable(QWidget *)
 {
     this->mineCounter=0;
     this->noMineCounter=GRID_HEIGHT*GRID_WIDTH;
+    this->congratsShown=false;
 }
 
 MyTable::~MyTable()
@@ -17,7 +18,7 @@ void MyTable::mousePressEvent(QMouseEvent *event)
     if(event->button()==Qt::LeftButton){
         itClicked->setSelected(false);
         if(itClicked->whatsThis() == "noflag-nomine-novisit"){
-           emit itemClicked(itClicked);
+            emit itemClicked(itClicked);
         }
         else if(itClicked->whatsThis() == "noflag-mine-novisit"){
             itClicked->setWhatsThis("noflag-mine-visit");
@@ -54,12 +55,10 @@ void MyTable::mousePressEvent(QMouseEvent *event)
             this->mineCounter++;
         }
     }
-    qDebug() << "Nomines found: " << this->noMineCounter;
-    qDebug() << "Mines found: " << this->mineCounter;
-    if(this->mineCounter == this->noMineCounter){
-        qDebug() << "You made it.";
+    if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
+        qDebug() << "Congratulations, you made it.";
         QMessageBox::about(this,"Congratulations", "You made it.");
-
+        this->congratsShown = true;
     }
 }
 
@@ -78,11 +77,9 @@ void MyTable::mouseReleaseEvent(QMouseEvent *event)
 void MyTable::cellsRevealedAutomaticallySlot(int number)
 {
     this->noMineCounter-=number;
-    qDebug() << "Nomines found: " << this->noMineCounter;
-    qDebug() << "Mines found: " << this->mineCounter;
-    if(this->mineCounter == this->noMineCounter){
-        qDebug() << "You made it.";
+    if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
+        qDebug() << "Congratulations, you made it.";
         QMessageBox::about(this,"Congratulations", "You made it.");
+        this->congratsShown = true;
     }
-
 }

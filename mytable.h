@@ -21,14 +21,13 @@ public:
     virtual ~MyTable();
     int mineCounter;
     int noMineCounter;
+    bool congratsShown;
 private slots:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
 public slots:
     void cellsRevealedAutomaticallySlot(int);
-private:
-
 };
 
 #endif // MYTABLE_H

@@ -147,6 +147,8 @@ public:
 
         noMinesSpinBox = new QSpinBox(centralWidget);
         noMinesSpinBox->setObjectName(QStringLiteral("noMinesSpinBox"));
+        noMinesSpinBox->setMinimum(0);
+        noMinesSpinBox->setMaximum(100);
         noMinesSpinBox->setValue(10);
 
         horizontalLayout_2->addWidget(noMinesSpinBox);

@@ -43,29 +43,28 @@ Mines::~Mines()
     delete ui;
 }
 
+// function to place random mines on the game grid
 void Mines::placeMines(int count)
 {
+    // qrand init
     qsrand(time(0));
 
-    // clear the set of mines
+    // clear the previous set of mines
     this->mines.clear();
 
-    qDebug() << " **********";
-
     // place mines
-    int no=0;
     while(this->mines.count()<count){
         QPoint point(qrand()%ui->tableWidget->columnCount(), qrand()%ui->tableWidget->rowCount());
         this->mines.insert(point);
         this->grid[point.y()+1][point.x()+1]=MINE;
         ui->tableWidget->item(point.y(),point.x())->setWhatsThis("noflag-mine-novisit");
-        qDebug() << no++ << " : " << point;
     }
 }
 
+// function to place mine numbers on the game grid
 void Mines::placeMineNumbers()
 {
-    // compute mine numbers
+    // compute mine numbers in non-mine cells
     for(int i=0; i< ui->tableWidget->rowCount();i++){
         for(int j=0; j<ui->tableWidget->columnCount();j++){
             if(this->grid[i+1][j+1]!=MINE){
@@ -75,6 +74,7 @@ void Mines::placeMineNumbers()
     }
 }
 
+// function to compute how many nearby mines are present in the cell
 int Mines::countNearbyMines(int row, int col)
 {
     if(row<0 || row>=ui->tableWidget->rowCount()){
@@ -90,7 +90,7 @@ int Mines::countNearbyMines(int row, int col)
         qDebug() << "MINE";
         return -999;
     }
-    quint16 mineCount = 0;
+    int mineCount = 0;
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 3; j++){
             if(this->grid[row+i][col+j]==MINE){
@@ -101,6 +101,7 @@ int Mines::countNearbyMines(int row, int col)
     return mineCount;
 }
 
+// function to clear the visible game grid
 void Mines::clearVisibleGrid()
 {
     for(int i=0; i< ui->tableWidget->rowCount();i++){
@@ -117,6 +118,7 @@ void Mines::clearVisibleGrid()
     }
 }
 
+// function reveal all empty cells when som empty cell is clicked
 void Mines::revealEmptyArea(int row, int col)
 {
     QList<QPoint> unvisitedEmptyCells;
@@ -124,26 +126,20 @@ void Mines::revealEmptyArea(int row, int col)
     unvisitedEmptyCells.push_back(QPoint(col,row));
     int new_row, new_col;
     int complexity = 0;
-    int emptyCellsNo=0;
-    int unvisitedCellsNo=0;
     while(!unvisitedEmptyCells.isEmpty()){
         // exploring 8-connected neighborhood of the selected empty cell
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
                 new_row = unvisitedEmptyCells.first().y()-1+i;
                 new_col = unvisitedEmptyCells.first().x()-1+j;
+                // check if not out of bounds
                 if(ui->tableWidget->item(new_row, new_col)){
-                    // if the cell was not visited
+                    // check if the cell was not visited
                     if(ui->tableWidget->item(new_row, new_col)->whatsThis() == "noflag-nomine-novisit"){
-                        qDebug() << "UNVISITED CELL FOUND: " << ++unvisitedCellsNo;
-                        ui->tableWidget->removeCellWidget(new_row, new_col); // to remove flags
-                        // check if not out of bounds
-
-                        // if another empty cell is found
+                        ui->tableWidget->removeCellWidget(new_row, new_col); // to remove possible flags
+                        // check if another empty cell is found
                         if(this->grid[new_row+1][new_col+1]==0 && visitedEmptyCells.indexOf(unvisitedEmptyCells.first(),0)==-1){
                             unvisitedEmptyCells.push_back(QPoint(new_col,new_row));
-                            qDebug() << "NEW EMPTY CELL FOUND: " << ++emptyCellsNo;
-
                         }
                         this->makeItemVisible(new_row, new_col);
                         qApp->processEvents();
@@ -152,17 +148,15 @@ void Mines::revealEmptyArea(int row, int col)
                 }
             }
         }
-
         // put the current empty cell to the list of visited empty cells
         visitedEmptyCells.push_back(unvisitedEmptyCells.first());
         // remove the current empty cell from the list of unvisited empty cells
         unvisitedEmptyCells.removeFirst();
     }
-
-    qDebug() << "Sending complexity: " << complexity;
     emit cellsRevealedAutomatically(complexity);
 }
 
+// function to make the selected cell visible
 void Mines::makeItemVisible(int row, int col)
 {
     ui->tableWidget->item(row, col)->setWhatsThis("noflag-nomine-visit");
@@ -174,6 +168,7 @@ void Mines::makeItemVisible(int row, int col)
     ui->tableWidget->item(row, col)->setBackgroundColor(QColor(210,210,210));
 }
 
+// function to clear necessary data before game starts
 void Mines::clearEverything()
 {
     for(int i=0; i < GRID_HEIGHT; i++){
@@ -184,6 +179,7 @@ void Mines::clearEverything()
     this->clearVisibleGrid();
 }
 
+// function to handle user clicks
 void Mines::on_tableWidget_itemClicked(QTableWidgetItem *item)
 {
     if(this->ready==true){
@@ -211,14 +207,17 @@ void Mines::on_tableWidget_itemClicked(QTableWidgetItem *item)
     }
 }
 
+// function to start the game
 void Mines::on_start_game_button_clicked()
 {
     ui->tableWidget->mineCounter=0;
     ui->tableWidget->noMineCounter=GRID_HEIGHT*GRID_WIDTH;
+    ui->tableWidget->congratsShown=false;
     this->clearEverything();
     this->placeMines(ui->noMinesSpinBox->value());
     this->placeMineNumbers();
     ui->tableWidget->setEnabled(true);
     ui->tableWidget->setVisible(true);
     this->ready = true;
+    ui->statusBar->showMessage("Game started...",3000);
 }
