@@ -11,6 +11,8 @@
 #include <QMessageBox>
 #include <QElapsedTimer>
 #include <QTimer>
+#include <QDialog>
+
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 10
@@ -40,6 +42,7 @@ public slots:
     void flagCounterIncreasedSlot();
     void flagCounterDecreasedSlot();
     void updateTime();
+    void timerStopSlot();
 
 private:
     Ui::Mines *ui;

@@ -27,12 +27,13 @@ SOURCES += \
         main.cpp \
         mines.cpp \
     mytable.cpp \
-    leaderdialog.cpp
+    leaderboard.cpp
 
 HEADERS += \
         mines.h \
     mytable.h \
-    leaderdialog.h
+    leaderboard.h
 
 FORMS += \
-        mines.ui
+        mines.ui \
+    leaderboard.ui

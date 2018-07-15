@@ -25,6 +25,7 @@ Mines::Mines(QWidget *parent) :
     QObject::connect(ui->tableWidget, SIGNAL(flagCounterIncreased()), this, SLOT(flagCounterIncreasedSlot()));
     QObject::connect(ui->tableWidget, SIGNAL(flagCounterDecreased()), this, SLOT(flagCounterDecreasedSlot()));
     QObject::connect(&(ui->tableWidget->timer), SIGNAL(timeout()), this, SLOT(updateTime()));
+    QObject::connect(ui->tableWidget, SIGNAL(timerStop()), this, SLOT(timerStopSlot()));
 
     this->ready = false;
     for(int j=0; j< ui->tableWidget->rowCount();j++){
@@ -261,6 +262,14 @@ void Mines::updateTime()
 {
     ui->time->setText(QString::number(this->save_time+ui->tableWidget->elap_timer.elapsed()) + " ms");
     qApp->processEvents();
+}
+
+void Mines::timerStopSlot()
+{
+    ui->tableWidget->timer.stop();
+    this->save_time += ui->tableWidget->elap_timer.elapsed();
+    ui->time->setText(QString::number(this->save_time) + " ms");
+    ui->tableWidget->leaderboardDialog(this->save_time);
 }
 
 void Mines::on_pause_time_button_clicked(bool checked)

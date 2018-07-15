@@ -13,6 +13,9 @@
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QPushButton>
+#include <QDialog>
+
+#include "leaderboard.h"
 
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 10
@@ -28,7 +31,7 @@ public:
     bool congratsShown;
     QTimer timer;
     QElapsedTimer elap_timer;
-    void leaderboardDialog();
+    void leaderboardDialog(quint64 time_taken);
 private slots:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent *event);
@@ -38,6 +41,7 @@ public slots:
 signals:
     void flagCounterIncreased();
     void flagCounterDecreased();
+    void timerStop();
 };
 
 #endif // MYTABLE_H

@@ -12,9 +12,14 @@ MyTable::~MyTable()
 
 }
 
-void MyTable::leaderboardDialog()
+void MyTable::leaderboardDialog(quint64 time_taken)
 {
-    QMessageBox::about(this,"Congratulations" ,"You won.");
+    //QMessageBox::about(this,"Congratulations" ,"You won.");
+    LeaderBoard *lb = new LeaderBoard(time_taken);
+    lb->setWindowTitle("Leaderboard");
+    lb->show();
+
+
 }
 
 void MyTable::mousePressEvent(QMouseEvent *event)
@@ -66,34 +71,32 @@ void MyTable::mousePressEvent(QMouseEvent *event)
         }
     }
     if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
-        this->timer.stop();
+        emit timerStop();
         qDebug() << "Congratulations, you made it.";
         this->congratsShown = true;
         this->setEnabled(false);
-        this->leaderboardDialog();
     }
 }
 
 void MyTable::mouseMoveEvent(QMouseEvent *event)
 {
-    QTableWidgetItem * itClicked = this->itemAt(event->pos());
-    itClicked->setSelected(false);
+   //QTableWidgetItem * itClicked = this->itemAt(event->pos());
+   //itClicked->setSelected(false);
 }
 
 void MyTable::mouseReleaseEvent(QMouseEvent *event)
 {
-    QTableWidgetItem * itClicked = this->itemAt(event->pos());
-    itClicked->setSelected(false);
+    //QTableWidgetItem * itClicked = this->itemAt(event->pos());
+    //itClicked->setSelected(false);
 }
 
 void MyTable::cellsRevealedAutomaticallySlot(int number)
 {
     this->noMineCounter-=number;
     if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
-        this->timer.stop();
+        emit timerStop();
         qDebug() << "Congratulations, you made it.";
         this->congratsShown = true;
         this->setEnabled(false);
-        this->leaderboardDialog();
     }
 }
