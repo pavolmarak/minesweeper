@@ -229,6 +229,7 @@ void Mines::on_start_game_button_clicked()
     this->placeMines(ui->noMinesSpinBox->value());
     this->placeMineNumbers();
     ui->tableWidget->setEnabled(true);
+    ui->tableWidget->setVisible(true);
     this->ready = true;
     this->flagCnt=0;
     ui->flag_counter->setText(QString::number(this->flagCnt) + "/" + QString::number(ui->noMinesSpinBox->value()));

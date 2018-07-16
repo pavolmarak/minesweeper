@@ -34,14 +34,16 @@ public:
     void leaderboardDialog(quint64 time_taken);
 private slots:
     void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 public slots:
     void cellsRevealedAutomaticallySlot(int);
 signals:
     void flagCounterIncreased();
     void flagCounterDecreased();
     void timerStop();
+private:
+    QTableWidgetItem* itClicked;
 };
 
 #endif // MYTABLE_H
