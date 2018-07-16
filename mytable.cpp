@@ -28,7 +28,9 @@ void MyTable::mouseReleaseEvent(QMouseEvent *event)
 {
     if(this->itClicked){
         this->itClicked->setSelected(false);
-        this->itClicked->setBackgroundColor(QColor(150,150,150));
+        if(this->itClicked->whatsThis().endsWith("-novisit")){
+            this->itClicked->setBackgroundColor(QColor(150,150,150));
+        }
         if(event->button()==Qt::LeftButton){
             if(itClicked->whatsThis() == "noflag-nomine-novisit"){
                 emit itemClicked(itClicked);
@@ -95,8 +97,9 @@ void MyTable::mousePressEvent(QMouseEvent *event)
 {
     this->itClicked = this->itemAt(event->pos());
     this->itClicked->setSelected(false);
-    this->itClicked->setBackgroundColor(QColor(90,90,90));
-
+    if(this->itClicked->whatsThis().endsWith("-novisit")){
+        this->itClicked->setBackgroundColor(QColor(90,90,90));
+    }
 }
 
 
