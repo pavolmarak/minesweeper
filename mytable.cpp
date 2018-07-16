@@ -18,6 +18,7 @@ void MyTable::leaderboardDialog(quint64 time_taken)
     //QMessageBox::about(this,"Congratulations" ,"You won.");
     LeaderBoard *lb = new LeaderBoard(time_taken);
     lb->setWindowTitle("Leaderboard");
+    lb->setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
     lb->show();
 
 

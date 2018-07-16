@@ -63,7 +63,7 @@ public:
     {
         if (Mines->objectName().isEmpty())
             Mines->setObjectName(QStringLiteral("Mines"));
-        Mines->resize(520, 731);
+        Mines->resize(520, 757);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -235,7 +235,7 @@ public:
         noMinesSpinBox->setObjectName(QStringLiteral("noMinesSpinBox"));
         noMinesSpinBox->setMinimum(0);
         noMinesSpinBox->setMaximum(100);
-        noMinesSpinBox->setValue(10);
+        noMinesSpinBox->setValue(0);
 
         horizontalLayout_2->addWidget(noMinesSpinBox);
 
@@ -260,7 +260,7 @@ public:
         Mines->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Mines);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 520, 22));
+        menuBar->setGeometry(QRect(0, 0, 520, 30));
         Mines->setMenuBar(menuBar);
         mainToolBar = new QToolBar(Mines);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
