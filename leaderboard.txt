@@ -1,7 +1,10 @@
 # DO NOT MODIFY THIS FILE !!!
 
+me 368 10x10
 hero 925 25x25
+player1 975 10x10
 hero3 1053 Custom
+player2 1203 10x10
 hero2 1897 Custom
 user7 5894 15x15
 user1 8462 10x10

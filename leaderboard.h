@@ -14,6 +14,8 @@
 #include <QCloseEvent>
 #include <QStatusBar>
 #include <QPushButton>
+#include <QComboBox>
+#include <QGroupBox>
 
 typedef struct _user{
     QString name;
@@ -46,7 +48,9 @@ public:
     void redraw(); // redraws a leaderboard table and highlights the specified row
     void setTimeTaken(quint64 time_taken);
     void setDifficulty(const QString& difficulty);
-    void setSubmitBtnEnabled();
+    void setSubmitBtnEnabled(bool);
+    void setLeaderboardTypes(QVector<QString>);
+    void setResultboxVisible(bool);
     bool error;
 
 private slots:
@@ -58,6 +62,9 @@ private:
     QString leader_board_file;
     void closeEvent (QCloseEvent *event);
     QString difficulty;
+
+signals:
+    void leaderboardClosedSignal();
 };
 
 #endif // LEADERBOARD_H

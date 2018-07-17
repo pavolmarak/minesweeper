@@ -10,18 +10,19 @@ LeaderBoard::LeaderBoard(const QString &path_to_file, QWidget *parent) :
     this->error = false;
     this->difficulty = "10x10";
 
-    int columnCnt = 3;
+    int columnCnt = 4;
     ui->leader_table->setColumnCount(columnCnt);
     if(!this->loadLeaderBoard(this->leader_board_file)){
         this->error = true;
     }
 
-    ui->leader_table->setHorizontalHeaderLabels(QStringList() << "Username" << "Time [ms]" << "Difficulty");
+    ui->leader_table->setHorizontalHeaderLabels(QStringList() << "Username" << "Time [ms]" << "Difficulty" << "Date");
     //columns width
-    int factor_ratio = ui->leader_table->width()/10;
-    ui->leader_table->setColumnWidth(0, factor_ratio*4);
-    ui->leader_table->setColumnWidth(1, factor_ratio*2);
-    ui->leader_table->setColumnWidth(2, factor_ratio*2);
+    int factor_ratio = ui->leader_table->width()/40;
+    ui->leader_table->setColumnWidth(0, factor_ratio*12);
+    ui->leader_table->setColumnWidth(1, factor_ratio*8);
+    ui->leader_table->setColumnWidth(2, factor_ratio*7);
+    ui->leader_table->setColumnWidth(3, factor_ratio*9);
 }
 
 LeaderBoard::~LeaderBoard()
@@ -59,6 +60,7 @@ bool LeaderBoard::loadLeaderBoard(const QString &path_to_file)
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 0, new QTableWidgetItem(iterat.value().name));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 1, new QTableWidgetItem(QString::number(iterat.key())));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 2, new QTableWidgetItem(iterat.value().difficulty));
+        ui->leader_table->setItem(ui->leader_table->rowCount()-1, 3, new QTableWidgetItem("1.1.1999"));
         ++iterat;
     }
     return true;
@@ -76,12 +78,14 @@ void LeaderBoard::redraw()
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 0, new QTableWidgetItem(iterat.value().name));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 1, new QTableWidgetItem(QString::number(iterat.key())));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 2, new QTableWidgetItem(iterat.value().difficulty));
+        ui->leader_table->setItem(ui->leader_table->rowCount()-1, 3, new QTableWidgetItem("1.1.1999"));
         if(iterat.value().name.endsWith("-highlight")){
             iterat.value().name = iterat.value().name.chopped(10);
             ui->leader_table->item(ui->leader_table->rowCount()-1,0)->setText(iterat.value().name);
             ui->leader_table->item(ui->leader_table->rowCount()-1,0)->setBackgroundColor(QColor(0, 204, 102));
             ui->leader_table->item(ui->leader_table->rowCount()-1,1)->setBackgroundColor(QColor(0, 204, 102));
             ui->leader_table->item(ui->leader_table->rowCount()-1,2)->setBackgroundColor(QColor(0, 204, 102));
+            ui->leader_table->item(ui->leader_table->rowCount()-1,3)->setBackgroundColor(QColor(0, 204, 102));
 
         }
 
@@ -99,9 +103,21 @@ void LeaderBoard::setDifficulty(const QString &difficulty)
     this->difficulty = difficulty;
 }
 
-void LeaderBoard::setSubmitBtnEnabled()
+void LeaderBoard::setSubmitBtnEnabled(bool value)
 {
-    ui->submit_result_button->setEnabled(true);
+    ui->submit_result_button->setEnabled(value);
+}
+
+void LeaderBoard::setLeaderboardTypes(QVector<QString> ltypes)
+{
+    foreach (QString s, ltypes) {
+        ui->leaderboard_selection_combobox->addItem(s);
+    }
+}
+
+void LeaderBoard::setResultboxVisible(bool value)
+{
+    ui->leaderboard_result_box->setVisible(value);
 }
 
 
@@ -144,6 +160,7 @@ void LeaderBoard::closeEvent(QCloseEvent *event)
     this->redraw();
     ui->username->setText("");
     ui->statusbar->showMessage("");
+    emit leaderboardClosedSignal();
 }
 
 

@@ -35,6 +35,10 @@ public:
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout_5;
+    QSpacerItem *horizontalSpacer_6;
+    QPushButton *show_leaderboard_button;
+    QSpacerItem *horizontalSpacer_7;
     QSpacerItem *verticalSpacer;
     MyTable *tableWidget;
     QGroupBox *gameinfo_groupbox;
@@ -67,14 +71,14 @@ public:
     {
         if (Mines->objectName().isEmpty())
             Mines->setObjectName(QStringLiteral("Mines"));
-        Mines->resize(514, 782);
+        Mines->resize(514, 821);
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(Mines->sizePolicy().hasHeightForWidth());
         Mines->setSizePolicy(sizePolicy);
         Mines->setMinimumSize(QSize(514, 0));
-        Mines->setMaximumSize(QSize(514, 782));
+        Mines->setMaximumSize(QSize(514, 821));
         centralWidget = new QWidget(Mines);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -85,6 +89,25 @@ public:
         verticalLayout->setSpacing(6);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_6);
+
+        show_leaderboard_button = new QPushButton(centralWidget);
+        show_leaderboard_button->setObjectName(QStringLiteral("show_leaderboard_button"));
+
+        horizontalLayout_5->addWidget(show_leaderboard_button);
+
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_7);
+
+
+        verticalLayout->addLayout(horizontalLayout_5);
+
         verticalSpacer = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -314,6 +337,7 @@ public:
     void retranslateUi(QMainWindow *Mines)
     {
         Mines->setWindowTitle(QApplication::translate("Mines", "Mines", nullptr));
+        show_leaderboard_button->setText(QApplication::translate("Mines", "Leaderboard", nullptr));
         QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QApplication::translate("Mines", "New Column", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);

@@ -26,6 +26,7 @@ Mines::Mines(QWidget *parent) :
     QObject::connect(ui->tableWidget, SIGNAL(flagCounterDecreased()), this, SLOT(flagCounterDecreasedSlot()));
     QObject::connect(&(ui->tableWidget->timer), SIGNAL(timeout()), this, SLOT(updateTime()));
     QObject::connect(ui->tableWidget, SIGNAL(timerStop()), this, SLOT(timerStopSlot()));
+    QObject::connect(ui->tableWidget->getLb(),SIGNAL(leaderboardClosedSignal()),this, SLOT(leaderboardClosedSlot()));
 
     this->ready = false;
     for(int j=0; j< ui->tableWidget->rowCount();j++){
@@ -45,6 +46,13 @@ Mines::Mines(QWidget *parent) :
             ui->tableWidget->item(j,i)->setWhatsThis("noflag-nomine-novisit");
         }
     }
+
+    // set leaderboard types in the leader board window
+    QVector<QString> ltypes;
+    for(int i=0;i<ui->gridsize_selector->count();i++){
+        ltypes.push_back(ui->gridsize_selector->itemText(i));
+    }
+    ui->tableWidget->getLb()->setLeaderboardTypes(ltypes);
     qApp->processEvents();
 }
 
@@ -266,13 +274,23 @@ void Mines::updateTime()
     qApp->processEvents();
 }
 
+// when user wins
 void Mines::timerStopSlot()
 {
     ui->pause_time_button->setEnabled(false);
     ui->tableWidget->timer.stop();
     this->save_time += ui->tableWidget->elap_timer.elapsed();
     ui->time->setText(QString::number(this->save_time) + " ms");
-    ui->tableWidget->leaderboardDialog(this->save_time,ui->gridsize_selector->currentText());
+    ui->tableWidget->getLb()->setResultboxVisible(true);
+    ui->show_leaderboard_button->setEnabled(false);
+    ui->start_game_button->setEnabled(false);
+    ui->tableWidget->showLeaderboard(this->save_time,ui->gridsize_selector->currentText());
+}
+
+void Mines::leaderboardClosedSlot()
+{
+    ui->show_leaderboard_button->setEnabled(true);
+    ui->start_game_button->setEnabled(true);
 }
 
 void Mines::on_pause_time_button_clicked(bool checked)
@@ -291,3 +309,9 @@ void Mines::on_pause_time_button_clicked(bool checked)
     }
 }
 
+
+void Mines::on_show_leaderboard_button_clicked()
+{
+    ui->tableWidget->getLb()->setResultboxVisible(false);
+    ui->tableWidget->showLeaderboard();
+}

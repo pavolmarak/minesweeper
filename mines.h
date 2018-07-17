@@ -40,11 +40,14 @@ private slots:
     void on_start_game_button_clicked();    
     void on_pause_time_button_clicked(bool checked);
 
+    void on_show_leaderboard_button_clicked();
+
 public slots:
     void flagCounterIncreasedSlot();
     void flagCounterDecreasedSlot();
     void updateTime();
     void timerStopSlot();
+    void leaderboardClosedSlot();
 
 private:
     Ui::Mines *ui;

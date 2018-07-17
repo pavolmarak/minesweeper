@@ -7,6 +7,8 @@ MyTable::MyTable(QWidget *)
     this->congratsShown=false;
     this->itClicked=nullptr;
     this->lb = new LeaderBoard(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE, this->parentWidget());
+    this->lb->setWindowTitle("Leaderboard");
+    this->lb->setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
 }
 
 MyTable::~MyTable()
@@ -14,17 +16,18 @@ MyTable::~MyTable()
 
 }
 
-void MyTable::leaderboardDialog(quint64 time_taken, const QString& difficulty)
+void MyTable::showLeaderboard(quint64 time_taken, const QString& difficulty)
 {
+
     //QMessageBox::about(this,"Congratulations" ,"You won.");
-    lb->setTimeTaken(time_taken);
-    lb->setDifficulty(difficulty);
-    lb->setWindowTitle("Leaderboard");
-    lb->setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
-    lb->setSubmitBtnEnabled();
-    if(!lb->error){
-        lb->show();
+    this->lb->setTimeTaken(time_taken);
+    this->lb->setDifficulty(difficulty);
+    this->lb->setSubmitBtnEnabled(true);
+    if(!this->lb->error){
+        this->lb->show();
     }
+
+
 }
 
 void MyTable::mouseReleaseEvent(QMouseEvent *event)
@@ -79,7 +82,6 @@ void MyTable::mouseReleaseEvent(QMouseEvent *event)
             }
         }
         if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
-
             emit timerStop();
             qDebug() << "Congratulations, you made it.";
             this->congratsShown = true;
@@ -116,4 +118,9 @@ void MyTable::cellsRevealedAutomaticallySlot(int number)
         this->congratsShown = true;
         this->setEnabled(false);
     }
+}
+
+LeaderBoard *MyTable::getLb() const
+{
+    return lb;
 }
