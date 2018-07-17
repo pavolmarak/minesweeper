@@ -195,6 +195,7 @@ void Mines::on_tableWidget_itemClicked(QTableWidgetItem *item)
     if(this->ready==true){
         // if a user clicks on a mine game ends
         if(this->grid[item->row()+1][item->column()+1]==MINE){
+            ui->pause_time_button->setEnabled(false);
             qDebug() << "MINE";
             QLabel* wi = new QLabel();
             wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/icon.png"));
@@ -267,6 +268,7 @@ void Mines::updateTime()
 
 void Mines::timerStopSlot()
 {
+    ui->pause_time_button->setEnabled(false);
     ui->tableWidget->timer.stop();
     this->save_time += ui->tableWidget->elap_timer.elapsed();
     ui->time->setText(QString::number(this->save_time) + " ms");
@@ -275,8 +277,6 @@ void Mines::timerStopSlot()
 
 void Mines::on_pause_time_button_clicked(bool checked)
 {
-    qDebug() << checked;
-
     if(checked){
         this->save_time += ui->tableWidget->elap_timer.elapsed();
         ui->tableWidget->timer.stop();

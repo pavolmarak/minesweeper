@@ -17,7 +17,6 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
@@ -55,7 +54,6 @@ public:
     QSpinBox *noMinesSpinBox;
     QPushButton *start_game_button;
     QSpacerItem *horizontalSpacer_2;
-    QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -63,14 +61,14 @@ public:
     {
         if (Mines->objectName().isEmpty())
             Mines->setObjectName(QStringLiteral("Mines"));
-        Mines->resize(520, 757);
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        Mines->resize(514, 727);
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(Mines->sizePolicy().hasHeightForWidth());
         Mines->setSizePolicy(sizePolicy);
-        Mines->setMinimumSize(QSize(0, 0));
-        Mines->setMaximumSize(QSize(520, 99999));
+        Mines->setMinimumSize(QSize(514, 0));
+        Mines->setMaximumSize(QSize(514, 727));
         centralWidget = new QWidget(Mines);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -81,7 +79,7 @@ public:
         verticalLayout->setSpacing(6);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
 
@@ -157,6 +155,11 @@ public:
 
         gameinfo_groupbox = new QGroupBox(centralWidget);
         gameinfo_groupbox->setObjectName(QStringLiteral("gameinfo_groupbox"));
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Maximum);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(gameinfo_groupbox->sizePolicy().hasHeightForWidth());
+        gameinfo_groupbox->setSizePolicy(sizePolicy2);
         verticalLayout_3 = new QVBoxLayout(gameinfo_groupbox);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -215,6 +218,8 @@ public:
 
         config_groupbox = new QGroupBox(centralWidget);
         config_groupbox->setObjectName(QStringLiteral("config_groupbox"));
+        sizePolicy2.setHeightForWidth(config_groupbox->sizePolicy().hasHeightForWidth());
+        config_groupbox->setSizePolicy(sizePolicy2);
         verticalLayout_2 = new QVBoxLayout(config_groupbox);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -258,10 +263,6 @@ public:
         horizontalLayout->addLayout(verticalLayout);
 
         Mines->setCentralWidget(centralWidget);
-        menuBar = new QMenuBar(Mines);
-        menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 520, 30));
-        Mines->setMenuBar(menuBar);
         mainToolBar = new QToolBar(Mines);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
         Mines->addToolBar(Qt::TopToolBarArea, mainToolBar);

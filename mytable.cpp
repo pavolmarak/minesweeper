@@ -19,13 +19,12 @@ void MyTable::leaderboardDialog(quint64 time_taken)
     LeaderBoard *lb = new LeaderBoard(time_taken);
     lb->setWindowTitle("Leaderboard");
     lb->setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
-    lb->show();
-
-
+    if(!lb->error){
+        lb->show();
+    }
 }
 
 void MyTable::mouseReleaseEvent(QMouseEvent *event)
-
 {
     if(this->itClicked){
         this->itClicked->setSelected(false);
@@ -77,6 +76,7 @@ void MyTable::mouseReleaseEvent(QMouseEvent *event)
             }
         }
         if(this->mineCounter == this->noMineCounter && this->congratsShown==false){
+
             emit timerStop();
             qDebug() << "Congratulations, you made it.";
             this->congratsShown = true;
