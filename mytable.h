@@ -15,6 +15,7 @@
 #include <QPushButton>
 #include <QDialog>
 
+#define LEADERBOARD_FILE "leaderboard.txt"
 #include "leaderboard.h"
 
 #define GRID_WIDTH 10
@@ -44,6 +45,7 @@ signals:
     void timerStop();
 private:
     QTableWidgetItem* itClicked;
+    LeaderBoard *lb;
 };
 
 #endif // MYTABLE_H

@@ -9,8 +9,11 @@
 #include <QTableWidget>
 #include <QMultiMap>
 #include <QThread>
-
-#define DATA_FILE_PATH "leaderboard.txt"
+#include <QLabel>
+#include <QLineEdit>
+#include <QCloseEvent>
+#include <QStatusBar>
+#include <QPushButton>
 
 namespace Ui {
 class LeaderBoard;
@@ -21,9 +24,12 @@ class LeaderBoard : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit LeaderBoard(quint64 time_taken, QWidget *parent = 0);
+    explicit LeaderBoard(const QString &path_to_file, QWidget *parent = 0);
     ~LeaderBoard();
     bool loadLeaderBoard(const QString&);
+    void redraw(); // redraws a leaderboard table and highlights the specified row
+    void setTimeTaken(quint64 time_taken);
+    void setSubmitBtnEnabled();
     bool error;
 
 private slots:
@@ -32,6 +38,8 @@ private slots:
 private:
     Ui::LeaderBoard *ui;
     QMultiMap<quint64,QString> leader_board;
+    QString leader_board_file;
+    void closeEvent (QCloseEvent *event);
 };
 
 #endif // LEADERBOARD_H

@@ -1,0 +1,7 @@
+# DO NOT MODIFY THIS FILE !!!
+user2, 96
+user1, 152
+user4, 409
+user5, 415
+user6, 2186
+user3, 8547

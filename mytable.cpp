@@ -6,6 +6,7 @@ MyTable::MyTable(QWidget *)
     this->noMineCounter=GRID_HEIGHT*GRID_WIDTH;
     this->congratsShown=false;
     this->itClicked=nullptr;
+    this->lb = new LeaderBoard(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE);
 }
 
 MyTable::~MyTable()
@@ -16,9 +17,10 @@ MyTable::~MyTable()
 void MyTable::leaderboardDialog(quint64 time_taken)
 {
     //QMessageBox::about(this,"Congratulations" ,"You won.");
-    LeaderBoard *lb = new LeaderBoard(time_taken);
+    lb->setTimeTaken(time_taken);
     lb->setWindowTitle("Leaderboard");
     lb->setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
+    lb->setSubmitBtnEnabled();
     if(!lb->error){
         lb->show();
     }
