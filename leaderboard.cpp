@@ -46,7 +46,7 @@ bool LeaderBoard::loadLeaderBoard(const QString &path_to_file)
         username.chop(1);
         this->leader_board.insert(msec,username);
     }
-    qDebug() << "Removed: " << this->leader_board.remove(0,"");
+    this->leader_board.remove(0,"");
     data_file.close();
 
     QMultiMap<quint64,QString>::const_iterator iterat = this->leader_board.constBegin();
