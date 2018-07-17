@@ -1,6 +1,7 @@
 # DO NOT MODIFY THIS FILE !!!
 
 me 368 10x10
+good_player 728 10x10
 hero 925 25x25
 player1 975 10x10
 hero3 1053 Custom
@@ -9,3 +10,4 @@ hero2 1897 Custom
 user7 5894 15x15
 user1 8462 10x10
 user3 51469 10x10
+me_again 83319 10x10
