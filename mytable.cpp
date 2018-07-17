@@ -6,7 +6,7 @@ MyTable::MyTable(QWidget *)
     this->noMineCounter=GRID_HEIGHT*GRID_WIDTH;
     this->congratsShown=false;
     this->itClicked=nullptr;
-    this->lb = new LeaderBoard(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE);
+    this->lb = new LeaderBoard(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE, this->parentWidget());
 }
 
 MyTable::~MyTable()

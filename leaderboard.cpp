@@ -8,7 +8,7 @@ LeaderBoard::LeaderBoard(const QString &path_to_file, QWidget *parent) :
     ui->setupUi(this);
     this->leader_board_file = path_to_file;
     this->error = false;
-    this->difficulty = "10x10, 10 mines";
+    this->difficulty = "10x10";
 
     int columnCnt = 3;
     ui->leader_table->setColumnCount(columnCnt);
