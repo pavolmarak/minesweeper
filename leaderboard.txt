@@ -5,3 +5,4 @@ user4, 409
 user5, 415
 user6, 2186
 user3, 8547
+hero, 78569
