@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>514</width>
-    <height>743</height>
+    <height>782</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>514</width>
-    <height>743</height>
+    <height>782</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -331,6 +331,77 @@
          <string>Configuration</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Difficulty:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="gridsize_selector">
+             <item>
+              <property name="text">
+               <string>10x10</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>15x15</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>20x20</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>25x25</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>100x100</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Custom</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>

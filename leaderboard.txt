@@ -1,12 +1,9 @@
 # DO NOT MODIFY THIS FILE !!!
-user2, 96
-user1, 152
-ppppp, 294
-eeeee, 397
-user4, 409
-user5, 415
-hero2, 476
-oio, 784
-user6, 2186
-user3, 8547
-hero, 78569
+
+hero 925 25x25
+hero3 1053 Custom
+hero2 1897 Custom
+user7 5894 15x15
+user1 8462 10x10
+me 51140 10x10
+user3 51469 10x10

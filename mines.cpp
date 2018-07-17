@@ -272,7 +272,7 @@ void Mines::timerStopSlot()
     ui->tableWidget->timer.stop();
     this->save_time += ui->tableWidget->elap_timer.elapsed();
     ui->time->setText(QString::number(this->save_time) + " ms");
-    ui->tableWidget->leaderboardDialog(this->save_time);
+    ui->tableWidget->leaderboardDialog(this->save_time,ui->gridsize_selector->currentText());
 }
 
 void Mines::on_pause_time_button_clicked(bool checked)

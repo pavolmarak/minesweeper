@@ -15,6 +15,22 @@
 #include <QStatusBar>
 #include <QPushButton>
 
+typedef struct _user{
+    QString name;
+    QString difficulty;
+
+    bool operator ==(const _user &lhs)
+    {
+        if(lhs.name == this->name && lhs.difficulty == this->difficulty){
+            return true;
+        }
+        return false;
+    }
+}User;
+
+
+
+
 namespace Ui {
 class LeaderBoard;
 }
@@ -29,6 +45,7 @@ public:
     bool loadLeaderBoard(const QString&);
     void redraw(); // redraws a leaderboard table and highlights the specified row
     void setTimeTaken(quint64 time_taken);
+    void setDifficulty(const QString& difficulty);
     void setSubmitBtnEnabled();
     bool error;
 
@@ -37,9 +54,10 @@ private slots:
 
 private:
     Ui::LeaderBoard *ui;
-    QMultiMap<quint64,QString> leader_board;
+    QMultiMap<quint64,User> leader_board;
     QString leader_board_file;
     void closeEvent (QCloseEvent *event);
+    QString difficulty;
 };
 
 #endif // LEADERBOARD_H

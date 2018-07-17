@@ -14,10 +14,11 @@ MyTable::~MyTable()
 
 }
 
-void MyTable::leaderboardDialog(quint64 time_taken)
+void MyTable::leaderboardDialog(quint64 time_taken, const QString& difficulty)
 {
     //QMessageBox::about(this,"Congratulations" ,"You won.");
     lb->setTimeTaken(time_taken);
+    lb->setDifficulty(difficulty);
     lb->setWindowTitle("Leaderboard");
     lb->setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
     lb->setSubmitBtnEnabled();

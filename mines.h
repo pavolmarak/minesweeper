@@ -11,6 +11,8 @@
 #include <QMessageBox>
 #include <QElapsedTimer>
 #include <QTimer>
+#include <QComboBox>
+#include <QSpinBox>
 #include <QDialog>
 
 

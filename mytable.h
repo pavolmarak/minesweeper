@@ -32,7 +32,7 @@ public:
     bool congratsShown;
     QTimer timer;
     QElapsedTimer elap_timer;
-    void leaderboardDialog(quint64 time_taken);
+    void leaderboardDialog(quint64 time_taken, const QString &difficulty);
 private slots:
     void mousePressEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent *event);

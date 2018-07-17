@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
@@ -48,6 +49,11 @@ public:
     QSpacerItem *horizontalSpacer_3;
     QGroupBox *config_groupbox;
     QVBoxLayout *verticalLayout_2;
+    QHBoxLayout *horizontalLayout_4;
+    QSpacerItem *horizontalSpacer_4;
+    QLabel *label;
+    QComboBox *gridsize_selector;
+    QSpacerItem *horizontalSpacer_5;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer;
     QLabel *no_mines_label;
@@ -61,14 +67,14 @@ public:
     {
         if (Mines->objectName().isEmpty())
             Mines->setObjectName(QStringLiteral("Mines"));
-        Mines->resize(514, 743);
+        Mines->resize(514, 782);
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(Mines->sizePolicy().hasHeightForWidth());
         Mines->setSizePolicy(sizePolicy);
         Mines->setMinimumSize(QSize(514, 0));
-        Mines->setMaximumSize(QSize(514, 743));
+        Mines->setMaximumSize(QSize(514, 782));
         centralWidget = new QWidget(Mines);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -224,6 +230,36 @@ public:
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer_4);
+
+        label = new QLabel(config_groupbox);
+        label->setObjectName(QStringLiteral("label"));
+
+        horizontalLayout_4->addWidget(label);
+
+        gridsize_selector = new QComboBox(config_groupbox);
+        gridsize_selector->addItem(QString());
+        gridsize_selector->addItem(QString());
+        gridsize_selector->addItem(QString());
+        gridsize_selector->addItem(QString());
+        gridsize_selector->addItem(QString());
+        gridsize_selector->addItem(QString());
+        gridsize_selector->setObjectName(QStringLiteral("gridsize_selector"));
+
+        horizontalLayout_4->addWidget(gridsize_selector);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer_5);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_4);
+
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
@@ -325,6 +361,14 @@ public:
         time_label->setText(QApplication::translate("Mines", "Time:", nullptr));
         time->setText(QApplication::translate("Mines", "<html><head/><body><p align=\"right\"><br/></p></body></html>", nullptr));
         config_groupbox->setTitle(QApplication::translate("Mines", "Configuration", nullptr));
+        label->setText(QApplication::translate("Mines", "Difficulty:", nullptr));
+        gridsize_selector->setItemText(0, QApplication::translate("Mines", "10x10", nullptr));
+        gridsize_selector->setItemText(1, QApplication::translate("Mines", "15x15", nullptr));
+        gridsize_selector->setItemText(2, QApplication::translate("Mines", "20x20", nullptr));
+        gridsize_selector->setItemText(3, QApplication::translate("Mines", "25x25", nullptr));
+        gridsize_selector->setItemText(4, QApplication::translate("Mines", "100x100", nullptr));
+        gridsize_selector->setItemText(5, QApplication::translate("Mines", "Custom", nullptr));
+
         no_mines_label->setText(QApplication::translate("Mines", "Number of mines:", nullptr));
         start_game_button->setText(QApplication::translate("Mines", "Start game", nullptr));
     } // retranslateUi
