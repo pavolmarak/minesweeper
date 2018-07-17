@@ -15,7 +15,7 @@ LeaderBoard::LeaderBoard(const QString &path_to_file, QWidget *parent) :
         this->error = true;
     }
 
-    ui->leader_table->setHorizontalHeaderLabels(QStringList() << "Username" << "Time");
+    ui->leader_table->setHorizontalHeaderLabels(QStringList() << "Username" << "Time [ms]");
     //columns width
     int factor_ratio = ui->leader_table->width()/10;
     ui->leader_table->setColumnWidth(0, factor_ratio*6);
