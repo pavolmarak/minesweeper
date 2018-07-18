@@ -361,11 +361,9 @@ void Mines::on_visibleGrid_itemClicked(QTableWidgetItem *item)
     if(this->grid){
         // if a user clicks on a mine, game ends
         if(this->grid[item->row()+1][item->column()+1]==MINE){
-            //when a mine is found, all buttons are disabled
-            ui->show_leaderboard_button->setEnabled(false);
+            //when a mine is found, some elements are disabled
             ui->pause_time_button->setEnabled(false);
-            ui->gridsize_selector->setEnabled(false);
-            ui->start_game_button->setEnabled(false);
+            ui->visibleGrid->setEnabled(false);
 
             qDebug() << "*** MINE ***";
             QLabel* wi = new QLabel();
@@ -373,8 +371,8 @@ void Mines::on_visibleGrid_itemClicked(QTableWidgetItem *item)
             wi->setScaledContents(true);
             ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
             qApp->processEvents();
+            // on Linux and Windows this is modal window blocking all background activity
             QMessageBox::about(this, "Mine", "Game Over");
-            ui->visibleGrid->setEnabled(false);
         }
         // if a user clicks on empty cell, a whole empty area gets revealed
         else if(this->grid[item->row()+1][item->column()+1]==0){
@@ -390,6 +388,8 @@ void Mines::on_visibleGrid_itemClicked(QTableWidgetItem *item)
         qDebug() << "User click: Invisible game grid does not exist.";
     }
 }
+
+
 
 // function to start the game
 void Mines::on_start_game_button_clicked()
