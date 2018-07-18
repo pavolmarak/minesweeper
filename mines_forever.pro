@@ -27,12 +27,15 @@ SOURCES += \
         main.cpp \
         mines.cpp \
     mytable.cpp \
-    leaderboard.cpp
+    leaderboard.cpp \
+    player.cpp
 
 HEADERS += \
         mines.h \
     mytable.h \
-    leaderboard.h
+    leaderboard.h \
+    player.h \
+    helper.h
 
 FORMS += \
         mines.ui \

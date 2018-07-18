@@ -95,7 +95,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="MyTable" name="tableWidget">
+       <widget class="MyTable" name="visibleGrid">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -144,6 +144,12 @@
         <property name="cornerButtonEnabled">
          <bool>false</bool>
         </property>
+        <property name="rowCount">
+         <number>0</number>
+        </property>
+        <property name="columnCount">
+         <number>0</number>
+        </property>
         <attribute name="horizontalHeaderVisible">
          <bool>false</bool>
         </attribute>
@@ -156,106 +162,6 @@
         <attribute name="verticalHeaderHighlightSections">
          <bool>false</bool>
         </attribute>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>New Row</string>
-         </property>
-        </row>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
-         </property>
-        </column>
        </widget>
       </item>
       <item>
@@ -391,38 +297,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="gridsize_selector">
-             <item>
-              <property name="text">
-               <string>10x10</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>15x15</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>20x20</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>25x25</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>100x100</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Custom</string>
-              </property>
-             </item>
-            </widget>
+            <widget class="QComboBox" name="gridsize_selector"/>
            </item>
            <item>
             <spacer name="horizontalSpacer_5">

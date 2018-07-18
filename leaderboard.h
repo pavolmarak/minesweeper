@@ -17,18 +17,10 @@
 #include <QComboBox>
 #include <QGroupBox>
 
-typedef struct _user{
-    QString name;
-    QString difficulty;
+#define COLUMN_COUNT 4
 
-    bool operator ==(const _user &lhs)
-    {
-        if(lhs.name == this->name && lhs.difficulty == this->difficulty){
-            return true;
-        }
-        return false;
-    }
-}User;
+
+#include "helper.h"
 
 
 
@@ -42,26 +34,24 @@ class LeaderBoard : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit LeaderBoard(const QString &path_to_file, QWidget *parent = 0);
+    LeaderBoard(QWidget *parent = 0);
     ~LeaderBoard();
-    bool loadLeaderBoard(const QString&);
+    bool loadFromFile(const QString&);
     void redraw(); // redraws a leaderboard table and highlights the specified row
     void setTimeTaken(quint64 time_taken);
-    void setDifficulty(const QString& difficulty);
     void setSubmitBtnEnabled(bool);
     void setLeaderboardTypes(QVector<QString>);
     void setResultboxVisible(bool);
-    bool error;
+    void setup(const QString &path_to_file, const QVector<DIFFICULTY> diffs);
 
 private slots:
     void on_submit_result_button_clicked();
 
 private:
     Ui::LeaderBoard *ui;
-    QMultiMap<quint64,User> leader_board;
+    QMultiMap<quint64,UserResult> leader_board;
     QString leader_board_file;
     void closeEvent (QCloseEvent *event);
-    QString difficulty;
 
 signals:
     void leaderboardClosedSignal();

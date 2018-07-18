@@ -15,7 +15,7 @@
 #include <QPushButton>
 #include <QDialog>
 
-#define LEADERBOARD_FILE "leaderboard.txt"
+
 #include "leaderboard.h"
 
 #define GRID_WIDTH 10
@@ -32,7 +32,6 @@ public:
     bool congratsShown;
     QTimer timer;
     QElapsedTimer elap_timer;
-    void showLeaderboard(quint64 time_taken=0, const QString &difficulty="-");
     LeaderBoard *getLb() const;
 
 private slots:

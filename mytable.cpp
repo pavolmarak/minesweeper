@@ -6,7 +6,6 @@ MyTable::MyTable(QWidget *)
     this->noMineCounter=GRID_HEIGHT*GRID_WIDTH;
     this->congratsShown=false;
     this->itClicked=nullptr;
-    this->lb = new LeaderBoard(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE, this->parentWidget());
     this->lb->setWindowTitle("Leaderboard");
     this->lb->setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
 }
@@ -16,19 +15,7 @@ MyTable::~MyTable()
 
 }
 
-void MyTable::showLeaderboard(quint64 time_taken, const QString& difficulty)
-{
 
-    //QMessageBox::about(this,"Congratulations" ,"You won.");
-    this->lb->setTimeTaken(time_taken);
-    this->lb->setDifficulty(difficulty);
-    this->lb->setSubmitBtnEnabled(true);
-    if(!this->lb->error){
-        this->lb->show();
-    }
-
-
-}
 
 void MyTable::mouseReleaseEvent(QMouseEvent *event)
 {

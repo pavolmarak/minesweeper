@@ -14,12 +14,28 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QDialog>
+#include <QHeaderView>
 
 
+#define TILE_SIZE 50
 #define GRID_WIDTH 10
 #define GRID_HEIGHT 10
-
 #define MINE 999
+
+
+#define LEADERBOARD_FILE "leaderboard.txt"
+
+
+#include "player.h"
+#include "leaderboard.h"
+#include "helper.h"
+
+
+// vector of available game difficulties
+QVector<DIFFICULTY> difficulties;
+
+
+
 
 namespace Ui {
 class Mines;
@@ -36,11 +52,10 @@ signals:
     void cellsRevealedAutomatically(int number);
 
 private slots:
-    void on_tableWidget_itemClicked(QTableWidgetItem *item);
     void on_start_game_button_clicked();    
     void on_pause_time_button_clicked(bool checked);
-
     void on_show_leaderboard_button_clicked();
+    void on_visibleGrid_itemClicked(QTableWidgetItem *item);
 
 public slots:
     void flagCounterIncreasedSlot();
@@ -51,20 +66,21 @@ public slots:
 
 private:
     Ui::Mines *ui;
+    // mines are represented as set of QPoints
+    QSet<QPoint> mines;
+    int **grid; // extra borders for problem-free indexing
+    int current_difficulty;
+    Player player;
+    LeaderBoard lb;
+
     void placeMines(int count);
     void placeMineNumbers();
     int countNearbyMines(int row, int col);
     void clearVisibleGrid();
-    void revealEmptyArea(int row, int col);
-    void makeItemVisible(int row, int col);
+    int revealEmptyArea(int row, int col);
+    void showMineNumber(int row, int col);
     void clearEverything();
-    // mines and flags are represented as QPoints
-    QSet<QPoint> mines;
-    QSet<QPoint> flags;
-    int grid[GRID_HEIGHT+2][GRID_WIDTH+2] = {{-1}}; // extra borders for problem-free indexing
-    bool ready;
-    int flagCnt;
-    quint64 save_time;
+
 };
 
 #endif // MINES_H
