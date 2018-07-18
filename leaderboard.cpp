@@ -6,26 +6,9 @@ LeaderBoard::LeaderBoard(QWidget *parent) :
     ui(new Ui::LeaderBoard)
 {
     ui->setupUi(this);
-}
 
-void LeaderBoard::setup(const QString &path_to_file, const QVector<DIFFICULTY> difficulties)
-{
-    // general setup
-    this->leader_board.clear();
-    this->leader_board_file = "";
-
-    // set leaderboard difficulties
-    ui->leaderboard_selection_combobox->clear();
-    foreach (DIFFICULTY d, difficulties) {
-        ui->leaderboard_selection_combobox->addItem(d.name);
-    }
-
-    // set path to a text file containing leaderboard data
-    this->leader_board_file = path_to_file;
-
-    // set leaderboard
-    ui->leader_table->clearContents();
-    ui->leader_table->setColumnCount(COLUMN_COUNT);
+    // set leaderboard table
+    ui->leader_table->setColumnCount(LEADERBOARD_COLUMN_COUNT);
     ui->leader_table->setHorizontalHeaderLabels(QStringList() << "Username" << "Time [ms]" << "Difficulty" << "Date");
     ui->leader_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->leader_table->horizontalHeader()->setStretchLastSection(true);
@@ -37,12 +20,18 @@ void LeaderBoard::setup(const QString &path_to_file, const QVector<DIFFICULTY> d
     ui->leader_table->setColumnWidth(2, factor_ratio*7);
     ui->leader_table->setColumnWidth(3, factor_ratio*9);
 
-    // populate leaderboard from file
-    if(!this->loadFromFile(this->leader_board_file)){
-        exit(EXIT_FAILURE);
-    }
-
+    // user result box is available only when user successfully finishes the game
     ui->leaderboard_result_box->setVisible(false);
+}
+
+
+void LeaderBoard::setLeader_board_types(QVector<DIFFICULTY> difficulties)
+{
+    // set leaderboard difficulties
+    ui->leaderboard_selection_combobox->clear();
+    foreach (DIFFICULTY d, difficulties) {
+        ui->leaderboard_selection_combobox->addItem(d.name);
+    }
 }
 
 LeaderBoard::~LeaderBoard()
@@ -53,6 +42,7 @@ LeaderBoard::~LeaderBoard()
 // function to load leaderboard data from file and display it
 bool LeaderBoard::loadFromFile(const QString &path_to_file)
 {
+    this->setLeader_board_file(path_to_file);
     this->leader_board.clear();
     ui->leader_table->clearContents();
     QFile data_file(path_to_file);
@@ -127,12 +117,7 @@ void LeaderBoard::setSubmitBtnEnabled(bool value)
     ui->submit_result_button->setEnabled(value);
 }
 
-void LeaderBoard::setLeaderboardTypes(QVector<QString> ltypes)
-{
-    foreach (QString s, ltypes) {
-        ui->leaderboard_selection_combobox->addItem(s);
-    }
-}
+
 
 void LeaderBoard::setResultboxVisible(bool value)
 {
@@ -173,6 +158,17 @@ void LeaderBoard::on_submit_result_button_clicked()
 
 }
 
+QMultiMap<quint64, UserResult> LeaderBoard::getLeader_board() const
+{
+    return leader_board;
+}
+
+void LeaderBoard::setLeader_board(const QMultiMap<quint64, UserResult> &value)
+{
+    leader_board = value;
+}
+
+
 void LeaderBoard::closeEvent(QCloseEvent *event)
 {
     event->accept();
@@ -180,6 +176,16 @@ void LeaderBoard::closeEvent(QCloseEvent *event)
     ui->username->setText("");
     ui->statusbar->showMessage("");
     emit leaderboardClosedSignal();
+}
+
+QString LeaderBoard::getLeader_board_file() const
+{
+    return leader_board_file;
+}
+
+void LeaderBoard::setLeader_board_file(const QString &value)
+{
+    leader_board_file = value;
 }
 
 

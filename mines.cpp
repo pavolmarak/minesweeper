@@ -1,49 +1,85 @@
 #include "mines.h"
 #include "ui_mines.h"
 
+// helper function for QMultiMap
 inline uint qHash (const QPoint & key)
 {
     return qHash (QPair<int,int>(key.x(), key.y()) );
 }
 
+// main constructor
 Mines::Mines(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Mines)
 {
     ui->setupUi(this);
 
-    // general setup
+    // *************************************
+    // ***********               ***********
+    // *********** GENERAL SETUP ***********
+    // ***********               ***********
+    // *************************************
+
+    // set game difficulties
+    this->difficulties.push_back(DIFFICULTY(10,10,10,"Easy"));
+    this->difficulties.push_back(DIFFICULTY(15,15,25,"Medium"));
+    this->difficulties.push_back(DIFFICULTY(20,20,50,"Hard"));
+
+    // set current game difficulty
     this->current_difficulty = 0;
-    difficulties.push_back(DIFFICULTY(10,10,10,"Easy"));
-    difficulties.push_back(DIFFICULTY(15,15,25,"Medium"));
-    difficulties.push_back(DIFFICULTY(20,20,50,"Hard"));
-    this->grid = new int*[difficulties[this->current_difficulty].grid_height+2];
-    for(int i=0;i<difficulties[this->current_difficulty].grid_height+2;i++){
-        this->grid[i] = new int[difficulties[this->current_difficulty].grid_width+2];
-        for(int j=0;j<difficulties[this->current_difficulty].grid_width+2;j++){
-            this->grid[i][j] = -1;
-        }
-    }
 
 
-    // leaderboard button setup
+    // ************************************************
+    // ***********                          ***********
+    // *********** LEADERBOARD BUTTON SETUP ***********
+    // ***********                          ***********
+    // ************************************************
+
+    // enable leaderboard button
     ui->show_leaderboard_button->setEnabled(true);
 
 
-    // game grid setup
+    // ********************************************
+    // ***********                      ***********
+    // *********** INVISIBLE GRID SETUP ***********
+    // ***********                      ***********
+    // ********************************************
+
+    // create invisible game grid with dimensions corresponding to the current game difficulty
+    this->createInvisibleGrid(
+        this->difficulties[this->current_difficulty].grid_height+2,
+        this->difficulties[this->current_difficulty].grid_width+2
+    );
+
+
+    // ******************************************
+    // ***********                    ***********
+    // *********** VISIBLE GRID SETUP ***********
+    // ***********                    ***********
+    // ******************************************
+
+    // visible game grid is represented as QTableWidget
+
+    // visible grid is disabled by default
     ui->visibleGrid->setEnabled(false);
-    ui->visibleGrid->setRowCount(difficulties[this->current_difficulty].grid_height);
-    ui->visibleGrid->setColumnCount(difficulties[this->current_difficulty].grid_width);
+
+    // set dimensions of the visible game grid
+    ui->visibleGrid->setRowCount(this->difficulties[this->current_difficulty].grid_height);
+    ui->visibleGrid->setColumnCount(this->difficulties[this->current_difficulty].grid_width);
     for(int i=0; i< ui->visibleGrid->rowCount();i++){
         ui->visibleGrid->setRowHeight(i,TILE_SIZE);
     }
     for(int i=0; i<ui->visibleGrid->columnCount();i++){
         ui->visibleGrid->setColumnWidth(i, TILE_SIZE);
     }
+
+    // set headers
     ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->visibleGrid->horizontalHeader()->setStretchLastSection(true);
     ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->visibleGrid->verticalHeader()->setStretchLastSection(false);
+
+    // create items in visible game grid, set their default color and hints
     for(int i=0; i< ui->visibleGrid->rowCount();i++){
         for(int j=0; j<ui->visibleGrid->columnCount();j++){
             ui->visibleGrid->setItem(i,j,new QTableWidgetItem(""));
@@ -53,50 +89,80 @@ Mines::Mines(QWidget *parent) :
     }
 
 
-    // game info setup
-    ui->flag_counter->setText(QString::number(this->player.getFlag_counter()) + "/" + QString::number(difficulties[this->current_difficulty].number_of_mines));
+    // ***************************************
+    // ***********                 ***********
+    // *********** GAME INFO SETUP ***********
+    // ***********                 ***********
+    // ***************************************
+
+    // flag counter setup
+    ui->flag_counter->setText("0/" + QString::number(this->difficulties[this->current_difficulty].number_of_mines));
+
+    // pause button setup
     ui->pause_time_button->setEnabled(false);
+
+    // game time setup
     ui->time->setText("0 ms");
     ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
 
-    // game configuration setup
-    foreach (DIFFICULTY d, difficulties) {
+    // *****************************************
+    // ***********                   ***********
+    // *********** GAME CONFIG SETUP ***********
+    // ***********                   ***********
+    // *****************************************
+
+    // populate the list of available difficulties in the combobox
+    foreach (DIFFICULTY d, this->difficulties) {
         ui->gridsize_selector->addItem(d.name);
     }
+
+    // set the number of mines for the given game difficulty
     ui->noMinesSpinBox->setValue(difficulties[this->current_difficulty].number_of_mines);
-    ui->noMinesSpinBox->setEnabled(false);
+    ui->noMinesSpinBox->setEnabled(false); // user cannot change number of mines in the preset game difficulty
+
+    // start game button setup
     ui->start_game_button->setEnabled(true);
 
 
-    // leaderboard setup
-    this->lb.setup(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE,difficulties);
+    // *****************************************
+    // ***********                   ***********
+    // *********** LEADERBOARD SETUP ***********
+    // ***********                   ***********
+    // *****************************************
+
     this->lb.setWindowTitle("Leaderboard");
     this->lb.setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
+    this->lb.setLeader_board_types(this->difficulties);
+    if(!this->lb.loadFromFile(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE)){
+        exit(EXIT_FAILURE);
+    }
 
 
     // SIGNAL/SLOT connections
+
+    // signal when empty cell region is revealed automatically
     QObject::connect(this,
                      SIGNAL(cellsRevealedAutomatically(int)),
                      ui->visibleGrid,
                      SLOT(cellsRevealedAutomaticallySlot(int)));
+    // signal when user places a flag on the visible game grid
     QObject::connect(ui->visibleGrid, SIGNAL(flagCounterIncreased()), this, SLOT(flagCounterIncreasedSlot()));
+    // signal when user removes a flag from the visible game grid
     QObject::connect(ui->visibleGrid, SIGNAL(flagCounterDecreased()), this, SLOT(flagCounterDecreasedSlot()));
+    // signal emitted every 1 ms to update time of gameplay
     QObject::connect(&(ui->visibleGrid->timer), SIGNAL(timeout()), this, SLOT(updateTime()));
+    // signal when timer stops updating time
     QObject::connect(ui->visibleGrid, SIGNAL(timerStop()), this, SLOT(timerStopSlot()));
-    QObject::connect(ui->visibleGrid->getLb(),SIGNAL(leaderboardClosedSignal()),this, SLOT(leaderboardClosedSlot()));
-
+    // signal when leaderboard window is closed
+    QObject::connect(&(this->lb),SIGNAL(leaderboardClosedSignal()),this, SLOT(leaderboardClosedSlot()));
 
     qApp->processEvents();
 }
 
 Mines::~Mines()
 {
-    // free the game grid
-    for(int i=0;i<difficulties[this->current_difficulty].grid_height+2;i++){
-       delete [] this->grid[i];
-    }
-    delete [] this->grid;
+    this->freeInvisibleGrid(difficulties[this->current_difficulty].grid_height+2);
     delete ui;
 }
 
@@ -230,19 +296,44 @@ void Mines::showMineNumber(int row, int col)
 
 }
 
-// function to clear necessary data before game starts
+// function to clear necessary data and GUI before game starts
 void Mines::clearEverything()
 {
+    // clear all neccessary data structures
     this->mines.clear();
     for(int i=0; i < difficulties[this->current_difficulty].grid_height+2; i++){
         for(int j=0; j < difficulties[this->current_difficulty].grid_width+2; j++){
             this->grid[i+1][j+1]=-1;
         }
     }
+
+    // clear all neccessary GUI elements
     this->clearVisibleGrid();
     ui->time->setText("0 ms");
     ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
     ui->flag_counter->setText("0/" + QString::number(difficulties[this->current_difficulty].number_of_mines));
+}
+
+// function to create/allocate new invisible game grid
+void Mines::createInvisibleGrid(int rows, int cols)
+{
+    this->grid = new int*[rows];
+    for(int i=0;i<rows;i++){
+        this->grid[i] = new int[cols];
+        for(int j=0;j<cols;j++){
+            this->grid[i][j] = -1;
+        }
+    }
+}
+
+// function to free invisible game grid and set it to nullptr
+void Mines::freeInvisibleGrid(int rows)
+{
+    for(int i=0;i<rows;i++){
+       delete [] this->grid[i];
+    }
+    delete [] this->grid;
+    this->grid = nullptr;
 }
 
 // function to handle user clicks

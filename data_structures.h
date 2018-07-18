@@ -3,6 +3,11 @@
 #ifndef HELPER_H
 #define HELPER_H
 
+#define TILE_SIZE 50
+#define MINE 999
+#define LEADERBOARD_FILE "leaderboard.txt"
+#define LEADERBOARD_COLUMN_COUNT 4
+
 // struct for representing game difficulty
 typedef struct difficulty{
     int grid_width;
