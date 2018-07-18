@@ -47,9 +47,9 @@ Mines::Mines(QWidget *parent) :
 
     // create invisible game grid with dimensions corresponding to the current game difficulty
     this->createInvisibleGrid(
-                this->difficulties[this->current_difficulty].grid_height+2,
-            this->difficulties[this->current_difficulty].grid_width+2
-            );
+        this->difficulties[this->current_difficulty].grid_height+2,
+        this->difficulties[this->current_difficulty].grid_width+2
+    );
 
 
     // ******************************************
@@ -238,9 +238,9 @@ void Mines::clearEverything()
     // clear all neccessary data structures
     this->mines.clear();
     if(this->grid){
-        for(int i=0; i < difficulties[this->current_difficulty].grid_height+2; i++){
-            for(int j=0; j < difficulties[this->current_difficulty].grid_width+2; j++){
-                this->grid[i+1][j+1]=-1;
+        for(int i=0; i < this->difficulties[this->current_difficulty].grid_height+2; i++){
+            for(int j=0; j < this->difficulties[this->current_difficulty].grid_width+2; j++){
+                this->grid[i][j]=-1;
             }
         }
     }
@@ -275,17 +275,24 @@ void Mines::clearVisibleGrid()
 // function to show mine number on the game grid
 void Mines::showMineNumber(int row, int col)
 {
-    if(ui->visibleGrid->item(row, col)->whatsThis() == "noflag-nomine-novisit"){
-        ui->visibleGrid->item(row, col)->setWhatsThis("noflag-nomine-visit");
+    if(ui->visibleGrid->item(row, col)){
+        // showing mine number only if the cell has not yet been visited
+        if(ui->visibleGrid->item(row, col)->whatsThis() == "noflag-nomine-novisit"){
+            ui->visibleGrid->item(row, col)->setWhatsThis("noflag-nomine-visit");
 
-        // prevents from displaying 0
-        if(this->grid[row+1][col+1]>0){
-            ui->visibleGrid->item(row, col)->setText(QString::number(this->grid[row+1][col+1]));
+            // prevents from displaying 0
+            if(this->grid[row+1][col+1]>0){
+                ui->visibleGrid->item(row, col)->setText(QString::number(this->grid[row+1][col+1]));
+            }
+            ui->visibleGrid->item(row, col)->setFont(QFont("Tahoma",12,60));
+            ui->visibleGrid->item(row, col)->setTextAlignment(Qt::AlignCenter);
+            ui->visibleGrid->item(row, col)->setBackgroundColor(QColor(210,210,210));
         }
-        ui->visibleGrid->item(row, col)->setFont(QFont("Tahoma",12,60));
-        ui->visibleGrid->item(row, col)->setTextAlignment(Qt::AlignCenter);
-        ui->visibleGrid->item(row, col)->setBackgroundColor(QColor(210,210,210));
     }
+    else{
+        qDebug() << "Show mine number: Cell at given coordinate does not exist.";
+    }
+
 }
 
 // function to reveal all empty cells when some empty cell is clicked
@@ -326,7 +333,6 @@ int Mines::revealEmptyArea(int row, int col)
     return itemsRevealed;
 }
 
-
 // function to create/allocate new invisible game grid
 void Mines::createInvisibleGrid(int rows, int cols)
 {
@@ -352,30 +358,36 @@ void Mines::freeInvisibleGrid(int rows)
 // function to handle user clicks
 void Mines::on_visibleGrid_itemClicked(QTableWidgetItem *item)
 {
-    // if a user clicks on a mine, game ends
-    if(this->grid[item->row()+1][item->column()+1]==MINE){
-        //when a mine is found, all buttons are disabled
-        //        ui->pause_time_button->setEnabled(false);
-        //        ui->show_leaderboard_button->setEnabled(false);
-        //        ui->start_game_button->setEnabled(false);
-        //        ui->gridsize_selector->setEnabled(false);
-        qDebug() << "MINE";
-        QLabel* wi = new QLabel();
-        wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/icon.png"));
-        wi->setScaledContents(true);
-        ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
-        qApp->processEvents();
-        QMessageBox::about(this, "Mine", "Game Over");
-        ui->visibleGrid->setEnabled(false);
+    if(this->grid){
+        // if a user clicks on a mine, game ends
+        if(this->grid[item->row()+1][item->column()+1]==MINE){
+            //when a mine is found, all buttons are disabled
+            ui->show_leaderboard_button->setEnabled(false);
+            ui->pause_time_button->setEnabled(false);
+            ui->gridsize_selector->setEnabled(false);
+            ui->start_game_button->setEnabled(false);
+
+            qDebug() << "*** MINE ***";
+            QLabel* wi = new QLabel();
+            wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/mine_icon.png"));
+            wi->setScaledContents(true);
+            ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
+            qApp->processEvents();
+            QMessageBox::about(this, "Mine", "Game Over");
+            ui->visibleGrid->setEnabled(false);
+        }
+        // if a user clicks on empty cell, a whole empty area gets revealed
+        else if(this->grid[item->row()+1][item->column()+1]==0){
+            emit cellsRevealedAutomatically(this->revealEmptyArea(item->row(),item->column()));
+        }
+        // if a user clicks on a cell with mine number, the cell is revealed
+        else{
+            this->showMineNumber(item->row(), item->column());
+            ui->visibleGrid->noMineCounter--;
+        }
     }
-    // if a user clicks on empty cell, a whole empty area gets revealed
-    else if(this->grid[item->row()+1][item->column()+1]==0){
-        emit cellsRevealedAutomatically(this->revealEmptyArea(item->row(),item->column()));
-    }
-    // if a user clicks on a cell with mine number, the cell is revealed
     else{
-        this->showMineNumber(item->row(), item->column());
-        ui->visibleGrid->noMineCounter--;
+        qDebug() << "User click: Invisible game grid does not exist.";
     }
 }
 
@@ -385,21 +397,15 @@ void Mines::on_start_game_button_clicked()
     this->clearEverything();
 
     // free old game grid
-    for(int i=0;i<difficulties[this->current_difficulty].grid_height+2;i++){
-        delete [] this->grid[i];
-    }
-    delete [] this->grid;
+    this->freeInvisibleGrid(difficulties[this->current_difficulty].grid_height+2);
 
     this->current_difficulty = ui->gridsize_selector->currentIndex();
 
     // allocate new game grid
-    this->grid = new int*[difficulties[this->current_difficulty].grid_height+2];
-    for(int i=0;i<difficulties[this->current_difficulty].grid_height+2;i++){
-        this->grid[i] = new int[difficulties[this->current_difficulty].grid_width+2];
-        for(int j=0;j<difficulties[this->current_difficulty].grid_width+2;j++){
-            this->grid[i][j] = -1;
-        }
-    }
+    this->createInvisibleGrid(
+        this->difficulties[this->current_difficulty].grid_height+2,
+        this->difficulties[this->current_difficulty].grid_width+2
+    );
 
     // re-create visible grid
     ui->visibleGrid->setEnabled(true);
@@ -493,16 +499,6 @@ void Mines::leaderboardClosedSlot()
     ui->show_leaderboard_button->setEnabled(true);
     ui->start_game_button->setEnabled(true);
     ui->gridsize_selector->setEnabled(true);
-}
-
-LeaderBoard Mines::getLb() const
-{
-    return lb;
-}
-
-void Mines::setLb(const LeaderBoard &value)
-{
-    lb = value;
 }
 
 Player Mines::getPlayer() const

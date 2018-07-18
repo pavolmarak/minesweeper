@@ -59,9 +59,6 @@ public:
     Player getPlayer() const;
     void setPlayer(const Player &value);
 
-    LeaderBoard getLb() const;
-    void setLb(const LeaderBoard &value);
-
 signals:
     void cellsRevealedAutomatically(int number);
 
