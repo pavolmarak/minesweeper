@@ -33,11 +33,40 @@ public:
     ~Mines();
     // vector of available game difficulties
     QVector<DIFFICULTY> difficulties;
+
+    // function to place mines in the invisible game grid
+    void placeMines(int count);
+
+    // function to place mine numbers in the invisible game grid
+    void placeMineNumbers();
+
+    // function to reset visible game grid in order to prepare it for the new game
+    void clearVisibleGrid();
+
+    // function to reset data and GUI in order to prepare it for the new game
+    void clearEverything();
+
+    // getters and setters
+    QSet<QPoint> getMines() const;
+    void setMines(const QSet<QPoint> &value);
+
+    int **getGrid() const;
+    void setGrid(int **value);
+
+    int getCurrent_difficulty() const;
+    void setCurrent_difficulty(int value);
+
+    Player getPlayer() const;
+    void setPlayer(const Player &value);
+
+    LeaderBoard getLb() const;
+    void setLb(const LeaderBoard &value);
+
 signals:
     void cellsRevealedAutomatically(int number);
 
 private slots:
-    void on_start_game_button_clicked();    
+    void on_start_game_button_clicked();
     void on_pause_time_button_clicked(bool checked);
     void on_show_leaderboard_button_clicked();
     void on_visibleGrid_itemClicked(QTableWidgetItem *item);
@@ -66,12 +95,6 @@ private:
     // object for a leaderboard
     LeaderBoard lb;
 
-    // function to place mines in the invisible game grid
-    void placeMines(int count);
-
-    // function to place mine numbers in the invisible game grid
-    void placeMineNumbers();
-
     // function to compute a number of nearby mines around the given cell
     int countNearbyMines(int row, int col);
 
@@ -80,12 +103,6 @@ private:
 
     // function to reveal a number of nearby mines at the given coordinate
     void showMineNumber(int row, int col);
-
-    // function to reset visible game grid in order to prepare it for the new game
-    void clearVisibleGrid();
-
-    // function to reset data and GUI in order to prepare it for the new game
-    void clearEverything();
 
     // function to create invisible game grid with the given dimensions
     void createInvisibleGrid(int rows, int cols);
