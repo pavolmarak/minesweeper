@@ -35,7 +35,7 @@ HEADERS += \
     mytable.h \
     leaderboard.h \
     player.h \
-    helper.h
+    data_structures.h
 
 FORMS += \
         mines.ui \

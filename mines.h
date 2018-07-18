@@ -16,25 +16,13 @@
 #include <QDialog>
 #include <QHeaderView>
 
-
 #define TILE_SIZE 50
-#define GRID_WIDTH 10
-#define GRID_HEIGHT 10
 #define MINE 999
-
-
 #define LEADERBOARD_FILE "leaderboard.txt"
-
 
 #include "player.h"
 #include "leaderboard.h"
-#include "helper.h"
-
-
-// vector of available game difficulties
-QVector<DIFFICULTY> difficulties;
-
-
+#include "data_structures.h"
 
 
 namespace Ui {
@@ -48,6 +36,8 @@ class Mines : public QMainWindow
 public:
     explicit Mines(QWidget *parent = 0);
     ~Mines();
+    // vector of available game difficulties
+    QVector<DIFFICULTY> difficulties;
 signals:
     void cellsRevealedAutomatically(int number);
 

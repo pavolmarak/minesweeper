@@ -69,7 +69,7 @@ bool LeaderBoard::loadFromFile(const QString &path_to_file)
 
     // reading from file
     while(!txt.atEnd()){
-        txt >> usr_result.name >> msec >> usr_result.diff >> usr_result.date;
+        txt >> usr_result.name >> msec >> usr_result.difficulty >> usr_result.date;
         this->leader_board.insert(msec,usr_result);
     }
     this->leader_board.remove(0,{"","",""});
@@ -80,7 +80,7 @@ bool LeaderBoard::loadFromFile(const QString &path_to_file)
         ui->leader_table->insertRow(ui->leader_table->rowCount());
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 0, new QTableWidgetItem(iter.value().name));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 1, new QTableWidgetItem(QString::number(iter.key())));
-        ui->leader_table->setItem(ui->leader_table->rowCount()-1, 2, new QTableWidgetItem(iter.value().diff));
+        ui->leader_table->setItem(ui->leader_table->rowCount()-1, 2, new QTableWidgetItem(iter.value().difficulty));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 3, new QTableWidgetItem(iter.value().date));
         ++iter;
     }
@@ -101,7 +101,7 @@ void LeaderBoard::redraw()
         ui->leader_table->insertRow(ui->leader_table->rowCount());
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 0, new QTableWidgetItem(iter.value().name));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 1, new QTableWidgetItem(QString::number(iter.key())));
-        ui->leader_table->setItem(ui->leader_table->rowCount()-1, 2, new QTableWidgetItem(iter.value().diff));
+        ui->leader_table->setItem(ui->leader_table->rowCount()-1, 2, new QTableWidgetItem(iter.value().difficulty));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 3, new QTableWidgetItem(iter.value().date));
         if(iter.value().name.endsWith(hint)){
             iter.value().name = iter.value().name.chopped(hint.length()); // remove the hint
@@ -164,7 +164,7 @@ void LeaderBoard::on_submit_result_button_clicked()
     txt << "# DO NOT MODIFY THIS FILE !!!\n\n";
     QMultiMap<quint64,UserResult>::const_iterator iterat = this->leader_board.constBegin();
     while (iterat != this->leader_board.constEnd()) {
-        txt << iterat.value().name << " " << iterat.key() << " " << iterat.value().diff << " " << iterat.value().date << "\n";
+        txt << iterat.value().name << " " << iterat.key() << " " << iterat.value().difficulty << " " << iterat.value().date << "\n";
         ++iterat;
     }
     data_file.close();

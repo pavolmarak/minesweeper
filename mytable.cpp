@@ -6,8 +6,6 @@ MyTable::MyTable(QWidget *)
     this->noMineCounter=GRID_HEIGHT*GRID_WIDTH;
     this->congratsShown=false;
     this->itClicked=nullptr;
-    this->lb->setWindowTitle("Leaderboard");
-    this->lb->setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
 }
 
 MyTable::~MyTable()
