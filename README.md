@@ -5,6 +5,6 @@ First working version. Some functionality is missing and will be added soon. Gam
 
 ![Mines](mines_app.png)
 
-This is a screenshot of the leaderboard that appears after successfully completing the game.
+This is a screenshot of the leaderboard that appears after successfully completing the game. It allows you to save and compare your result with other players. 
 
 ![Leaderboard](leaderboard.png)
