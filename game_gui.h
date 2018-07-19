@@ -39,6 +39,11 @@ private slots:
     void on_show_leaderboard_button_clicked();
     void on_visibleGrid_itemClicked(QTableWidgetItem *item);
 
+public slots:
+        void leaderboardClosedSlot();
+        void updateTime();
+        void flagCounterIncreasedSlot();
+        void flagCounterDecreasedSlot();
 private:
     Ui::GameGUI *ui;
     Game game;

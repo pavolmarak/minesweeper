@@ -40,16 +40,7 @@ public:
     // function to reveal an empty cell region, returning number of cells revealed
     int revealEmptyArea(int row, int col);
 
-    // function to reset visible game grid in order to prepare it for the new game
-    void clearVisibleGrid();
-
-    // function to reset data and GUI in order to prepare it for the new game
-    void clearEverything();
-
     // getters and setters
-    QSet<QPoint> getMines() const;
-    void setMines(const QSet<QPoint> &value);
-
     int getCurrent_difficulty() const;
     void setCurrent_difficulty(int value);
 
@@ -60,15 +51,8 @@ public:
     void setInvisible_grid(const QVector<QVector<Cell> > &value);
 
 public slots:
-    void flagCounterIncreasedSlot();
-    void flagCounterDecreasedSlot();
-    void updateTime();
-    void timerStopSlot();
-    void leaderboardClosedSlot();
 
 private:
-    // mines are represented as set of QPoints
-    QSet<QPoint> mines;
 
     // invisible game grid
     QVector<QVector<Cell>> invisible_grid;
@@ -85,11 +69,8 @@ private:
     // function to compute a number of nearby mines around the given cell
     int countNearbyMines(int row, int col);
 
-    // function to reveal a number of nearby mines at the given coordinate
-    void showMineNumber(int row, int col);
-
     // function to create invisible game grid with the given dimensions
-    // and set it to the default value. Previous values are removed.
+    // and set it to the user-defined value. Previous values are removed.
     void createInvisibleGrid(int rows, int cols, Cell cell);
 
 };

@@ -108,8 +108,6 @@ GameGUI::GameGUI(QWidget *parent) :
     QObject::connect(ui->visibleGrid, SIGNAL(flagCounterDecreased()), &(this-game), SLOT(flagCounterDecreasedSlot()));
     // signal emitted every 1 ms to update time of gameplay
     QObject::connect(&(ui->visibleGrid->timer), SIGNAL(timeout()), this, SLOT(updateTime()));
-    // signal when timer stops updating time
-    QObject::connect(ui->visibleGrid, SIGNAL(timerStop()), &(this->game), SLOT(timerStopSlot()));
     // signal when leaderboard window is closed
     QObject::connect(&(this->game.lb),SIGNAL(leaderboardClosedSignal()),this, SLOT(leaderboardClosedSlot()));
 
@@ -248,3 +246,35 @@ void GameGUI::on_show_leaderboard_button_clicked()
     this->lb.setSubmitBtnEnabled(false);
     this->lb.show();
 }
+
+void GameGUI::leaderboardClosedSlot()
+{
+    ui->show_leaderboard_button->setEnabled(true);
+    ui->start_game_button->setEnabled(true);
+    ui->gridsize_selector->setEnabled(true);
+}
+
+void GameGUI::updateTime()
+{
+    ui->time->setText(QString::number(this->player.getTime()+ui->visibleGrid->elap_timer.elapsed()) + " ms");
+    qApp->processEvents();
+}
+
+void GameGUI::flagCounterIncreasedSlot()
+{
+    this->player.setFlag_counter(this->player.getFlag_counter()+1);
+    ui->flag_counter->setText(QString::number(this->player.getFlag_counter()) + "/" + QString::number(difficulties[this->current_difficulty].number_of_mines));
+    if(this->player.getFlag_counter() > difficulties[this->current_difficulty].number_of_mines){
+        ui->flag_counter->setStyleSheet("color:red;font-weight: bold;");
+    }
+}
+
+void GameGUI::flagCounterDecreasedSlot()
+{
+    this->player.setFlag_counter(this->player.getFlag_counter()-1);
+    ui->flag_counter->setText(QString::number(this->player.getFlag_counter()) + "/" + QString::number(difficulties[this->current_difficulty].number_of_mines));
+    if(this->player.getFlag_counter() <= difficulties[this->current_difficulty].number_of_mines){
+        ui->flag_counter->setStyleSheet("color:auto;font-weight: auto;");
+    }
+}
+
