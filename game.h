@@ -50,9 +50,11 @@ public:
     // and set it to the user-defined value. Previous values are removed.
     void createInvisibleGrid(int rows, int cols, Cell cell);
 
+    bool accomplished();
+
     // function to notify about the outcome of user click
-    ClickResult userLeftClick(int row, int col);
-    void userRightClick(int row, int col);
+    LeftClickResult userLeftClick(int row, int col);
+    bool userRightClick(int row, int col);
 
     // getters and setters
     int getCurrent_difficulty() const;
@@ -69,6 +71,10 @@ public:
     QElapsedTimer getElap_timer() const;
     void setElap_timer(const QElapsedTimer &value);
 
+    int getUnvisited_cells() const;
+    void setUnvisited_cells(int value);
+    void unvisited_cellsDown();
+
 public slots:
 
 private:
@@ -81,6 +87,9 @@ private:
 
     // object for a leaderboard
     LeaderBoard lb;
+
+    // number of unvisited cells
+    int unvisited_cells;
 
     // index of currently selected game difficulty from the available difficulties
     int current_difficulty;

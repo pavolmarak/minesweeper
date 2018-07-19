@@ -29,8 +29,8 @@ private slots:
 public slots:
 
 signals:
-    void flagUp();
-    void flagDown();
+    void rightClickSignal(QTableWidgetItem* item);
+    void leftClickSignal(QTableWidgetItem* item);
 
 private:
     QTableWidgetItem* itClicked;

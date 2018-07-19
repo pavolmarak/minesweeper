@@ -18,6 +18,9 @@ public:
     int getFlag_counter() const;
     void setFlag_counter(int value);
 
+    void flagUp();
+    void flagDown();
+
 private:
     quint64 time;
     QString name;

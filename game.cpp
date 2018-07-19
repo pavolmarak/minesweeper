@@ -23,6 +23,9 @@ Game::Game()
     // set current game difficulty
     this->current_difficulty = 0;
 
+    // set number of unvisited cells
+    this->unvisited_cells = this->difficulties[this->current_difficulty].grid_height *this->difficulties[this->current_difficulty].grid_width;
+
 
     // ********************************************
     // ***********                      ***********
@@ -44,12 +47,12 @@ Game::Game()
     // ***********                   ***********
     // *****************************************
 
-    this->lb.setWindowTitle("Leaderboard");
-    this->lb.setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
-    this->lb.setLeader_board_types(this->difficulties);
-    if(!this->lb.loadFromFile(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE)){
-        exit(EXIT_FAILURE);
-    }
+//    this->lb.setWindowTitle("Leaderboard");
+//    this->lb.setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
+//    this->lb.setLeader_board_types(this->difficulties);
+//    if(!this->lb.loadFromFile(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE)){
+//        exit(EXIT_FAILURE);
+//    }
 }
 
 // destructor
@@ -69,13 +72,14 @@ void Game::placeMines(int count)
         // qrand init
         qsrand(time(0));
 
+        QSet<QPoint> s;
         int r_row, r_col;
-        // place mines
-        while(count>0){
+        // place unique mines
+        while(s.size()<count){
             r_row = qrand()%this->difficulties[this->current_difficulty].grid_height;
             r_col = qrand()%this->difficulties[this->current_difficulty].grid_width;
+            s.insert(QPoint(r_col, r_row));
             this->invisible_grid[r_row][r_col]=Cell(MINE,UNVISITED);
-            count--;
         }
         // place mine numbers
         this->placeMineNumbers();
@@ -127,9 +131,9 @@ int Game::countNearbyMines(int row, int col)
 }
 
 // function to handle user left-clicks
-ClickResult Game::userLeftClick(int row, int col)
+LeftClickResult Game::userLeftClick(int row, int col)
 {
-    ClickResult cr;
+    LeftClickResult cr;
     if(this->invisible_grid[row][col].status == UNVISITED){
         if(this->invisible_grid[row][col].value == MINE){
             this->invisible_grid[row][col].status = VISITED;
@@ -149,9 +153,18 @@ ClickResult Game::userLeftClick(int row, int col)
 }
 
 // function to handle user right-clicks
-void Game::userRightClick(int row, int col)
+bool Game::userRightClick(int row, int col)
 {
-
+    if(this->invisible_grid[row][col].status == UNVISITED){
+        this->player.flagUp();
+        this->invisible_grid[row][col].status = FLAG;
+        return true;
+    }
+    else if(this->invisible_grid[row][col].status == FLAG){
+        this->player.flagDown();
+        this->invisible_grid[row][col].status = UNVISITED;
+    }
+    return false;
 }
 
 // function to reveal empty cell region when some empty cell is clicked
@@ -193,7 +206,9 @@ QVector<QPoint> Game::revealEmptyArea(int row, int col)
             unvisitedEmptyCells.removeFirst();
         }
     }
-    qDebug() << "Revealing empty cells: Cell is not empty.";
+    else{
+        qDebug() << "Revealing empty cells: Cell is not empty.";
+    }
     return cellsRevealed;
 }
 
@@ -207,6 +222,14 @@ void Game::createInvisibleGrid(int rows, int cols, Cell cell)
         this->invisible_grid[i].resize(cols);
         this->invisible_grid[i].fill(cell);
     }
+}
+
+bool Game::accomplished()
+{
+    if(this->unvisited_cells == this->difficulties[this->current_difficulty].number_of_mines){
+        return true;
+    }
+    return false;
 }
 
 Player Game::getPlayer() const
@@ -232,4 +255,19 @@ void Game::setCurrent_difficulty(int value)
 QVector<QVector<Cell> > Game::getInvisible_grid() const
 {
     return invisible_grid;
+}
+
+int Game::getUnvisited_cells() const
+{
+    return unvisited_cells;
+}
+
+void Game::setUnvisited_cells(int value)
+{
+    unvisited_cells = value;
+}
+
+void Game::unvisited_cellsDown()
+{
+    this->unvisited_cells--;
 }

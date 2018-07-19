@@ -16,6 +16,8 @@ GameGUI::GameGUI(QWidget *parent) :
 
     // *********** SIGNALS/SLOTS ***********
     QObject::connect(&(this->game.timer), SIGNAL(timeout()), this, SLOT(timeoutSlot()));
+    QObject::connect(ui->visibleGrid, SIGNAL(rightClickSignal(QTableWidgetItem*)), this, SLOT(rightClickSlot(QTableWidgetItem*)));
+    QObject::connect(ui->visibleGrid, SIGNAL(leftClickSignal(QTableWidgetItem*)), this, SLOT(leftClickSlot(QTableWidgetItem*)));
 
     qApp->processEvents();
 }
@@ -82,40 +84,11 @@ void GameGUI::resetGui()
     if(this->game.difficulties[this->game.getCurrent_difficulty()].name != "Custom"){
         ui->noMinesSpinBox->setEnabled(false);
     }
+
+    // initial start button focus
+    ui->start_game_button->setFocus();
 }
 
-// function to handle user left-clicks
-void GameGUI::on_visibleGrid_itemClicked(QTableWidgetItem *item)
-{
-    ClickResult result = this->game.userLeftClick(item->row(),item->column());
-    // if user left-clicked on a mine
-    if(result.is_mine == true){
-        ui->pause_time_button->setEnabled(false);
-        ui->visibleGrid->setEnabled(false);
-        qDebug() << "*** MINE ***";
-        QLabel* wi = new QLabel();
-        wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/mine_icon.png"));
-        wi->setScaledContents(true);
-        ui->visibleGrid->item(item->row(),item->column())->setBackgroundColor(QColor(220,220,220));
-        ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
-        qApp->processEvents();
-        // on Linux and Windows this is modal window blocking all background activity
-        // on MacOS it is modeless
-        QMessageBox::about(this, "Mine", "Game Over");
-    }
-    else{
-        // reveal one or more cells
-        foreach (QPoint p, result.cellsRevealed) {
-            ui->visibleGrid->item(p.y(), p.x())->setBackgroundColor(QColor(220,220,220));
-            if(this->game.getInvisible_grid()[p.y()][p.x()].value > 0){
-                ui->visibleGrid->item(p.y(), p.x())->setFont(QFont("Tahoma",12));
-                ui->visibleGrid->item(p.y(), p.x())->setTextAlignment(Qt::AlignCenter);
-                ui->visibleGrid->item(p.y(), p.x())->setText(QString::number(this->game.getInvisible_grid()[p.y()][p.x()].value));
-            }
-            ui->visibleGrid->item(p.y(), p.x())->setSelected(false);
-        }
-    }
-}
 
 
 // function to start the game
@@ -130,6 +103,9 @@ void GameGUI::on_start_game_button_clicked()
                 this->game.difficulties[this->game.getCurrent_difficulty()].grid_width,
                 Cell()
             );
+
+    // set number of unvisited cells in the grid
+    this->game.setUnvisited_cells(this->game.difficulties[this->game.getCurrent_difficulty()].grid_height *this->game.difficulties[this->game.getCurrent_difficulty()].grid_width);
 
     // populate invisible grid
     this->game.placeMines(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines);
@@ -174,7 +150,6 @@ void GameGUI::on_show_leaderboard_button_clicked()
 
 }
 
-
 void GameGUI::on_noMinesSpinBox_valueChanged(int arg1)
 {
 
@@ -185,3 +160,80 @@ void GameGUI::timeoutSlot()
     ui->time->setText(QString::number(this->game.getPlayer().getTime()+ this->game.elap_timer.elapsed()) + " ms");
 }
 
+
+void GameGUI::leftClickSlot(QTableWidgetItem* item)
+{
+    LeftClickResult result = this->game.userLeftClick(item->row(),item->column());
+    // if user left-clicked on a mine
+    if(result.is_mine == true){
+        ui->pause_time_button->setEnabled(false);
+
+        this->game.timer.stop();
+        qDebug() << "*** MINE ***";
+        for(int i=0; i<this->game.getInvisible_grid().length();i++) {
+            for(int j=0; j<this->game.getInvisible_grid().at(i).length();j++) {
+                if(this->game.getInvisible_grid().at(i).at(j).value == MINE){
+                    QLabel* wi = new QLabel();
+                    wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/mine_icon.png"));
+                    wi->setScaledContents(true);
+                    ui->visibleGrid->item(i,j)->setBackgroundColor(QColor(220,220,220));
+                    ui->visibleGrid->setCellWidget(i,j,wi);
+                }
+            }
+        }
+        ui->visibleGrid->setEnabled(false);
+        qApp->processEvents();
+        // on Linux and Windows this is modal window blocking all background activity
+        // on MacOS it is modeless
+        QMessageBox::about(this, "Mine", "Game Over");
+    }
+    else{
+        // reveal one or more cells
+        foreach (QPoint p, result.cellsRevealed) {
+            ui->visibleGrid->item(p.y(), p.x())->setBackgroundColor(QColor(220,220,220));
+            if(this->game.getInvisible_grid()[p.y()][p.x()].value > 0){
+                ui->visibleGrid->item(p.y(), p.x())->setFont(QFont("Tahoma",12));
+                ui->visibleGrid->item(p.y(), p.x())->setTextAlignment(Qt::AlignCenter);
+                ui->visibleGrid->item(p.y(), p.x())->setText(QString::number(this->game.getInvisible_grid()[p.y()][p.x()].value));
+            }
+            ui->visibleGrid->item(p.y(), p.x())->setSelected(false);
+            this->game.unvisited_cellsDown();
+        }
+    }
+    if(this->game.accomplished()==true){
+        this->game.timer.stop();
+        ui->pause_time_button->setEnabled(false);
+        ui->visibleGrid->setEnabled(false);
+        qDebug() << "Game accomplished.";
+        QMessageBox::about(this, "Congratulations", "You have successfully accomplished the game.");
+    }
+}
+
+void GameGUI::rightClickSlot(QTableWidgetItem* item)
+{
+    if(this->game.userRightClick(item->row(),item->column()) == true){
+        QLabel* wi = new QLabel();
+        wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/flag.png"));
+        wi->setScaledContents(true);
+        ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
+        if(this->game.getPlayer().getFlag_counter() > this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines){
+            ui->flag_counter->setStyleSheet("color:red;font-weight:bold;");
+        }
+        ui->flag_counter->setText(QString::number(this->game.getPlayer().getFlag_counter()) + "/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
+        qApp->processEvents();
+    }
+    else{
+        ui->visibleGrid->removeCellWidget(item->row(),item->column());
+        if(this->game.getPlayer().getFlag_counter() <= this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines){
+            ui->flag_counter->setStyleSheet("color:auto;font-weight:auto;");
+        }
+        ui->flag_counter->setText(QString::number(this->game.getPlayer().getFlag_counter()) + "/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
+    }
+    if(this->game.accomplished()==true){
+        this->game.timer.stop();
+        ui->pause_time_button->setEnabled(false);
+        ui->visibleGrid->setEnabled(false);
+        qDebug() << "Game accomplished.";
+        QMessageBox::about(this, "Congratulations", "You have successfully accomplished the game.");
+    }
+}

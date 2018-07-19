@@ -36,3 +36,13 @@ void Player::setFlag_counter(int value)
 {
     flag_counter = value;
 }
+
+void Player::flagUp()
+{
+    this->flag_counter++;
+}
+
+void Player::flagDown()
+{
+    this->flag_counter--;
+}
