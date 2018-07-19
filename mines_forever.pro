@@ -25,17 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mines.cpp \
     mytable.cpp \
-    leaderboard.cpp \
-    player.cpp
+    player.cpp \
+    game.cpp \
+    game_gui.cpp \
+    leaderboard_gui.cpp \
+    leaderboard.cpp
 
 HEADERS += \
-        mines.h \
     mytable.h \
-    leaderboard.h \
     player.h \
-    data_structures.h
+    data_structures.h \
+    game.h \
+    game_gui.h \
+    leaderboard_gui.h \
+    leaderboard.h
 
 FORMS += \
         mines.ui \

@@ -1,7 +1,9 @@
-#ifndef MINES_H
-#define MINES_H
+#ifndef GAME_H
+#define GAME_H
 
 #include <QMainWindow>
+#include <QObject>
+#include <QWidget>
 #include <QTableWidget>
 #include <QLabel>
 #include <QPoint>
@@ -17,20 +19,15 @@
 #include <QHeaderView>
 
 #include "player.h"
-#include "leaderboard.h"
+#include "leaderboard_gui.h"
 #include "data_structures.h"
 
-namespace Ui {
-class Mines;
-}
-
-class Mines : public QMainWindow
+class Game
 {
-    Q_OBJECT
-
 public:
-    explicit Mines(QWidget *parent = 0);
-    ~Mines();
+    Game();
+    ~Game();
+
     // vector of available game difficulties
     QVector<DIFFICULTY> difficulties;
 
@@ -62,12 +59,6 @@ public:
 signals:
     void cellsRevealedAutomatically(int number);
 
-private slots:
-    void on_start_game_button_clicked();
-    void on_pause_time_button_clicked(bool checked);
-    void on_show_leaderboard_button_clicked();
-    void on_visibleGrid_itemClicked(QTableWidgetItem *item);
-
 public slots:
     void flagCounterIncreasedSlot();
     void flagCounterDecreasedSlot();
@@ -76,7 +67,12 @@ public slots:
     void leaderboardClosedSlot();
 
 private:
-    Ui::Mines *ui;
+    // object for a player
+    Player player;
+
+    // object for a leaderboard
+    LeaderBoard lb;
+
     // mines are represented as set of QPoints
     QSet<QPoint> mines;
 
@@ -85,12 +81,6 @@ private:
 
     // index of currently selected game difficulty from the available difficulties
     int current_difficulty;
-
-    // object for a player
-    Player player;
-
-    // object for a leaderboard
-    LeaderBoard lb;
 
     // function to compute a number of nearby mines around the given cell
     int countNearbyMines(int row, int col);
@@ -108,4 +98,4 @@ private:
     void freeInvisibleGrid(int rows);
 };
 
-#endif // MINES_H
+#endif // GAME_H

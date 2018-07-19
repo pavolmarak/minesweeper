@@ -1,13 +1,13 @@
-#include "mines.h"
+#include "game_gui.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Mines w;
-    w.setWindowIcon(QIcon(qApp->applicationDirPath() + "/mine_icon.png"));
-    w.setWindowTitle("Minesweeper by Pavol Marak");
-    w.show();
+    GameGUI game_gui;
+    game_gui.setWindowIcon(QIcon(qApp->applicationDirPath() + "/mine_icon.png"));
+    game_gui.setWindowTitle("Minesweeper by Pavol Marak");
+    game_gui.show();
 
     return a.exec();
 }
