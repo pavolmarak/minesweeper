@@ -42,5 +42,5 @@ HEADERS += \
     leaderboard.h
 
 FORMS += \
-        mines.ui \
-    leaderboard.ui
+    leaderboard.ui \
+    game_gui.ui

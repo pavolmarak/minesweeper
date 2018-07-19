@@ -27,24 +27,24 @@ class MyTable : public QTableWidget
 public:
     MyTable(QWidget*);
     virtual ~MyTable();
-    int mineCounter;
-    int noMineCounter;
-    bool congratsShown;
-    LeaderBoard *getLb() const;
+//    int mineCounter;
+//    int noMineCounter;
+//    bool congratsShown;
+//    LeaderBoard *getLb() const;
 
 private slots:
-    void mousePressEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
+//    void mousePressEvent(QMouseEvent* e);
+//    void mouseReleaseEvent(QMouseEvent *event);
+//    void mouseMoveEvent(QMouseEvent *event);
 public slots:
-    void cellsRevealedAutomaticallySlot(int);
+//    void cellsRevealedAutomaticallySlot(int);
 signals:
-    void flagCounterIncreased();
-    void flagCounterDecreased();
-    void timerStop();
+//    void flagCounterIncreased();
+//    void flagCounterDecreased();
+//    void timerStop();
 private:
-    QTableWidgetItem* itClicked;
-    LeaderBoard *lb;
+//    QTableWidgetItem* itClicked;
+//    LeaderBoard *lb;
 };
 
 #endif // MYTABLE_H

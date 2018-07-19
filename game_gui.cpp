@@ -1,101 +1,20 @@
 #include "game_gui.h"
-#include "ui_mines.h"
+#include "ui_game_gui.h"
 
 // constructor
 GameGUI::GameGUI(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Mines)
+    ui(new Ui::GameGUI)
 {
     ui->setupUi(this);
 
-    // ************************************************
-    // ***********                          ***********
-    // *********** LEADERBOARD BUTTON SETUP ***********
-    // ***********                          ***********
-    // ************************************************
-
-    // enable leaderboard button
-    ui->show_leaderboard_button->setEnabled(true);
-
-
-    // ******************************************
-    // ***********                    ***********
-    // *********** VISIBLE GRID SETUP ***********
-    // ***********                    ***********
-    // ******************************************
-
-    // visible game grid is represented as QTableWidget
-
-    // visible grid is disabled by default
-    ui->visibleGrid->setEnabled(false);
-
-    // set dimensions of the visible game grid
-    ui->visibleGrid->setRowCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
-    ui->visibleGrid->setColumnCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width);
-    for(int i=0; i< ui->visibleGrid->rowCount();i++){
-        ui->visibleGrid->setRowHeight(i,TILE_SIZE);
-    }
-    for(int i=0; i<ui->visibleGrid->columnCount();i++){
-        ui->visibleGrid->setColumnWidth(i, TILE_SIZE);
-    }
-
-    // set headers
-    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->visibleGrid->horizontalHeader()->setStretchLastSection(true);
-    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->visibleGrid->verticalHeader()->setStretchLastSection(false);
-
-    // create items in visible game grid, set their default color and hints
-    for(int i=0; i< ui->visibleGrid->rowCount();i++){
-        for(int j=0; j<ui->visibleGrid->columnCount();j++){
-            ui->visibleGrid->setItem(i,j,new QTableWidgetItem(""));
-            ui->visibleGrid->item(i,j)->setBackgroundColor(QColor(150,150,150));
-        }
-    }
-
-
-    // ***************************************
-    // ***********                 ***********
-    // *********** GAME INFO SETUP ***********
-    // ***********                 ***********
-    // ***************************************
-
-    // flag counter setup
-    ui->flag_counter->setText("0/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
-
-    // pause button setup
-    ui->pause_time_button->setEnabled(false);
-
-    // game time setup
-    ui->time->setText("0 ms");
-    ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-
-
-    // *****************************************
-    // ***********                   ***********
-    // *********** GAME CONFIG SETUP ***********
-    // ***********                   ***********
-    // *****************************************
-
-    // populate the list of available difficulties in the combobox
-    foreach (Difficulty d, this->game.difficulties) {
-        ui->gridsize_selector->addItem(d.name);
-    }
-
-    // set the number of mines for the given game difficulty
-    ui->noMinesSpinBox->setValue(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines);
-    ui->noMinesSpinBox->setEnabled(false); // user cannot change number of mines in the preset game difficulty
+    // reset gui
+    this->resetGui();
 
     // start game button setup
     ui->start_game_button->setEnabled(true);
 
-
-    // *************************************
-    // ***********               ***********
     // *********** SIGNALS/SLOTS ***********
-    // ***********               ***********
-    // *************************************
-
 
     qApp->processEvents();
 }
@@ -106,13 +25,63 @@ GameGUI::~GameGUI()
     delete ui;
 }
 
+void GameGUI::resetGui()
+{
+    // reset leaderboard button
+    ui->show_leaderboard_button->setEnabled(true);
+
+    // reset visible grid
+    ui->visibleGrid->clearContents();
+    ui->visibleGrid->setEnabled(true);
+    ui->visibleGrid->setVisible(true);
+
+    ui->visibleGrid->setRowCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
+    ui->visibleGrid->setColumnCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width);
+    for(int i=0; i< ui->visibleGrid->rowCount();i++){
+        ui->visibleGrid->setRowHeight(i,TILE_SIZE);
+    }
+    for(int i=0; i<ui->visibleGrid->columnCount();i++){
+        ui->visibleGrid->setColumnWidth(i, TILE_SIZE);
+    }
+    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->visibleGrid->horizontalHeader()->setStretchLastSection(true);
+    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->visibleGrid->verticalHeader()->setStretchLastSection(false);
+
+    for(int i=0; i< ui->visibleGrid->rowCount();i++){
+        for(int j=0; j<ui->visibleGrid->columnCount();j++){
+            ui->visibleGrid->setItem(i,j,new QTableWidgetItem(""));
+            ui->visibleGrid->item(i,j)->setBackgroundColor(QColor(150,150,150));
+        }
+    }
+
+    // reset game info box
+    ui->flag_counter->setText("0/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
+    ui->pause_time_button->setEnabled(false);
+    ui->pause_time_button->setChecked(false);
+    ui->time->setText("0 ms");
+    ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+
+    // reset game configuration box
+    ui->gridsize_selector->setEnabled(true);
+    foreach (Difficulty d, this->game.difficulties) {
+        ui->gridsize_selector->addItem(d.name);
+    }
+    ui->gridsize_selector->setCurrentIndex(this->game.getCurrent_difficulty());
+
+    // set the number of mines for the given game difficulty
+    ui->noMinesSpinBox->setValue(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines);
+    if(this->game.difficulties[this->game.getCurrent_difficulty()].name != "Custom"){
+        ui->noMinesSpinBox->setEnabled(false);
+    }
+}
+
 // function to handle user left-clicks
 void GameGUI::on_visibleGrid_itemClicked(QTableWidgetItem *item)
 {
-
-    int result = this->game.userLeftClick(item->row(),item->column());
-    // user left-clicked on a mine
-    if(result == MINE){
+    ClickResult result = this->game.userLeftClick(item->row(),item->column());
+    // if user left-clicked on a mine
+    if(result.is_mine == true){
         ui->pause_time_button->setEnabled(false);
         ui->visibleGrid->setEnabled(false);
         qDebug() << "*** MINE ***";
@@ -128,100 +97,77 @@ void GameGUI::on_visibleGrid_itemClicked(QTableWidgetItem *item)
     }
     else{
         // reveal one or more cells
-
-
+        foreach (QPoint p, result.cellsRevealed) {
+            ui->visibleGrid->item(p.y(), p.x())->setBackgroundColor(QColor(220,220,220));
+            if(this->game.getInvisible_grid()[p.y()][p.x()].value > 0){
+                ui->visibleGrid->item(p.y(), p.x())->setText(QString::number(this->game.getInvisible_grid()[p.y()][p.x()].value));
+            }
+            ui->visibleGrid->item(p.y(), p.x())->setSelected(false);
+        }
     }
 }
-
 
 
 // function to start the game
 void GameGUI::on_start_game_button_clicked()
 {
-    this->clearEverything();
+    // apply the currently selected difficulty
+    this->game.setCurrent_difficulty(ui->gridsize_selector->currentIndex());
 
-    // free old game grid
-    this->freeInvisibleGrid(difficulties[this->current_difficulty].grid_height+2);
+    // reset invisible grid
+    this->game.createInvisibleGrid(
+                this->game.difficulties[this->game.getCurrent_difficulty()].grid_height,
+                this->game.difficulties[this->game.getCurrent_difficulty()].grid_width,
+                Cell()
+            );
 
-    this->current_difficulty = ui->gridsize_selector->currentIndex();
+    // populate invisible grid
+    this->game.placeMines(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines);
 
-    // allocate new game grid
-    this->createInvisibleGrid(
-        this->difficulties[this->current_difficulty].grid_height+2,
-        this->difficulties[this->current_difficulty].grid_width+2
-    );
+    // reset gui
+    this->resetGui();
 
-    // re-create visible grid
-    ui->visibleGrid->setEnabled(true);
-    ui->visibleGrid->setVisible(true);
-    ui->visibleGrid->clearContents();
-    ui->visibleGrid->setRowCount(difficulties[this->current_difficulty].grid_height);
-    ui->visibleGrid->setColumnCount(difficulties[this->current_difficulty].grid_width);
-    for(int i=0; i< ui->visibleGrid->rowCount();i++){
-        ui->visibleGrid->setRowHeight(i,TILE_SIZE);
-    }
-    for(int i=0; i<ui->visibleGrid->columnCount();i++){
-        ui->visibleGrid->setColumnWidth(i, TILE_SIZE);
-    }
-    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->visibleGrid->horizontalHeader()->setStretchLastSection(true);
-    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->visibleGrid->verticalHeader()->setStretchLastSection(false);
-    for(int i=0; i< ui->visibleGrid->rowCount();i++){
-        for(int j=0; j<ui->visibleGrid->columnCount();j++){
-            ui->visibleGrid->setItem(i,j,new QTableWidgetItem(""));
-            ui->visibleGrid->item(i,j)->setBackgroundColor(QColor(150,150,150));
-            ui->visibleGrid->item(i,j)->setWhatsThis("noflag-nomine-novisit");
-        }
-    }
-
-    ui->show_leaderboard_button->setEnabled(true);
-    ui->pause_time_button->setEnabled(true);
-    ui->pause_time_button->setChecked(false);
-    ui->start_game_button->setEnabled(true);
-    ui->gridsize_selector->setEnabled(true);
-    ui->noMinesSpinBox->setValue(difficulties[this->current_difficulty].number_of_mines);
-
-    this->placeMines(difficulties[this->current_difficulty].number_of_mines);
-    this->player.setTime(0);
-    this->player.setFlag_counter(0);
-
-
-    ui->visibleGrid->mineCounter=0;
-    ui->visibleGrid->noMineCounter=difficulties[this->current_difficulty].grid_height*difficulties[this->current_difficulty].grid_width;
-    ui->visibleGrid->congratsShown=false;
-    ui->visibleGrid->timer.start(1);
-    ui->visibleGrid->elap_timer.restart();
+    // reset player
+    Player p = this->game.getPlayer();
+    p.setFlag_counter(0);
+    p.setTime(0);
+    this->game.setPlayer(p);
 
     ui->statusBar->showMessage("New game started.",3000);
+
+    // reset timers
+    this->game.timer.start(TIMER_INTERVAL);
+    this->game.elap_timer.restart();
+
     qApp->processEvents();
 }
 
 
 void GameGUI::on_pause_time_button_clicked(bool checked)
 {
+    Player p = this->game.getPlayer();
     if(checked){
-        this->player.setTime(this->player.getTime() + ui->visibleGrid->elap_timer.elapsed());
-        ui->visibleGrid->timer.stop();
-        ui->pause_time_button->setChecked(true);
+        p.setTime(p.getTime() + this->game.elap_timer.elapsed());
+        this->game.timer.stop();
         ui->visibleGrid->setVisible(false);
     }
     else{
         ui->visibleGrid->setVisible(true);
-        ui->visibleGrid->timer.start(1);
-        ui->visibleGrid->elap_timer.restart();
-        ui->pause_time_button->setChecked(false);
+        this->game.timer.start(TIMER_INTERVAL);
+        this->game.elap_timer.restart();
     }
+    this->game.setPlayer(p);
 }
 
 
 void GameGUI::on_show_leaderboard_button_clicked()
 {
-    this->lb.setResultboxVisible(false); // displays also a resultbox
-    this->lb.setTimeTaken(0);
-    this->lb.setSubmitBtnEnabled(false);
-    this->lb.show();
+
 }
 
 
+void GameGUI::on_noMinesSpinBox_valueChanged(int arg1)
+{
+
+}
 

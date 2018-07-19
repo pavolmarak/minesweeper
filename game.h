@@ -12,8 +12,8 @@
 #include <QSet>
 #include <QMouseEvent>
 #include <QMessageBox>
-#include <QElapsedTimer>
 #include <QTimer>
+#include <QElapsedTimer>
 #include <QComboBox>
 #include <QSpinBox>
 #include <QDialog>
@@ -23,7 +23,7 @@
 #include "leaderboard_gui.h"
 #include "data_structures.h"
 
-class Game
+class Game : public QObject
 {
     Q_OBJECT
 public:
@@ -33,17 +33,22 @@ public:
     // vector of available game difficulties
     QVector<Difficulty> difficulties;
 
+    // timers
+    QTimer timer; // for updating time in GUI
+    QElapsedTimer elap_timer; // for measuring overall time
+
     // function to place mines in the invisible game grid
     void placeMines(int count);
 
-    // function to place mine numbers in the invisible game grid
-    void placeMineNumbers();
-
     // function to reveal an empty cell region, returning number of cells revealed
-    int revealEmptyArea(int row, int col);
+    QVector<QPoint> revealEmptyArea(int row, int col);
 
     // function to compute a number of nearby mines around the given cell
     int countNearbyMines(int row, int col);
+
+    // function to create invisible game grid with the given dimensions
+    // and set it to the user-defined value. Previous values are removed.
+    void createInvisibleGrid(int rows, int cols, Cell cell);
 
     // function to notify about the outcome of user click
     ClickResult userLeftClick(int row, int col);
@@ -57,7 +62,6 @@ public:
     void setPlayer(const Player &value);
 
     QVector<QVector<Cell> > getInvisible_grid() const;
-    void setInvisible_grid(const QVector<QVector<Cell> > &value);
 
     QTimer getTimer() const;
     void setTimer(const QTimer &value);
@@ -76,18 +80,15 @@ private:
     Player player;
 
     // object for a leaderboard
-    LeaderBoard lb;
+    // LeaderBoard lb;
 
     // index of currently selected game difficulty from the available difficulties
     int current_difficulty;
 
-    // timers
-    QTimer timer; // for updating time in GUI
-    QElapsedTimer elap_timer; // for measuring overall time
 
-    // function to create invisible game grid with the given dimensions
-    // and set it to the user-defined value. Previous values are removed.
-    void createInvisibleGrid(int rows, int cols, Cell cell);
+
+    // function to place mine numbers in the invisible game grid
+    void placeMineNumbers();
 };
 
 #endif // GAME_H

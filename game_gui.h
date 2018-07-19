@@ -29,12 +29,14 @@ class GameGUI : public QMainWindow
 public:
     explicit GameGUI(QWidget *parent = 0);
     ~GameGUI();
+    void resetGui();
 
 private slots:
     void on_start_game_button_clicked();
     void on_pause_time_button_clicked(bool checked);
     void on_show_leaderboard_button_clicked();
     void on_visibleGrid_itemClicked(QTableWidgetItem *item);
+    void on_noMinesSpinBox_valueChanged(int arg1);
 
 public slots:
 

@@ -9,6 +9,7 @@
 #define MINE 999
 #define LEADERBOARD_FILE "leaderboard.txt"
 #define LEADERBOARD_COLUMN_COUNT 4
+#define TIMER_INTERVAL 1 // in ms
 
 // struct representing the outcome of user left-click informing whether a mine
 // was clicked, if not, which cells were revealed

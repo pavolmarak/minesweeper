@@ -44,12 +44,12 @@ Game::Game()
     // ***********                   ***********
     // *****************************************
 
-    this->lb.setWindowTitle("Leaderboard");
-    this->lb.setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
-    this->lb.setLeader_board_types(this->difficulties);
-    if(!this->lb.loadFromFile(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE)){
-        exit(EXIT_FAILURE);
-    }
+//    this->lb.setWindowTitle("Leaderboard");
+//    this->lb.setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
+//    this->lb.setLeader_board_types(this->difficulties);
+//    if(!this->lb.loadFromFile(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE)){
+//        exit(EXIT_FAILURE);
+//    }
 }
 
 // destructor
@@ -69,7 +69,7 @@ void Game::placeMines(int count)
         // qrand init
         qsrand(time(0));
 
-        inr r_row, r_col;
+        int r_row, r_col;
         // place mines
         while(count>0){
             r_row = qrand()%this->difficulties[this->current_difficulty].grid_height;
@@ -134,27 +134,30 @@ ClickResult Game::userLeftClick(int row, int col)
         if(this->invisible_grid[row][col].value == MINE){
             this->invisible_grid[row][col].status = VISITED;
             cr.is_mine = true;
-            return cr;
         }
         else if(this->invisible_grid[row][col].value == 0){
-            this->revealEmptyArea(row,col);
+            cr.cellsRevealed = this->revealEmptyArea(row,col);
+            cr.is_mine = false;
         }
         else{
             this->invisible_grid[row][col].status = VISITED;
-            return 1;
+            cr.cellsRevealed.push_back(QPoint(col,row));
+            cr.is_mine = false;
         }
     }
-    return 0;
+    return cr;
 }
 
+// function to handle user right-clicks
 void Game::userRightClick(int row, int col)
 {
 
 }
 
-// function to reveal all empty cells when some empty cell is clicked
-int Game::revealEmptyArea(int row, int col)
+// function to reveal empty cell region when some empty cell is clicked
+QVector<QPoint> Game::revealEmptyArea(int row, int col)
 {
+    QVector<QPoint> cellsRevealed;
     if(this->invisible_grid[row][col].value == 0){
         QList<QPoint> unvisitedEmptyCells;
         unvisitedEmptyCells.push_back(QPoint(col,row));
@@ -179,6 +182,7 @@ int Game::revealEmptyArea(int row, int col)
                                 unvisitedEmptyCells.push_back(QPoint(new_col,new_row));
                             }
                             this->invisible_grid[new_row][new_col].status = VISITED;
+                            cellsRevealed.push_back(QPoint(new_col,new_row));
                             qApp->processEvents();
                             itemsRevealed++;
                         }
@@ -188,10 +192,9 @@ int Game::revealEmptyArea(int row, int col)
             // remove the current empty cell from the list of unvisited empty cells
             unvisitedEmptyCells.removeFirst();
         }
-        return itemsRevealed;
     }
     qDebug() << "Revealing empty cells: Cell is not empty.";
-    return 0;
+    return cellsRevealed;
 }
 
 // function to create new invisible game grid and set it to user-defined value,
@@ -229,29 +232,4 @@ void Game::setCurrent_difficulty(int value)
 QVector<QVector<Cell> > Game::getInvisible_grid() const
 {
     return invisible_grid;
-}
-
-void Game::setInvisible_grid(const QVector<QVector<Cell> > &value)
-{
-    invisible_grid = value;
-}
-
-QTimer Game::getTimer() const
-{
-    return timer;
-}
-
-void Game::setTimer(const QTimer &value)
-{
-    timer = value;
-}
-
-QElapsedTimer Game::getElap_timer() const
-{
-    return elap_timer;
-}
-
-void Game::setElap_timer(const QElapsedTimer &value)
-{
-    elap_timer = value;
 }
