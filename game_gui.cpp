@@ -79,7 +79,7 @@ GameGUI::GameGUI(QWidget *parent) :
     // *****************************************
 
     // populate the list of available difficulties in the combobox
-    foreach (DIFFICULTY d, this->game.difficulties) {
+    foreach (Difficulty d, this->game.difficulties) {
         ui->gridsize_selector->addItem(d.name);
     }
 
@@ -98,7 +98,7 @@ GameGUI::GameGUI(QWidget *parent) :
     // *************************************
 
     // signal when empty cell region is revealed automatically
-    QObject::connect(&(this->game),
+    QObject::connect(this,
                      SIGNAL(cellsRevealedAutomatically(int)),
                      ui->visibleGrid,
                      SLOT(cellsRevealedAutomaticallySlot(int)));
@@ -125,9 +125,11 @@ GameGUI::~GameGUI()
 // function to handle user clicks
 void GameGUI::on_visibleGrid_itemClicked(QTableWidgetItem *item)
 {
-    if(this->grid){
+    int** invisible_grid = this->game.getInvisible_grid();
+    // if invisible game grid exists
+    if(invisible_grid){
         // if a user clicks on a mine, game ends
-        if(this->grid[item->row()+1][item->column()+1]==MINE){
+        if(invisible_grid[item->row()+1][item->column()+1]==MINE){
             //when a mine is found, some elements are disabled
             ui->pause_time_button->setEnabled(false);
             ui->visibleGrid->setEnabled(false);
@@ -139,11 +141,12 @@ void GameGUI::on_visibleGrid_itemClicked(QTableWidgetItem *item)
             ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
             qApp->processEvents();
             // on Linux and Windows this is modal window blocking all background activity
+            // on MacOS it is modeless
             QMessageBox::about(this, "Mine", "Game Over");
         }
         // if a user clicks on empty cell, a whole empty area gets revealed
-        else if(this->grid[item->row()+1][item->column()+1]==0){
-            emit cellsRevealedAutomatically(this->revealEmptyArea(item->row(),item->column()));
+        else if(invisible_grid[item->row()+1][item->column()+1]==0){
+            emit cellsRevealedAutomatically(this->game.revealEmptyArea(item->row(),item->column()));
         }
         // if a user clicks on a cell with mine number, the cell is revealed
         else{

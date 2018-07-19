@@ -32,7 +32,7 @@ public:
     ~LeaderBoard();
 
     void setResultboxVisible(bool);
-    void setLeader_board_types(QVector<DIFFICULTY>);
+    void setLeader_board_types(QVector<Difficulty>);
     bool loadFromFile(const QString&);
     void redraw();
     void setTimeTaken(quint64 time_taken);

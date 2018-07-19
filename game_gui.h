@@ -30,6 +30,9 @@ public:
     explicit GameGUI(QWidget *parent = 0);
     ~GameGUI();
 
+signals:
+    void cellsRevealedAutomatically(int number);
+
 private slots:
     void on_start_game_button_clicked();
     void on_pause_time_button_clicked(bool checked);

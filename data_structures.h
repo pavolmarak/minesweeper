@@ -8,25 +8,46 @@
 #define LEADERBOARD_FILE "leaderboard.txt"
 #define LEADERBOARD_COLUMN_COUNT 4
 
+// enum representing a cell status
+typedef enum _cell_status{
+    UNVISITED,
+    VISITED,
+    FLAG
+}CellStatus;
+
+// struct representing one cell in the invisible game grid
+typedef struct _cell{
+    int value;
+    CellStatus status;
+    _cell(int _value, CellStatus _status){
+        this->value = _value;
+        this->status = _status;
+    }
+    _cell() :
+        value(-1),
+        status(UNVISITED)
+    {}
+}Cell;
+
 // struct for representing game difficulty
-typedef struct difficulty{
+typedef struct _difficulty{
     int grid_width;
     int grid_height;
     int number_of_mines;
     QString name;
-    difficulty(int _grid_width, int _grid_height, int _number_of_mines, QString _name){
+    _difficulty(int _grid_width, int _grid_height, int _number_of_mines, QString _name){
         this->grid_width = _grid_width;
         this->grid_height = _grid_height;
         this->number_of_mines = _number_of_mines;
         this->name = _name;
     }
-    difficulty() :
+    _difficulty() :
         grid_width(10),
         grid_height(10),
         number_of_mines(10),
         name("Easy")
     {}
-}DIFFICULTY;
+}Difficulty;
 
 // struct for representing user result that is stored in the leaderboard
 typedef struct _user_result{

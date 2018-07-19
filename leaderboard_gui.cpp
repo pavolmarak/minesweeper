@@ -25,11 +25,11 @@ LeaderBoard::LeaderBoard(QWidget *parent) :
 }
 
 
-void LeaderBoard::setLeader_board_types(QVector<DIFFICULTY> difficulties)
+void LeaderBoard::setLeader_board_types(QVector<Difficulty> difficulties)
 {
     // set leaderboard difficulties
     ui->leaderboard_selection_combobox->clear();
-    foreach (DIFFICULTY d, difficulties) {
+    foreach (Difficulty d, difficulties) {
         ui->leaderboard_selection_combobox->addItem(d.name);
     }
 }
