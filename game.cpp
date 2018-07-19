@@ -227,7 +227,17 @@ void Game::createInvisibleGrid(int rows, int cols, Cell cell)
 bool Game::accomplished()
 {
     if(this->unvisited_cells == this->difficulties[this->current_difficulty].number_of_mines){
-        return true;
+        int flagged=0;
+        foreach (auto line, this->invisible_grid) {
+            foreach (auto cell, line) {
+                if(cell.status == FLAG){
+                    flagged++;
+                }
+            }
+        }
+        if(flagged == this->unvisited_cells){
+            return true;
+        }
     }
     return false;
 }
