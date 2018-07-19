@@ -39,6 +39,7 @@ private slots:
     void on_noMinesSpinBox_valueChanged(int arg1);
 
 public slots:
+    void timeoutSlot();
 
 private:
     Ui::GameGUI *ui;

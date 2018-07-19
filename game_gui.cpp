@@ -15,6 +15,7 @@ GameGUI::GameGUI(QWidget *parent) :
     ui->start_game_button->setEnabled(true);
 
     // *********** SIGNALS/SLOTS ***********
+    QObject::connect(&(this->game.timer), SIGNAL(timeout()), this, SLOT(timeoutSlot()));
 
     qApp->processEvents();
 }
@@ -32,8 +33,9 @@ void GameGUI::resetGui()
 
     // reset visible grid
     ui->visibleGrid->clearContents();
-    ui->visibleGrid->setEnabled(true);
+    ui->visibleGrid->setEnabled(false);
     ui->visibleGrid->setVisible(true);
+    ui->visibleGrid->setFocusPolicy(Qt::NoFocus);
 
     ui->visibleGrid->setRowCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
     ui->visibleGrid->setColumnCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width);
@@ -100,6 +102,8 @@ void GameGUI::on_visibleGrid_itemClicked(QTableWidgetItem *item)
         foreach (QPoint p, result.cellsRevealed) {
             ui->visibleGrid->item(p.y(), p.x())->setBackgroundColor(QColor(220,220,220));
             if(this->game.getInvisible_grid()[p.y()][p.x()].value > 0){
+                ui->visibleGrid->item(p.y(), p.x())->setFont(QFont("Tahoma",12));
+                ui->visibleGrid->item(p.y(), p.x())->setTextAlignment(Qt::AlignCenter);
                 ui->visibleGrid->item(p.y(), p.x())->setText(QString::number(this->game.getInvisible_grid()[p.y()][p.x()].value));
             }
             ui->visibleGrid->item(p.y(), p.x())->setSelected(false);
@@ -126,12 +130,11 @@ void GameGUI::on_start_game_button_clicked()
 
     // reset gui
     this->resetGui();
+    ui->visibleGrid->setEnabled(true);
+    ui->pause_time_button->setEnabled(true);
 
     // reset player
-    Player p = this->game.getPlayer();
-    p.setFlag_counter(0);
-    p.setTime(0);
-    this->game.setPlayer(p);
+    this->game.setPlayer(Player());
 
     ui->statusBar->showMessage("New game started.",3000);
 
@@ -169,5 +172,10 @@ void GameGUI::on_show_leaderboard_button_clicked()
 void GameGUI::on_noMinesSpinBox_valueChanged(int arg1)
 {
 
+}
+
+void GameGUI::timeoutSlot()
+{
+    ui->time->setText(QString::number(this->game.getPlayer().getTime()+ this->game.elap_timer.elapsed()) + " ms");
 }
 
