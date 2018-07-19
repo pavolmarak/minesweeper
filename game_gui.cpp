@@ -39,21 +39,26 @@ void GameGUI::resetGui()
 
     ui->visibleGrid->setRowCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
     ui->visibleGrid->setColumnCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width);
+    //    this->setGeometry(0,0, this->game.difficulties[this->game.getCurrent_difficulty()].grid_width,this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
+    //    this->setm
     for(int i=0; i< ui->visibleGrid->rowCount();i++){
         ui->visibleGrid->setRowHeight(i,TILE_SIZE);
     }
     for(int i=0; i<ui->visibleGrid->columnCount();i++){
         ui->visibleGrid->setColumnWidth(i, TILE_SIZE);
     }
-    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->visibleGrid->horizontalHeader()->setStretchLastSection(true);
-    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->visibleGrid->horizontalHeader()->setDefaultSectionSize(TILE_SIZE);
+    ui->visibleGrid->verticalHeader()->setDefaultSectionSize(TILE_SIZE);
+    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->visibleGrid->horizontalHeader()->setStretchLastSection(false);
+    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->visibleGrid->verticalHeader()->setStretchLastSection(false);
 
     for(int i=0; i< ui->visibleGrid->rowCount();i++){
         for(int j=0; j<ui->visibleGrid->columnCount();j++){
             ui->visibleGrid->setItem(i,j,new QTableWidgetItem(""));
             ui->visibleGrid->item(i,j)->setBackgroundColor(QColor(150,150,150));
+            ui->visibleGrid->item(i,j)->setSizeHint(QSize(TILE_SIZE,TILE_SIZE));
         }
     }
 
@@ -66,8 +71,9 @@ void GameGUI::resetGui()
 
     // reset game configuration box
     ui->gridsize_selector->setEnabled(true);
+    ui->gridsize_selector->clear();
     foreach (Difficulty d, this->game.difficulties) {
-        ui->gridsize_selector->addItem(d.name);
+        ui->gridsize_selector->addItem(d.name + ", " + QString::number(d.grid_height) + "x" + QString::number(d.grid_width) + ", " + QString::number(d.number_of_mines) + " mines");
     }
     ui->gridsize_selector->setCurrentIndex(this->game.getCurrent_difficulty());
 

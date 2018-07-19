@@ -25,21 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    mytable.cpp \
     player.cpp \
     game.cpp \
     game_gui.cpp \
     leaderboard_gui.cpp \
-    leaderboard.cpp
+    leaderboard.cpp \
+    mygrid.cpp
 
 HEADERS += \
-    mytable.h \
     player.h \
     data_structures.h \
     game.h \
     game_gui.h \
     leaderboard_gui.h \
-    leaderboard.h
+    leaderboard.h \
+    mygrid.h
 
 FORMS += \
     leaderboard.ui \

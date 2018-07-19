@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>528</width>
-    <height>815</height>
+    <width>328</width>
+    <height>615</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>528</width>
-    <height>815</height>
+    <width>328</width>
+    <height>615</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>528</width>
-    <height>815</height>
+    <width>328</width>
+    <height>615</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -125,21 +125,24 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>500</width>
-            <height>500</height>
+            <width>300</width>
+            <height>300</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>500</width>
-            <height>500</height>
+            <width>300</width>
+            <height>300</height>
            </size>
           </property>
           <property name="mouseTracking">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="tabletTracking">
-           <bool>false</bool>
+           <bool>true</bool>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
           </property>
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -148,7 +151,7 @@
            <enum>Qt::ScrollBarAlwaysOff</enum>
           </property>
           <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustToContents</enum>
+           <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
           </property>
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>
@@ -161,6 +164,9 @@
           </property>
           <property name="textElideMode">
            <enum>Qt::ElideNone</enum>
+          </property>
+          <property name="showGrid">
+           <bool>true</bool>
           </property>
           <property name="cornerButtonEnabled">
            <bool>false</bool>
@@ -175,6 +181,9 @@
            <bool>false</bool>
           </attribute>
           <attribute name="horizontalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
            <bool>false</bool>
           </attribute>
           <attribute name="verticalHeaderVisible">
@@ -231,13 +240,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>500</width>
+            <width>300</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>500</width>
+            <width>300</width>
             <height>16777215</height>
            </size>
           </property>
@@ -250,7 +259,7 @@
              <item>
               <widget class="QLabel" name="flagcounter_label">
                <property name="text">
-                <string>Flag counter:</string>
+                <string>Flags:</string>
                </property>
               </widget>
              </item>
@@ -377,13 +386,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>500</width>
+            <width>300</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>500</width>
+            <width>300</width>
             <height>16777215</height>
            </size>
           </property>
@@ -449,7 +458,7 @@
              <item>
               <widget class="QLabel" name="no_mines_label">
                <property name="text">
-                <string>Number of mines:</string>
+                <string>Mines:</string>
                </property>
               </widget>
              </item>

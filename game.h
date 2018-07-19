@@ -20,7 +20,7 @@
 #include <QHeaderView>
 
 #include "player.h"
-#include "leaderboard_gui.h"
+#include "leaderboard.h"
 #include "data_structures.h"
 
 class Game : public QObject
@@ -80,12 +80,10 @@ private:
     Player player;
 
     // object for a leaderboard
-    // LeaderBoard lb;
+    LeaderBoard lb;
 
     // index of currently selected game difficulty from the available difficulties
     int current_difficulty;
-
-
 
     // function to place mine numbers in the invisible game grid
     void placeMineNumbers();

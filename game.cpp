@@ -16,7 +16,7 @@ Game::Game()
     // *************************************
 
     // set game difficulties
-    this->difficulties.push_back(Difficulty(10,10,1,"Easy"));
+    this->difficulties.push_back(Difficulty(10,10,10,"Easy"));
     this->difficulties.push_back(Difficulty(15,15,25,"Medium"));
     this->difficulties.push_back(Difficulty(20,20,50,"Hard"));
 
@@ -44,12 +44,12 @@ Game::Game()
     // ***********                   ***********
     // *****************************************
 
-//    this->lb.setWindowTitle("Leaderboard");
-//    this->lb.setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
-//    this->lb.setLeader_board_types(this->difficulties);
-//    if(!this->lb.loadFromFile(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE)){
-//        exit(EXIT_FAILURE);
-//    }
+    this->lb.setWindowTitle("Leaderboard");
+    this->lb.setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
+    this->lb.setLeader_board_types(this->difficulties);
+    if(!this->lb.loadFromFile(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE)){
+        exit(EXIT_FAILURE);
+    }
 }
 
 // destructor
