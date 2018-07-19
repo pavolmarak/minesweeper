@@ -1,4 +1,6 @@
 #include <QString>
+#include <QVector>
+#include <QPoint>
 
 #ifndef HELPER_H
 #define HELPER_H
@@ -7,6 +9,21 @@
 #define MINE 999
 #define LEADERBOARD_FILE "leaderboard.txt"
 #define LEADERBOARD_COLUMN_COUNT 4
+
+// struct representing the outcome of user left-click informing whether a mine
+// was clicked, if not, which cells were revealed
+typedef struct _click_result{
+    bool is_mine;
+    QVector<QPoint> cellsRevealed;
+    _click_result() :
+        is_mine(false),
+        cellsRevealed(QVector<QPoint>())
+    {}
+    _click_result(bool _is_mine, QVector<QPoint> _cellsRevealed){
+        this->is_mine = _is_mine;
+        this->cellsRevealed = _cellsRevealed;
+    }
+}ClickResult;
 
 // enum representing a cell status
 typedef enum _cell_status{

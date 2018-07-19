@@ -50,7 +50,6 @@ GameGUI::GameGUI(QWidget *parent) :
         for(int j=0; j<ui->visibleGrid->columnCount();j++){
             ui->visibleGrid->setItem(i,j,new QTableWidgetItem(""));
             ui->visibleGrid->item(i,j)->setBackgroundColor(QColor(150,150,150));
-            ui->visibleGrid->item(i,j)->setWhatsThis("noflag-nomine-novisit");
         }
     }
 
@@ -97,63 +96,40 @@ GameGUI::GameGUI(QWidget *parent) :
     // ***********               ***********
     // *************************************
 
-    // signal when empty cell region is revealed automatically
-    QObject::connect(this,
-                     SIGNAL(cellsRevealedAutomatically(int)),
-                     ui->visibleGrid,
-                     SLOT(cellsRevealedAutomaticallySlot(int)));
-    // signal when user places a flag on the visible game grid
-    QObject::connect(ui->visibleGrid, SIGNAL(flagCounterIncreased()), &(this->game), SLOT(flagCounterIncreasedSlot()));
-    // signal when user removes a flag from the visible game grid
-    QObject::connect(ui->visibleGrid, SIGNAL(flagCounterDecreased()), &(this-game), SLOT(flagCounterDecreasedSlot()));
-    // signal emitted every 1 ms to update time of gameplay
-    QObject::connect(&(ui->visibleGrid->timer), SIGNAL(timeout()), this, SLOT(updateTime()));
-    // signal when leaderboard window is closed
-    QObject::connect(&(this->game.lb),SIGNAL(leaderboardClosedSignal()),this, SLOT(leaderboardClosedSlot()));
 
     qApp->processEvents();
 }
 
-//destructor
+// destructor
 GameGUI::~GameGUI()
 {
     delete ui;
 }
 
-// function to handle user clicks
+// function to handle user left-clicks
 void GameGUI::on_visibleGrid_itemClicked(QTableWidgetItem *item)
 {
-    int** invisible_grid = this->game.getInvisible_grid();
-    // if invisible game grid exists
-    if(invisible_grid){
-        // if a user clicks on a mine, game ends
-        if(invisible_grid[item->row()+1][item->column()+1]==MINE){
-            //when a mine is found, some elements are disabled
-            ui->pause_time_button->setEnabled(false);
-            ui->visibleGrid->setEnabled(false);
 
-            qDebug() << "*** MINE ***";
-            QLabel* wi = new QLabel();
-            wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/mine_icon.png"));
-            wi->setScaledContents(true);
-            ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
-            qApp->processEvents();
-            // on Linux and Windows this is modal window blocking all background activity
-            // on MacOS it is modeless
-            QMessageBox::about(this, "Mine", "Game Over");
-        }
-        // if a user clicks on empty cell, a whole empty area gets revealed
-        else if(invisible_grid[item->row()+1][item->column()+1]==0){
-            emit cellsRevealedAutomatically(this->game.revealEmptyArea(item->row(),item->column()));
-        }
-        // if a user clicks on a cell with mine number, the cell is revealed
-        else{
-            this->showMineNumber(item->row(), item->column());
-            ui->visibleGrid->noMineCounter--;
-        }
+    int result = this->game.userLeftClick(item->row(),item->column());
+    // user left-clicked on a mine
+    if(result == MINE){
+        ui->pause_time_button->setEnabled(false);
+        ui->visibleGrid->setEnabled(false);
+        qDebug() << "*** MINE ***";
+        QLabel* wi = new QLabel();
+        wi->setPixmap(QPixmap(qApp->applicationDirPath() + "/mine_icon.png"));
+        wi->setScaledContents(true);
+        ui->visibleGrid->item(item->row(),item->column())->setBackgroundColor(QColor(220,220,220));
+        ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
+        qApp->processEvents();
+        // on Linux and Windows this is modal window blocking all background activity
+        // on MacOS it is modeless
+        QMessageBox::about(this, "Mine", "Game Over");
     }
     else{
-        qDebug() << "User click: Invisible game grid does not exist.";
+        // reveal one or more cells
+
+
     }
 }
 
@@ -247,34 +223,5 @@ void GameGUI::on_show_leaderboard_button_clicked()
     this->lb.show();
 }
 
-void GameGUI::leaderboardClosedSlot()
-{
-    ui->show_leaderboard_button->setEnabled(true);
-    ui->start_game_button->setEnabled(true);
-    ui->gridsize_selector->setEnabled(true);
-}
 
-void GameGUI::updateTime()
-{
-    ui->time->setText(QString::number(this->player.getTime()+ui->visibleGrid->elap_timer.elapsed()) + " ms");
-    qApp->processEvents();
-}
-
-void GameGUI::flagCounterIncreasedSlot()
-{
-    this->player.setFlag_counter(this->player.getFlag_counter()+1);
-    ui->flag_counter->setText(QString::number(this->player.getFlag_counter()) + "/" + QString::number(difficulties[this->current_difficulty].number_of_mines));
-    if(this->player.getFlag_counter() > difficulties[this->current_difficulty].number_of_mines){
-        ui->flag_counter->setStyleSheet("color:red;font-weight: bold;");
-    }
-}
-
-void GameGUI::flagCounterDecreasedSlot()
-{
-    this->player.setFlag_counter(this->player.getFlag_counter()-1);
-    ui->flag_counter->setText(QString::number(this->player.getFlag_counter()) + "/" + QString::number(difficulties[this->current_difficulty].number_of_mines));
-    if(this->player.getFlag_counter() <= difficulties[this->current_difficulty].number_of_mines){
-        ui->flag_counter->setStyleSheet("color:auto;font-weight: auto;");
-    }
-}
 

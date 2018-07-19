@@ -1,5 +1,5 @@
-#ifndef MINES_H
-#define MINES_H
+#ifndef GAME_GUI_H
+#define GAME_GUI_H
 
 #include <QMainWindow>
 #include <QTableWidget>
@@ -30,9 +30,6 @@ public:
     explicit GameGUI(QWidget *parent = 0);
     ~GameGUI();
 
-signals:
-    void cellsRevealedAutomatically(int number);
-
 private slots:
     void on_start_game_button_clicked();
     void on_pause_time_button_clicked(bool checked);
@@ -40,13 +37,10 @@ private slots:
     void on_visibleGrid_itemClicked(QTableWidgetItem *item);
 
 public slots:
-        void leaderboardClosedSlot();
-        void updateTime();
-        void flagCounterIncreasedSlot();
-        void flagCounterDecreasedSlot();
+
 private:
     Ui::GameGUI *ui;
     Game game;
 };
 
-#endif // MINES_H
+#endif // GAME_GUI_H

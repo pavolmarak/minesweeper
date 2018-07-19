@@ -30,8 +30,6 @@ public:
     int mineCounter;
     int noMineCounter;
     bool congratsShown;
-    QTimer timer;
-    QElapsedTimer elap_timer;
     LeaderBoard *getLb() const;
 
 private slots:

@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QObject>
 #include <QWidget>
@@ -24,6 +25,7 @@
 
 class Game
 {
+    Q_OBJECT
 public:
     Game();
     ~Game();
@@ -40,6 +42,13 @@ public:
     // function to reveal an empty cell region, returning number of cells revealed
     int revealEmptyArea(int row, int col);
 
+    // function to compute a number of nearby mines around the given cell
+    int countNearbyMines(int row, int col);
+
+    // function to notify about the outcome of user click
+    ClickResult userLeftClick(int row, int col);
+    void userRightClick(int row, int col);
+
     // getters and setters
     int getCurrent_difficulty() const;
     void setCurrent_difficulty(int value);
@@ -49,6 +58,12 @@ public:
 
     QVector<QVector<Cell> > getInvisible_grid() const;
     void setInvisible_grid(const QVector<QVector<Cell> > &value);
+
+    QTimer getTimer() const;
+    void setTimer(const QTimer &value);
+
+    QElapsedTimer getElap_timer() const;
+    void setElap_timer(const QElapsedTimer &value);
 
 public slots:
 
@@ -66,13 +81,13 @@ private:
     // index of currently selected game difficulty from the available difficulties
     int current_difficulty;
 
-    // function to compute a number of nearby mines around the given cell
-    int countNearbyMines(int row, int col);
+    // timers
+    QTimer timer; // for updating time in GUI
+    QElapsedTimer elap_timer; // for measuring overall time
 
     // function to create invisible game grid with the given dimensions
     // and set it to the user-defined value. Previous values are removed.
     void createInvisibleGrid(int rows, int cols, Cell cell);
-
 };
 
 #endif // GAME_H

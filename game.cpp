@@ -6,6 +6,7 @@ inline uint qHash (const QPoint & key)
     return qHash (QPair<int,int>(key.x(), key.y()) );
 }
 
+// constructor
 Game::Game()
 {
     // *************************************
@@ -34,7 +35,7 @@ Game::Game()
     this->createInvisibleGrid(
                 this->difficulties[this->current_difficulty].grid_height,
                 this->difficulties[this->current_difficulty].grid_width,
-                Cell(-1,UNVISITED)
+                Cell()
             );
 
     // *****************************************
@@ -51,6 +52,7 @@ Game::Game()
     }
 }
 
+// destructor
 Game::~Game(){
 
 }
@@ -91,6 +93,7 @@ void Game::placeMineNumbers()
         for(int j=0; j<this->difficulties[this->current_difficulty].grid_width;j++){
             if(this->invisible_grid[i][j].value != MINE){
                 this->invisible_grid[i][j].value = this->countNearbyMines(i,j);
+                this->invisible_grid[i][j].status = UNVISITED;
             }
         }
     }
@@ -121,6 +124,32 @@ int Game::countNearbyMines(int row, int col)
         }
     }
     return mineCount;
+}
+
+// function to handle user left-clicks
+ClickResult Game::userLeftClick(int row, int col)
+{
+    ClickResult cr;
+    if(this->invisible_grid[row][col].status == UNVISITED){
+        if(this->invisible_grid[row][col].value == MINE){
+            this->invisible_grid[row][col].status = VISITED;
+            cr.is_mine = true;
+            return cr;
+        }
+        else if(this->invisible_grid[row][col].value == 0){
+            this->revealEmptyArea(row,col);
+        }
+        else{
+            this->invisible_grid[row][col].status = VISITED;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void Game::userRightClick(int row, int col)
+{
+
 }
 
 // function to reveal all empty cells when some empty cell is clicked
@@ -205,4 +234,24 @@ QVector<QVector<Cell> > Game::getInvisible_grid() const
 void Game::setInvisible_grid(const QVector<QVector<Cell> > &value)
 {
     invisible_grid = value;
+}
+
+QTimer Game::getTimer() const
+{
+    return timer;
+}
+
+void Game::setTimer(const QTimer &value)
+{
+    timer = value;
+}
+
+QElapsedTimer Game::getElap_timer() const
+{
+    return elap_timer;
+}
+
+void Game::setElap_timer(const QElapsedTimer &value)
+{
+    elap_timer = value;
 }
