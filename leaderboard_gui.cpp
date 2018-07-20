@@ -40,7 +40,7 @@ void LeaderBoardGUI::resetGui()
     ui->leader_table->verticalHeader()->show();
     ui->leader_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->leader_table->horizontalHeader()->setStretchLastSection(true);
-    ui->leader_table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->leader_table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->leader_table->verticalHeader()->setStretchLastSection(false);
 
     int factor_ratio = ui->leader_table->width()/40;
@@ -63,8 +63,11 @@ void LeaderBoardGUI::setLeaderboardTypes(QVector<Difficulty> difficulties)
 
 void LeaderBoardGUI::showUserResultBox(bool on_off, quint64 time)
 {
+    this->last_time = time;
     ui->leaderboard_result_box->setVisible(on_off);
-    ui->your_time->setText(QString::number(time) + " ms");
+    ui->submit_result_button->setEnabled(on_off);
+    ui->username->clear();
+    ui->your_time->setText(QString::number(this->last_time) + " ms");
 }
 
 void LeaderBoardGUI::redrawLeaderboard()
@@ -82,7 +85,6 @@ void LeaderBoardGUI::redrawLeaderboard()
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 3, new QTableWidgetItem(iter.value().date));
         if(iter.value().name.endsWith(hint)){
             iter.value().name = iter.value().name.chopped(hint.length()); // remove the hint
-            qDebug() << iter.value().name;
             ui->leader_table->item(ui->leader_table->rowCount()-1,0)->setText(iter.value().name);
             ui->leader_table->item(ui->leader_table->rowCount()-1,0)->setBackgroundColor(QColor(0, 204, 102));
             ui->leader_table->item(ui->leader_table->rowCount()-1,1)->setBackgroundColor(QColor(0, 204, 102));
@@ -92,24 +94,38 @@ void LeaderBoardGUI::redrawLeaderboard()
         ++iter;
     }
     ui->leader_table->scrollToTop();
+    qApp->processEvents();
 }
 
 void LeaderBoardGUI::on_submit_result_button_clicked()
 {
+    // check if user provided non-empty username
     if(ui->username->text().isEmpty()){
         ui->statusbar->showMessage("Please enter your name.",5000);
         return;
     }
+    // check if username contains white characters
     if(ui->username->text().contains(" ")){
         ui->statusbar->showMessage("White characters are not allowed.",5000);
         return;
     }
 
-    // insert to leaderboard map
-    this->lb.getLeader_board().insert(ui->your_time->text().chopped(3).toULongLong(),{ui->username->text()+"-highlight","Tutorial","1.1.1999"});
+    // insert new result to the leaderboard map
+    QMultiMap<quint64, UserResult>::iterator iter = this->lb.getLeader_board().insert(
+                this->last_time,
+                {
+                    ui->username->text()+"-highlight",
+                    ui->leaderboard_selection_combobox->currentText().split(",").at(0),
+                    QDateTime::currentDateTime().toString("d.M.yyyy")
+                });
     this->redrawLeaderboard();
+
+    // scroll to currently added item
+    ui->leader_table->scrollToItem(ui->leader_table->item(std::distance(this->lb.getLeader_board().begin(),iter)+1,0),QAbstractItemView::PositionAtCenter);
+
     ui->leaderboard_result_box->setVisible(true);
 
+    // write main leaderboard data
     QFile data_file(this->lb.getLeader_board_file());
     data_file.open(QFile::WriteOnly);
     if(!data_file.isOpen()){
@@ -125,6 +141,24 @@ void LeaderBoardGUI::on_submit_result_button_clicked()
         ++iterat;
     }
     data_file.close();
+
+    // write backup leaderboard data
+    QFile data_file_backup(this->lb.getLeader_board_file().chopped(4)+"_backup.txt");
+    data_file_backup.open(QIODevice::ReadWrite|QIODevice::Text);
+    if(!data_file_backup.isOpen()){
+        qDebug() << "There was an error opening file with leaderboard data.";
+        QMessageBox::about(nullptr,"Error", "There was an error opening file with leaderboard data.");
+        return;
+    }
+    QTextStream txt_backup(&data_file_backup);
+    txt_backup << "# DO NOT MODIFY THIS FILE !!!\n\n";
+    iterat = this->lb.getLeader_board().constBegin();
+    while (iterat != this->lb.getLeader_board().constEnd()) {
+        txt_backup << iterat.value().name << " " << iterat.key() << " " << iterat.value().difficulty << " " << iterat.value().date << "\n";
+        ++iterat;
+    }
+    data_file_backup.close();
+
     ui->submit_result_button->setEnabled(false);
     ui->statusbar->showMessage("Your result has been recorded.");
 
@@ -135,6 +169,16 @@ void LeaderBoardGUI::closeEvent(QCloseEvent *event)
     event->accept();
     //    this->redraw();
     emit leaderboardClosedSignal();
+}
+
+quint64 LeaderBoardGUI::getLast_time() const
+{
+    return last_time;
+}
+
+void LeaderBoardGUI::setLast_time(const quint64 &value)
+{
+    last_time = value;
 }
 
 void LeaderBoardGUI::on_leaderboard_selection_combobox_activated(int index)

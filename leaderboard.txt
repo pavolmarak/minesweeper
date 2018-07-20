@@ -1,19 +1,6 @@
 # DO NOT MODIFY THIS FILE !!!
 
-me 368 10x10@4 1.1.1999
-ftgy 381 Easy 1.1.1999
-good_player 728 Hard 1.1.1999
-hero 925 14x9@21 1.1.1999
-player1 975 10x10 1.1.1999
-hero3 1053 Medium 1.1.1999
-player2 1203 10x10 1.1.1999
-hero2 1897 Hard 1.1.1999
-pavol 2229 10x10 1.1.1999
-lsx 4623 Tutorial 1.1.1999
-user7 5894 15x15 1.1.1999
-pavol 6479 Tutorial 1.1.1999
-g 6568 Tutorial 1.1.1999
-user1 8462 10x10 1.1.1999
-auto 9045 Tutorial 1.1.1999
-user3 51469 10x10 1.1.1999
-me_again 83319 10x10 1.1.1999
+nerd2 2826 Tutorial 20.7.2018
+nerd 3901 Tutorial 20.7.2018
+paul 3918 Tutorial 20.7.2018
+player1 85499 Easy 5.6.2015

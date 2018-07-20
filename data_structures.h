@@ -80,6 +80,16 @@ typedef struct _user_result{
         }
         return false;
     }
+    _user_result() :
+        name(""),
+        difficulty(""),
+        date("")
+    {}
+    _user_result(QString _name, QString _difficulty, QString _date) :
+        name(_name),
+        difficulty(_difficulty),
+        date(_date)
+    {}
 }UserResult;
 
 #endif // HELPER_H
