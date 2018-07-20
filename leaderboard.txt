@@ -3,4 +3,5 @@
 nerd2 2826 Tutorial 20.7.2018
 nerd 3901 Tutorial 20.7.2018
 paul 3918 Tutorial 20.7.2018
+newPlayer 79743 Easy 20.7.2018
 player1 85499 Easy 5.6.2015
