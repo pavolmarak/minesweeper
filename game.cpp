@@ -166,7 +166,7 @@ bool Game::userRightClick(int row, int col)
 void Game::showLeaderboard(bool resultBoxOn)
 {
     this->lb_gui.redrawLeaderboard();
-    this->lb_gui.showUserResultBox(resultBoxOn);
+    this->lb_gui.showUserResultBox(resultBoxOn,this->player.getTime());
     this->lb_gui.show();
 }
 
@@ -239,7 +239,8 @@ bool Game::accomplished()
                 }
             }
         }
-        if(flagged == this->unvisited_cells){
+        if(flagged == this->unvisited_cells){ 
+            this->player.setTime(this->player.getTime() + this->elap_timer.elapsed());
             this->timer.stop();
             this->showLeaderboard(true);
             return true;

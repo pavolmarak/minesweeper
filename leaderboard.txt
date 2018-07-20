@@ -9,7 +9,11 @@ hero3 1053 Medium 1.1.1999
 player2 1203 10x10 1.1.1999
 hero2 1897 Hard 1.1.1999
 pavol 2229 10x10 1.1.1999
+lsx 4623 Tutorial 1.1.1999
 user7 5894 15x15 1.1.1999
+pavol 6479 Tutorial 1.1.1999
+g 6568 Tutorial 1.1.1999
 user1 8462 10x10 1.1.1999
+auto 9045 Tutorial 1.1.1999
 user3 51469 10x10 1.1.1999
 me_again 83319 10x10 1.1.1999

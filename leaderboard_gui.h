@@ -34,7 +34,7 @@ public:
     ~LeaderBoardGUI();
     void resetGui();
     void setLeaderboardTypes(QVector<Difficulty> difficulties);
-    void showUserResultBox(bool on_off);
+    void showUserResultBox(bool on_off, quint64 time);
     void redrawLeaderboard();
 
 private slots:

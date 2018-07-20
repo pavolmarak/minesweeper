@@ -206,6 +206,7 @@ void GameGUI::leftClickSlot(QTableWidgetItem* item)
         ui->pause_time_button->setEnabled(false);
         ui->start_game_button->setEnabled(false);
         ui->visibleGrid->setEnabled(false);
+        ui->time->setText(QString::number(this->game.getPlayer().getTime()) + " ms");
         qDebug() << "Game accomplished.";
     }
 }
@@ -241,6 +242,7 @@ void GameGUI::rightClickSlot(QTableWidgetItem* item)
         ui->pause_time_button->setEnabled(false);
         ui->start_game_button->setEnabled(false);
         ui->visibleGrid->setEnabled(false);
+        ui->time->setText(QString::number(this->game.getPlayer().getTime()) + " ms");
         qDebug() << "Game accomplished.";
     }
 }

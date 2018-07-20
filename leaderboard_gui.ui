@@ -90,7 +90,7 @@
       <item>
        <widget class="QGroupBox" name="leaderboard_result_box">
         <property name="title">
-         <string>Congratulations, your result</string>
+         <string>Congratulations, your result:</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>

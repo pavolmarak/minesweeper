@@ -31,7 +31,6 @@ bool LeaderBoard::loadFromFile(const QString &path_to_file)
     // reading from file
     while(!txt.atEnd()){
         txt >> usr_result.name >> msec >> usr_result.difficulty >> usr_result.date;
-        qDebug() << usr_result.name << msec << usr_result.difficulty << usr_result.date;
         this->leader_board.insert(msec,usr_result);
     }
     this->leader_board.remove(0,{"","",""});
