@@ -18,7 +18,7 @@ GameGUI::GameGUI(QWidget *parent) :
     QObject::connect(&(this->game.timer), SIGNAL(timeout()), this, SLOT(timeoutSlot()));
     QObject::connect(ui->visibleGrid, SIGNAL(rightClickSignal(QTableWidgetItem*)), this, SLOT(rightClickSlot(QTableWidgetItem*)));
     QObject::connect(ui->visibleGrid, SIGNAL(leftClickSignal(QTableWidgetItem*)), this, SLOT(leftClickSlot(QTableWidgetItem*)));
-
+    QObject::connect(&(this->game.getLb()), SIGNAL(leaderboardClosedSignal()), this, SLOT(leaderboardClosedSlot()));
     qApp->processEvents();
 }
 
@@ -147,7 +147,8 @@ void GameGUI::on_pause_time_button_clicked(bool checked)
 
 void GameGUI::on_show_leaderboard_button_clicked()
 {
-
+    ui->show_leaderboard_button->setEnabled(false);
+    this->game.showLeaderboard(false);
 }
 
 void GameGUI::on_noMinesSpinBox_valueChanged(int arg1)
@@ -201,12 +202,18 @@ void GameGUI::leftClickSlot(QTableWidgetItem* item)
         }
     }
     if(this->game.accomplished()==true){
-        this->game.timer.stop();
+        ui->show_leaderboard_button->setEnabled(false);
         ui->pause_time_button->setEnabled(false);
+        ui->start_game_button->setEnabled(false);
         ui->visibleGrid->setEnabled(false);
         qDebug() << "Game accomplished.";
-        QMessageBox::about(this, "Congratulations", "You have successfully accomplished the game.");
     }
+}
+
+void GameGUI::leaderboardClosedSlot()
+{
+    ui->show_leaderboard_button->setEnabled(true);
+    ui->start_game_button->setEnabled(true);
 }
 
 void GameGUI::rightClickSlot(QTableWidgetItem* item)
@@ -230,10 +237,10 @@ void GameGUI::rightClickSlot(QTableWidgetItem* item)
         ui->flag_counter->setText(QString::number(this->game.getPlayer().getFlag_counter()) + "/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
     }
     if(this->game.accomplished()==true){
-        this->game.timer.stop();
+        ui->show_leaderboard_button->setEnabled(false);
         ui->pause_time_button->setEnabled(false);
+        ui->start_game_button->setEnabled(false);
         ui->visibleGrid->setEnabled(false);
         qDebug() << "Game accomplished.";
-        QMessageBox::about(this, "Congratulations", "You have successfully accomplished the game.");
     }
 }

@@ -1,13 +1,13 @@
 # DO NOT MODIFY THIS FILE !!!
 
-me 368 10x10 1.1.1999
-ftgy 381 20x20 1.1.1999
-good_player 728 10x10 1.1.1999
-hero 925 25x25 1.1.1999
+me 368 10x10@4 1.1.1999
+ftgy 381 Easy 1.1.1999
+good_player 728 Hard 1.1.1999
+hero 925 14x9@21 1.1.1999
 player1 975 10x10 1.1.1999
-hero3 1053 Custom 1.1.1999
+hero3 1053 Medium 1.1.1999
 player2 1203 10x10 1.1.1999
-hero2 1897 Custom 1.1.1999
+hero2 1897 Hard 1.1.1999
 pavol 2229 10x10 1.1.1999
 user7 5894 15x15 1.1.1999
 user1 8462 10x10 1.1.1999

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LeaderBoard</class>
- <widget class="QMainWindow" name="LeaderBoard">
+ <class>LeaderBoardGUI</class>
+ <widget class="QMainWindow" name="LeaderBoardGUI">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -49,11 +49,23 @@
           <height>0</height>
          </size>
         </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+        <property name="tabletTracking">
+         <bool>true</bool>
+        </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerItem</enum>
         </property>
         <property name="sortingEnabled">
          <bool>false</bool>
@@ -78,7 +90,7 @@
       <item>
        <widget class="QGroupBox" name="leaderboard_result_box">
         <property name="title">
-         <string>Your result</string>
+         <string>Congratulations, your result</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>

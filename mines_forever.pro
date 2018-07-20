@@ -42,5 +42,5 @@ HEADERS += \
     mygrid.h
 
 FORMS += \
-    leaderboard.ui \
-    game_gui.ui
+    game_gui.ui \
+    leaderboard_gui.ui

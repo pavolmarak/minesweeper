@@ -16,6 +16,7 @@ Game::Game()
     // *************************************
 
     // set game difficulties
+    this->difficulties.push_back(Difficulty(10,10,3,"Tutorial"));
     this->difficulties.push_back(Difficulty(10,10,10,"Easy"));
     this->difficulties.push_back(Difficulty(15,15,25,"Medium"));
     this->difficulties.push_back(Difficulty(20,20,50,"Hard"));
@@ -47,12 +48,7 @@ Game::Game()
     // ***********                   ***********
     // *****************************************
 
-//    this->lb.setWindowTitle("Leaderboard");
-//    this->lb.setWindowIcon(QIcon(qApp->applicationDirPath() + "/leaderboard_icon.png"));
-//    this->lb.setLeader_board_types(this->difficulties);
-//    if(!this->lb.loadFromFile(qApp->applicationDirPath() + "/" + LEADERBOARD_FILE)){
-//        exit(EXIT_FAILURE);
-//    }
+    this->lb_gui.setLeaderboardTypes(this->difficulties);
 }
 
 // destructor
@@ -167,6 +163,13 @@ bool Game::userRightClick(int row, int col)
     return false;
 }
 
+void Game::showLeaderboard(bool resultBoxOn)
+{
+    this->lb_gui.redrawLeaderboard();
+    this->lb_gui.showUserResultBox(resultBoxOn);
+    this->lb_gui.show();
+}
+
 // function to reveal empty cell region when some empty cell is clicked
 QVector<QPoint> Game::revealEmptyArea(int row, int col)
 {
@@ -224,6 +227,7 @@ void Game::createInvisibleGrid(int rows, int cols, Cell cell)
     }
 }
 
+// function to check if user successfully finished the game
 bool Game::accomplished()
 {
     if(this->unvisited_cells == this->difficulties[this->current_difficulty].number_of_mines){
@@ -236,6 +240,8 @@ bool Game::accomplished()
             }
         }
         if(flagged == this->unvisited_cells){
+            this->timer.stop();
+            this->showLeaderboard(true);
             return true;
         }
     }
@@ -280,4 +286,9 @@ void Game::setUnvisited_cells(int value)
 void Game::unvisited_cellsDown()
 {
     this->unvisited_cells--;
+}
+
+const LeaderBoardGUI &Game::getLb() const
+{
+    return lb_gui;
 }

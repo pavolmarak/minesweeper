@@ -8,6 +8,7 @@
 #define TILE_SIZE 30
 #define MINE 999
 #define LEADERBOARD_FILE "leaderboard.txt"
+#define LEADERBOARD_ICON_FILE "leaderboard_icon.png"
 #define LEADERBOARD_COLUMN_COUNT 4
 #define TIMER_INTERVAL 1 // in ms
 

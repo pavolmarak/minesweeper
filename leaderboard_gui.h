@@ -1,60 +1,53 @@
-//#ifndef LEADERBOARD_H
-//#define LEADERBOARD_H
+#ifndef LEADERBOARDGUI_H
+#define LEADERBOARDGUI_H
 
-//#include <QMainWindow>
-//#include <QDebug>
-//#include <QFile>
-//#include <QTextStream>
-//#include <QMessageBox>
-//#include <QTableWidget>
-//#include <QMultiMap>
-//#include <QThread>
-//#include <QLabel>
-//#include <QLineEdit>
-//#include <QCloseEvent>
-//#include <QStatusBar>
-//#include <QPushButton>
-//#include <QComboBox>
-//#include <QGroupBox>
+#include <QMainWindow>
+#include <QDebug>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QMultiMap>
+#include <QThread>
+#include <QLabel>
+#include <QLineEdit>
+#include <QCloseEvent>
+#include <QStatusBar>
+#include <QPushButton>
+#include <QComboBox>
+#include <QGroupBox>
 
-//#include "data_structures.h"
+#include "data_structures.h"
+#include "leaderboard.h"
 
-//namespace Ui {
-//class LeaderBoard;
-//}
+namespace Ui {
+class LeaderBoardGUI;
+}
 
-//class LeaderBoard : public QMainWindow
-//{
-//    Q_OBJECT
+class LeaderBoardGUI : public QMainWindow
+{
+    Q_OBJECT
 
-//public:
-//    LeaderBoard(QWidget *parent = 0);
-//    ~LeaderBoard();
+public:
+    LeaderBoardGUI(QWidget *parent = 0);
+    ~LeaderBoardGUI();
+    void resetGui();
+    void setLeaderboardTypes(QVector<Difficulty> difficulties);
+    void showUserResultBox(bool on_off);
+    void redrawLeaderboard();
 
-//    void setResultboxVisible(bool);
-//    void setLeader_board_types(QVector<Difficulty>);
-//    bool loadFromFile(const QString&);
-//    void redraw();
-//    void setTimeTaken(quint64 time_taken);
-//    void setSubmitBtnEnabled(bool);
+private slots:
+    void on_submit_result_button_clicked();
+    void on_leaderboard_selection_combobox_activated(int index);
 
-//    QMultiMap<quint64, UserResult> getLeader_board() const;
-//    void setLeader_board(const QMultiMap<quint64, UserResult> &value);
+private:
+    Ui::LeaderBoardGUI *ui;
+    LeaderBoard lb;
+    void closeEvent (QCloseEvent *event);
 
-//    QString getLeader_board_file() const;
-//    void setLeader_board_file(const QString &value);
+signals:
+    void leaderboardClosedSignal();
+};
 
-//private slots:
-//    void on_submit_result_button_clicked();
-
-//private:
-//    Ui::LeaderBoard *ui;
-//    QMultiMap<quint64,UserResult> leader_board;
-//    void closeEvent (QCloseEvent *event);
-//    QString leader_board_file;
-
-//signals:
-//    void leaderboardClosedSignal();
-//};
-
-//#endif // LEADERBOARD_H
+#endif // LEADERBOARDGUI_H

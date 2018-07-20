@@ -19,9 +19,9 @@
 #include <QDialog>
 #include <QHeaderView>
 
-#include "player.h"
-#include "leaderboard.h"
 #include "data_structures.h"
+#include "player.h"
+#include "leaderboard_gui.h"
 
 class Game : public QObject
 {
@@ -50,11 +50,15 @@ public:
     // and set it to the user-defined value. Previous values are removed.
     void createInvisibleGrid(int rows, int cols, Cell cell);
 
+    // function to check if user successfully completed the game
     bool accomplished();
 
     // function to notify about the outcome of user click
     LeftClickResult userLeftClick(int row, int col);
     bool userRightClick(int row, int col);
+
+    // function to display the leaderboard with possibility to enable user result submission box
+    void showLeaderboard(bool resultBoxOn);
 
     // getters and setters
     int getCurrent_difficulty() const;
@@ -75,6 +79,8 @@ public:
     void setUnvisited_cells(int value);
     void unvisited_cellsDown();
 
+    const LeaderBoardGUI& getLb() const;
+
 public slots:
 
 private:
@@ -86,7 +92,7 @@ private:
     Player player;
 
     // object for a leaderboard
-    LeaderBoard lb;
+    LeaderBoardGUI lb_gui;
 
     // number of unvisited cells
     int unvisited_cells;

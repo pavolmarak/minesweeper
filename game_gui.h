@@ -41,6 +41,7 @@ public slots:
     void timeoutSlot();
     void rightClickSlot(QTableWidgetItem *item);
     void leftClickSlot(QTableWidgetItem *item);
+    void leaderboardClosedSlot();
 
 private:
     Ui::GameGUI *ui;
