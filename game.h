@@ -51,14 +51,14 @@ public:
     void createInvisibleGrid(int rows, int cols, Cell cell);
 
     // function to check if user successfully completed the game
-    bool accomplished();
+    bool accomplished(int difficultyIndex);
 
     // function to notify about the outcome of user click
     LeftClickResult userLeftClick(int row, int col);
     bool userRightClick(int row, int col);
 
     // function to display the leaderboard with possibility to enable user result submission box
-    void showLeaderboard(bool resultBoxOn);
+    void showLeaderboard(bool resultBoxOn, int difficultyIndex);
 
     // getters and setters
     int getCurrent_difficulty() const;

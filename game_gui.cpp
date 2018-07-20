@@ -148,7 +148,7 @@ void GameGUI::on_pause_time_button_clicked(bool checked)
 void GameGUI::on_show_leaderboard_button_clicked()
 {
     ui->show_leaderboard_button->setEnabled(false);
-    this->game.showLeaderboard(false);
+    this->game.showLeaderboard(false,ui->gridsize_selector->currentIndex());
 }
 
 void GameGUI::on_noMinesSpinBox_valueChanged(int arg1)
@@ -201,7 +201,7 @@ void GameGUI::leftClickSlot(QTableWidgetItem* item)
             this->game.unvisited_cellsDown();
         }
     }
-    if(this->game.accomplished()==true){
+    if(this->game.accomplished(ui->gridsize_selector->currentIndex())==true){
         ui->show_leaderboard_button->setEnabled(false);
         ui->pause_time_button->setEnabled(false);
         ui->start_game_button->setEnabled(false);
@@ -237,7 +237,7 @@ void GameGUI::rightClickSlot(QTableWidgetItem* item)
         }
         ui->flag_counter->setText(QString::number(this->game.getPlayer().getFlag_counter()) + "/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
     }
-    if(this->game.accomplished()==true){
+    if(this->game.accomplished(ui->gridsize_selector->currentIndex())==true){
         ui->show_leaderboard_button->setEnabled(false);
         ui->pause_time_button->setEnabled(false);
         ui->start_game_button->setEnabled(false);

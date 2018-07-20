@@ -51,6 +51,9 @@ void LeaderBoardGUI::resetGui()
 
     // reset user result box
     ui->leaderboard_result_box->setVisible(false);
+
+    // reset status bar
+    ui->statusbar->clearMessage();
 }
 
 void LeaderBoardGUI::setLeaderboardTypes(QVector<Difficulty> difficulties)
@@ -95,6 +98,11 @@ void LeaderBoardGUI::redrawLeaderboard()
     }
     ui->leader_table->scrollToTop();
     qApp->processEvents();
+}
+
+void LeaderBoardGUI::setCurrentDifficulty(int index)
+{
+    ui->leaderboard_selection_combobox->setCurrentIndex(index);
 }
 
 void LeaderBoardGUI::on_submit_result_button_clicked()

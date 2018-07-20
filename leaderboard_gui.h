@@ -37,6 +37,7 @@ public:
     void setLeaderboardTypes(QVector<Difficulty> difficulties);
     void showUserResultBox(bool on_off, quint64 time);
     void redrawLeaderboard();
+    void setCurrentDifficulty(int index);
 
     quint64 getLast_time() const;
     void setLast_time(const quint64 &value);

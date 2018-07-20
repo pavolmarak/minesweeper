@@ -22,7 +22,7 @@ Game::Game()
     this->difficulties.push_back(Difficulty(20,20,50,"Hard"));
 
     // set current game difficulty
-    this->current_difficulty = 1;
+    this->current_difficulty = 0;
 
     // set number of unvisited cells
     this->unvisited_cells = this->difficulties[this->current_difficulty].grid_height *this->difficulties[this->current_difficulty].grid_width;
@@ -163,10 +163,11 @@ bool Game::userRightClick(int row, int col)
     return false;
 }
 
-void Game::showLeaderboard(bool resultBoxOn)
+void Game::showLeaderboard(bool resultBoxOn, int difficultyIndex)
 {
     this->lb_gui.redrawLeaderboard();
     this->lb_gui.showUserResultBox(resultBoxOn,this->player.getTime());
+    this->lb_gui.setCurrentDifficulty(difficultyIndex);
     this->lb_gui.show();
 }
 
@@ -228,7 +229,7 @@ void Game::createInvisibleGrid(int rows, int cols, Cell cell)
 }
 
 // function to check if user successfully finished the game
-bool Game::accomplished()
+bool Game::accomplished(int difficultyIndex)
 {
     if(this->unvisited_cells == this->difficulties[this->current_difficulty].number_of_mines){
         int flagged=0;
@@ -242,7 +243,7 @@ bool Game::accomplished()
         if(flagged == this->unvisited_cells){ 
             this->player.setTime(this->player.getTime() + this->elap_timer.elapsed());
             this->timer.stop();
-            this->showLeaderboard(true);
+            this->showLeaderboard(true,difficultyIndex);
             return true;
         }
     }
