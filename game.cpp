@@ -22,7 +22,7 @@ Game::Game()
     this->difficulties.push_back(Difficulty(20,20,50,"Hard"));
 
     // set current game difficulty
-    this->current_difficulty = 0;
+    this->current_difficulty = 1;
 
     // set number of unvisited cells
     this->unvisited_cells = this->difficulties[this->current_difficulty].grid_height *this->difficulties[this->current_difficulty].grid_width;

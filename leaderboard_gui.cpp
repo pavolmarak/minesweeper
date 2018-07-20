@@ -51,6 +51,7 @@ void LeaderBoardGUI::resetGui()
 
     // reset user result box
     ui->leaderboard_result_box->setVisible(false);
+    ui->leaderboard_selection_combobox->setEnabled(false);
 
     // reset status bar
     ui->statusbar->clearMessage();

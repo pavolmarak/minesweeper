@@ -453,7 +453,11 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="gridsize_selector"/>
+              <widget class="QComboBox" name="gridsize_selector">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
              <item>
               <spacer name="horizontalSpacer_5">
