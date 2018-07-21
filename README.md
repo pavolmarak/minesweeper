@@ -1,7 +1,7 @@
 # Minesweeper
 Minesweeper developed by Pavol Marak.
 
-First working version. Some functionality is missing and will be added soon. Game now supports only 10x10 grid size. The game has been tested only on Manjaro Linux. Stay tuned.
+First working version. Some functionality is missing and will be added soon. Game now supports only 10x10 grid size. The game has been tested only on Manjaro Linux and Windows 10 Pro. Stay tuned.
 
 ![Mines](mines_app.png)
 
