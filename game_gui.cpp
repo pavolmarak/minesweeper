@@ -72,7 +72,7 @@ void GameGUI::resetGui()
     ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
     // reset game configuration box
-    ui->gridsize_selector->setEnabled(false);
+    ui->gridsize_selector->setEnabled(true);
     ui->gridsize_selector->clear();
     foreach (Difficulty d, this->game.difficulties) {
         ui->gridsize_selector->addItem(d.name + ", " + QString::number(d.grid_height) + "x" + QString::number(d.grid_width) + ", " + QString::number(d.number_of_mines) + " mines");

@@ -22,7 +22,7 @@ Game::Game()
     this->difficulties.push_back(Difficulty(20,20,50,"Hard"));
 
     // set current game difficulty
-    this->current_difficulty = 1;
+    this->current_difficulty = 0;
 
     // set number of unvisited cells
     this->unvisited_cells = this->difficulties[this->current_difficulty].grid_height *this->difficulties[this->current_difficulty].grid_width;
@@ -165,9 +165,9 @@ bool Game::userRightClick(int row, int col)
 
 void Game::showLeaderboard(bool resultBoxOn, int difficultyIndex)
 {
+    this->lb_gui.setCurrentDifficulty(difficultyIndex);
     this->lb_gui.redrawLeaderboard();
     this->lb_gui.showUserResultBox(resultBoxOn,this->player.getTime());
-    this->lb_gui.setCurrentDifficulty(difficultyIndex);
     this->lb_gui.show();
 }
 

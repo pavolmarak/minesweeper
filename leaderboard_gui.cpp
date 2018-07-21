@@ -51,7 +51,6 @@ void LeaderBoardGUI::resetGui()
 
     // reset user result box
     ui->leaderboard_result_box->setVisible(false);
-    ui->leaderboard_selection_combobox->setEnabled(false);
 
     // reset status bar
     ui->statusbar->clearMessage();
@@ -82,6 +81,10 @@ void LeaderBoardGUI::redrawLeaderboard()
     QString hint = "-highlight";
     QMultiMap<quint64,UserResult>::iterator iter = this->lb.getLeader_board().begin();
     while (iter != this->lb.getLeader_board().end()) {
+        if(iter.value().difficulty != ui->leaderboard_selection_combobox->currentText().split(",").at(0)){
+            ++iter;
+            continue;
+        }
         ui->leader_table->insertRow(ui->leader_table->rowCount());
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 0, new QTableWidgetItem(iter.value().name));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 1, new QTableWidgetItem(QString::number(iter.key())));
