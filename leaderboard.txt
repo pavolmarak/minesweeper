@@ -20,6 +20,7 @@ lord 32564 Easy 21.7.2018
 dwarf 32769 Tutorial 20.7.2018
 pavol 50035 Easy 20.7.2018
 man 54533 Easy 21.7.2018
+hero 61297 Easy 21.7.2018
 newPlayer 79743 Easy 20.7.2018
 player1 85499 Easy 5.6.2015
 gloom 397594 Easy 21.7.2018
