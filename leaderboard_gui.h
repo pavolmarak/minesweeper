@@ -18,6 +18,7 @@
 #include <QComboBox>
 #include <QGroupBox>
 #include <QDateTime>
+#include <QDir>
 
 #include "data_structures.h"
 #include "leaderboard.h"
