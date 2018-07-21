@@ -47,6 +47,7 @@ public slots:
 private:
     Ui::GameGUI *ui;
     Game game;
+    QLabel* statusbar_message;
 
 };
 

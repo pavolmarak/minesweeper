@@ -10,6 +10,7 @@
 
 class StatusBarSwitch : public QLabel
 {
+
 public:
     StatusBarSwitch();
 

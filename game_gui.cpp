@@ -11,6 +11,16 @@ GameGUI::GameGUI(QWidget *parent) :
     // reset gui
     this->resetGui();
 
+    // set game switch
+    StatusBarSwitch* switch_on_off = new StatusBarSwitch();
+    switch_on_off->setObjectName("statusbar_switch");
+    ui->statusBar->addWidget(switch_on_off);
+
+    // set status bar message widget
+    this->statusbar_message = new QLabel();
+    this->statusbar_message->setObjectName("statusbar_message");
+    ui->statusBar->addWidget(this->statusbar_message);
+
     // start game button setup
     ui->start_game_button->setEnabled(true);
 
@@ -89,11 +99,6 @@ void GameGUI::resetGui()
     ui->visibleGrid->setItClicked(nullptr);
     ui->visibleGrid->setItHover(nullptr);
 
-    // reset status bar switch
-    StatusBarSwitch* switch_on_off = new StatusBarSwitch();
-    ui->statusBar->addWidget(switch_on_off);
-
-
     // initial start button focus
     ui->start_game_button->setFocus();
 }
@@ -127,7 +132,7 @@ void GameGUI::on_start_game_button_clicked()
     // reset player
     this->game.setPlayer(Player());
 
-    ui->statusBar->showMessage("New game started.",3000);
+    this->statusbar_message->setText("New game started.");
 
     // reset timers
     this->game.timer.start(TIMER_INTERVAL);

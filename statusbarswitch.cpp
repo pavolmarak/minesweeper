@@ -5,6 +5,7 @@ StatusBarSwitch::StatusBarSwitch()
     this->setPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png");
     this->setScaledContents(true);
     this->status = false;
+    qDebug() << "heree";
 }
 
 void StatusBarSwitch::mousePressEvent(QMouseEvent *event)
