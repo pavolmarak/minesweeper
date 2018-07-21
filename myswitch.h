@@ -8,11 +8,11 @@
 #include <QDebug>
 #include <QMouseEvent>
 
-class StatusBarSwitch : public QLabel
+class MySwitch : public QLabel
 {
 
 public:
-    StatusBarSwitch();
+    MySwitch();
 
 private slots:
     void mousePressEvent(QMouseEvent* event);

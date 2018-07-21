@@ -17,7 +17,7 @@
 #include <QHeaderView>
 
 #include "game.h"
-#include "statusbarswitch.h"
+#include "myswitch.h"
 
 namespace Ui {
 class GameGUI;
@@ -48,6 +48,7 @@ private:
     Ui::GameGUI *ui;
     Game game;
     QLabel* statusbar_message;
+    MySwitch* switch_on_off;
 
 };
 
