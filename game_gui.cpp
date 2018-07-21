@@ -89,6 +89,16 @@ void GameGUI::resetGui()
     ui->visibleGrid->setItClicked(nullptr);
     ui->visibleGrid->setItHover(nullptr);
 
+    // reset status bar switch
+    QLabel* switch_on_off = new QLabel();
+    switch_on_off->setPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png");
+    switch_on_off->setFixedWidth(60);
+    switch_on_off->setFixedHeight(17);
+
+    switch_on_off->setScaledContents(true);
+    ui->statusBar->addWidget(switch_on_off);
+    ui->statusBar->setStyleSheet("border:none;");
+
     // initial start button focus
     ui->start_game_button->setFocus();
 }

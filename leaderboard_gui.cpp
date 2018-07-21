@@ -38,16 +38,11 @@ void LeaderBoardGUI::resetGui()
     ui->leader_table->setColumnCount(LEADERBOARD_COLUMN_COUNT);
     ui->leader_table->setHorizontalHeaderLabels(QStringList() << "Username" << "Time [ms]" << "Difficulty" << "Date");
     ui->leader_table->verticalHeader()->show();
+    ui->leader_table->horizontalHeader()->setStyleSheet("font-weight:bold;");
     ui->leader_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->leader_table->horizontalHeader()->setStretchLastSection(true);
     ui->leader_table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->leader_table->verticalHeader()->setStretchLastSection(false);
-
-    int factor_ratio = ui->leader_table->width()/40;
-    int factors[] = {factor_ratio*12, factor_ratio*8, factor_ratio*7, factor_ratio*9};
-    for(int i=0; i< ui->leader_table->columnCount();i++){
-        ui->leader_table->setColumnWidth(i, factors[i]);
-    }
 
     // reset user result box
     ui->leaderboard_result_box->setVisible(false);
@@ -128,7 +123,7 @@ void LeaderBoardGUI::on_submit_result_button_clicked()
                 {
                     ui->username->text()+"-highlight",
                     ui->leaderboard_selection_combobox->currentText().split(",").at(0),
-                    QDateTime::currentDateTime().toString("d.M.yyyy")
+                    QDateTime::currentDateTime().toString("d.M.yyyy") + "," + QTime::currentTime().toString()
                 });
     this->redrawLeaderboard();
 

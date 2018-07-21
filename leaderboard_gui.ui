@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>473</height>
+    <width>814</width>
+    <height>684</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>420</width>
-    <height>420</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="mouseTracking">
@@ -68,15 +68,15 @@
       <item>
        <widget class="QTableWidget" name="leader_table">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="minimumSize">
          <size>
-          <width>400</width>
-          <height>0</height>
+          <width>800</width>
+          <height>500</height>
          </size>
         </property>
         <property name="mouseTracking">
@@ -84,6 +84,9 @@
         </property>
         <property name="tabletTracking">
          <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
@@ -94,8 +97,14 @@
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
         </property>
+        <property name="textElideMode">
+         <enum>Qt::ElideLeft</enum>
+        </property>
         <property name="verticalScrollMode">
          <enum>QAbstractItemView::ScrollPerItem</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
         </property>
         <property name="sortingEnabled">
          <bool>false</bool>
@@ -275,8 +284,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>420</width>
-     <height>22</height>
+     <width>814</width>
+     <height>17</height>
     </rect>
    </property>
   </widget>
