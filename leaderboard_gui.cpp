@@ -197,5 +197,6 @@ void LeaderBoardGUI::setLast_time(const quint64 &value)
 
 void LeaderBoardGUI::on_leaderboard_selection_combobox_activated(int index)
 {
-
+    this->redrawLeaderboard();
+    ui->leaderboard_result_box->setVisible(true);
 }

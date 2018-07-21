@@ -1,5 +1,6 @@
 # DO NOT MODIFY THIS FILE !!!
 
+plow 2458 Easy 21.7.2018
 nerd2 2826 Tutorial 20.7.2018
 whiter 2881 Tutorial 21.7.2018
 palko 3373 Tutorial 21.7.2018
@@ -12,7 +13,9 @@ geroj 4386 Tutorial 21.7.2018
 hero 4410 Tutorial 21.7.2018
 look 5055 Tutorial 21.7.2018
 toolbar 8842 Tutorial 21.7.2018
+heal 9596 Tutorial 21.7.2018
 treamer 12451 Tutorial 21.7.2018
+yyyy 12985 Tutorial 21.7.2018
 majer 14586 Tutorial 22.7.2018
 hero 16134 Tutorial 21.7.2018
 newscore 20241 Tutorial 20.7.2018
