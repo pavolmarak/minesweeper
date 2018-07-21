@@ -17,6 +17,7 @@
 #include <QHeaderView>
 
 #include "game.h"
+#include "statusbarswitch.h"
 
 namespace Ui {
 class GameGUI;

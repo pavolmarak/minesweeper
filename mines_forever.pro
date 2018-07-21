@@ -30,7 +30,8 @@ SOURCES += \
     game_gui.cpp \
     leaderboard_gui.cpp \
     leaderboard.cpp \
-    mygrid.cpp
+    mygrid.cpp \
+    statusbarswitch.cpp
 
 HEADERS += \
     player.h \
@@ -39,7 +40,8 @@ HEADERS += \
     game_gui.h \
     leaderboard_gui.h \
     leaderboard.h \
-    mygrid.h
+    mygrid.h \
+    statusbarswitch.h
 
 FORMS += \
     game_gui.ui \
