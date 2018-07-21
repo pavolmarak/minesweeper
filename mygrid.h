@@ -22,6 +22,12 @@ public:
     MyGrid(QWidget*);
     virtual ~MyGrid();
 
+    QTableWidgetItem *getItClicked() const;
+    void setItClicked(QTableWidgetItem *value);
+
+    QTableWidgetItem *getItHover() const;
+    void setItHover(QTableWidgetItem *value);
+
 private slots:
     void mousePressEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -34,6 +40,7 @@ signals:
 
 private:
     QTableWidgetItem* itClicked;
+    QTableWidgetItem* itHover;
 };
 
 #endif // MYGRID_H

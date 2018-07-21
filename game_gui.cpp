@@ -85,6 +85,10 @@ void GameGUI::resetGui()
         ui->noMinesSpinBox->setEnabled(false);
     }
 
+    // reset cell status
+    ui->visibleGrid->setItClicked(nullptr);
+    ui->visibleGrid->setItHover(nullptr);
+
     // initial start button focus
     ui->start_game_button->setFocus();
 }
@@ -196,6 +200,33 @@ void GameGUI::leftClickSlot(QTableWidgetItem* item)
                 ui->visibleGrid->item(p.y(), p.x())->setFont(QFont("Tahoma",12));
                 ui->visibleGrid->item(p.y(), p.x())->setTextAlignment(Qt::AlignCenter);
                 ui->visibleGrid->item(p.y(), p.x())->setText(QString::number(this->game.getInvisible_grid()[p.y()][p.x()].value));
+                switch(this->game.getInvisible_grid()[p.y()][p.x()].value){
+                case 1:
+                    ui->visibleGrid->item(p.y(), p.x())->setTextColor(QColor(0,0,180));
+                    break;
+                case 2:
+                    ui->visibleGrid->item(p.y(), p.x())->setTextColor(QColor(0,100,0));
+                    break;
+                case 3:
+                    ui->visibleGrid->item(p.y(), p.x())->setTextColor(QColor(148,20,96));
+                    break;
+                case 4:
+                    ui->visibleGrid->item(p.y(), p.x())->setTextColor(QColor(200,60,180));
+                    break;
+                case 5:
+                    ui->visibleGrid->item(p.y(), p.x())->setTextColor(QColor(174,85,100));
+                    break;
+                case 6:
+                    ui->visibleGrid->item(p.y(), p.x())->setTextColor(QColor(201,157,14));
+                    break;
+                case 7:
+                    ui->visibleGrid->item(p.y(), p.x())->setTextColor(QColor(150,100,50));
+                    break;
+                case 8:
+                    ui->visibleGrid->item(p.y(), p.x())->setTextColor(QColor(50,100,150));
+                    break;
+
+                }
             }
             ui->visibleGrid->item(p.y(), p.x())->setSelected(false);
             this->game.unvisited_cellsDown();

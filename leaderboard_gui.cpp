@@ -130,7 +130,9 @@ void LeaderBoardGUI::on_submit_result_button_clicked()
     this->redrawLeaderboard();
 
     // scroll to currently added item
-    ui->leader_table->scrollToItem(ui->leader_table->item(std::distance(this->lb.getLeader_board().begin(),iter)+1,0),QAbstractItemView::PositionAtCenter);
+    //    qDebug() << "Scroll to: " << std::distance(this->lb.getLeader_board().begin(),iter);
+    //    qDebug() << ui->leader_table->item(std::distance(this->lb.getLeader_board().begin(),iter),0)->text();
+    ui->leader_table->scrollToItem(ui->leader_table->item(std::distance(this->lb.getLeader_board().begin(),iter),0),QAbstractItemView::PositionAtCenter);
 
     ui->leaderboard_result_box->setVisible(true);
 
