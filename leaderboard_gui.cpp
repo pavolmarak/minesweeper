@@ -8,13 +8,13 @@ LeaderBoardGUI::LeaderBoardGUI(QWidget *parent) :
     ui->setupUi(this);
 
     this->setWindowTitle("Leaderboard");
-    this->setWindowIcon(QIcon(qApp->applicationDirPath() + QDir::separator() + LEADERBOARD_ICON_FILE));
+    this->setWindowIcon(QIcon(QDir::currentPath() + QDir::separator() + LEADERBOARD_ICON_FILE));
 
     // reset GUI
     this->resetGui();
 
     // create leaderboard
-    this->lb = LeaderBoard(qApp->applicationDirPath() + QDir::separator() + LEADERBOARD_FILE);
+    this->lb = LeaderBoard(QDir::currentPath() + QDir::separator() + LEADERBOARD_FILE);
 }
 
 

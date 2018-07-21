@@ -179,7 +179,7 @@ void GameGUI::leftClickSlot(QTableWidgetItem* item)
             for(int j=0; j<this->game.getInvisible_grid().at(i).length();j++) {
                 if(this->game.getInvisible_grid().at(i).at(j).value == MINE){
                     QLabel* wi = new QLabel();
-                    wi->setPixmap(QPixmap(qApp->applicationDirPath() + QDir::separator() + "mine_icon.png"));
+                    wi->setPixmap(QPixmap(QDir::currentPath() + QDir::separator() + "mine_icon.png"));
                     wi->setScaledContents(true);
                     ui->visibleGrid->item(i,j)->setBackgroundColor(QColor(220,220,220));
                     ui->visibleGrid->setCellWidget(i,j,wi);
@@ -252,7 +252,7 @@ void GameGUI::rightClickSlot(QTableWidgetItem* item)
 {
     if(this->game.userRightClick(item->row(),item->column()) == true){
         QLabel* wi = new QLabel();
-        wi->setPixmap(QPixmap(qApp->applicationDirPath() + QDir::separator() + "flag.png"));
+        wi->setPixmap(QPixmap(QDir::currentPath() + QDir::separator() + "flag.png"));
         wi->setScaledContents(true);
         ui->visibleGrid->setCellWidget(item->row(),item->column(),wi);
         if(this->game.getPlayer().getFlag_counter() > this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines){
