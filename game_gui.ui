@@ -229,6 +229,12 @@
         </item>
         <item>
          <widget class="QPushButton" name="start_game_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Start game</string>
           </property>

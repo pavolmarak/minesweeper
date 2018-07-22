@@ -16,10 +16,10 @@ GameGUI::GameGUI(QWidget *parent) :
     this->switch_on_off->setObjectName("switch-off");
     ui->horizontalLayout_9->insertWidget(2,this->switch_on_off);
 
-    // set status bar message widget
+    // set custom status bar message widget
     this->statusbar_message = new QLabel();
     this->statusbar_message->setObjectName("statusbar_message");
-    ui->statusBar->addWidget(this->statusbar_message);
+    ui->statusBar->addPermanentWidget(this->statusbar_message);
 
     // start game button setup
     ui->start_game_button->setEnabled(true);
@@ -108,7 +108,8 @@ void GameGUI::resetGui()
 // function to start the game
 void GameGUI::on_start_game_button_clicked()
 {
-    this->switch_on_off->setPixmap(QDir::currentPath() + QDir::separator() + "switch-on.png");
+
+    this->switch_on_off->setPixmap(QPixmap(QDir::currentPath() + QDir::separator() + "switch-on.png"));
 
     // apply the currently selected difficulty
     this->game.setCurrent_difficulty(ui->gridsize_selector->currentIndex());
@@ -134,7 +135,7 @@ void GameGUI::on_start_game_button_clicked()
     // reset player
     this->game.setPlayer(Player());
 
-    this->statusbar_message->setText("New game started.");
+    ui->statusBar->showMessage("New game started.",3000);
 
     // reset timers
     this->game.timer.start(TIMER_INTERVAL);
@@ -151,11 +152,15 @@ void GameGUI::on_pause_time_button_clicked(bool checked)
         p.setTime(p.getTime() + this->game.elap_timer.elapsed());
         this->game.timer.stop();
         ui->visibleGrid->setVisible(false);
+        ui->time->setStyleSheet("color:red;");
+        ui->statusBar->showMessage("Game paused.", 3000);
     }
     else{
         ui->visibleGrid->setVisible(true);
         this->game.timer.start(TIMER_INTERVAL);
         this->game.elap_timer.restart();
+        ui->time->setStyleSheet("color:auto;");
+        ui->statusBar->showMessage("Game resumed.", 3000);
     }
     this->game.setPlayer(p);
 }
@@ -183,7 +188,7 @@ void GameGUI::leftClickSlot(QTableWidgetItem* item)
     LeftClickResult result = this->game.userLeftClick(item->row(),item->column());
     // if user left-clicked on a mine
     if(result.is_mine == true){
-        this->switch_on_off->setPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png");
+        this->switch_on_off->setPixmap(QPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png"));
         ui->pause_time_button->setEnabled(false);
 
         this->game.timer.stop();
@@ -246,7 +251,7 @@ void GameGUI::leftClickSlot(QTableWidgetItem* item)
         }
     }
     if(this->game.accomplished(ui->gridsize_selector->currentIndex())==true){
-        this->switch_on_off->setPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png");
+        this->switch_on_off->setPixmap(QPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png"));
         ui->show_leaderboard_button->setEnabled(false);
         ui->pause_time_button->setEnabled(false);
         ui->start_game_button->setEnabled(false);
@@ -283,7 +288,7 @@ void GameGUI::rightClickSlot(QTableWidgetItem* item)
         ui->flag_counter->setText(QString::number(this->game.getPlayer().getFlag_counter()) + "/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
     }
     if(this->game.accomplished(ui->gridsize_selector->currentIndex())==true){
-        this->switch_on_off->setPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png");
+        this->switch_on_off->setPixmap(QPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png"));
         ui->show_leaderboard_button->setEnabled(false);
         ui->pause_time_button->setEnabled(false);
         ui->start_game_button->setEnabled(false);

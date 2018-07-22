@@ -2,10 +2,11 @@
 
 MySwitch::MySwitch()
 {
-    this->setPixmap(QDir::currentPath() + QDir::separator() + "switch-off.png");
-    this->setScaledContents(true);
+    QPixmap p(QDir::currentPath() + QDir::separator() + "switch-off.png");
+    this->setPixmap(p);
+    this->setFixedSize(QSize(p.width(),p.height()));
+    //this->setScaledContents(true);
     this->status = false;
-    qDebug() << "heree";
 }
 
 void MySwitch::mousePressEvent(QMouseEvent *event)
