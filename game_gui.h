@@ -15,6 +15,7 @@
 #include <QSpinBox>
 #include <QDialog>
 #include <QHeaderView>
+#include <QResizeEvent>
 
 #include "game.h"
 #include "myswitch.h"
@@ -37,6 +38,7 @@ private slots:
     void on_pause_time_button_clicked(bool checked);
     void on_show_leaderboard_button_clicked();
     void on_noMinesSpinBox_valueChanged(int arg1);
+    void resizeEvent(QResizeEvent* event);
 
 public slots:
     void timeoutSlot();
@@ -49,6 +51,7 @@ private:
     Game game;
     QLabel* statusbar_message;
     MySwitch* switch_on_off;
+    bool resized;
 
 };
 

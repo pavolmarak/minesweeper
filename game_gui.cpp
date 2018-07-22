@@ -6,6 +6,7 @@ GameGUI::GameGUI(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GameGUI)
 {
+    this->resized = false;
     ui->setupUi(this);
 
     // reset gui
@@ -40,6 +41,9 @@ GameGUI::~GameGUI()
 
 void GameGUI::resetGui()
 {
+
+    ui->visibleGrid->setMinimumSize(QSize(500,500));
+
     // reset leaderboard button
     ui->show_leaderboard_button->setEnabled(true);
 
@@ -61,18 +65,18 @@ void GameGUI::resetGui()
     }
     ui->visibleGrid->horizontalHeader()->setDefaultSectionSize(TILE_SIZE);
     ui->visibleGrid->verticalHeader()->setDefaultSectionSize(TILE_SIZE);
-    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->visibleGrid->horizontalHeader()->setStretchLastSection(false);
-    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->visibleGrid->verticalHeader()->setStretchLastSection(false);
 
     for(int i=0; i< ui->visibleGrid->rowCount();i++){
         for(int j=0; j<ui->visibleGrid->columnCount();j++){
             ui->visibleGrid->setItem(i,j,new QTableWidgetItem(""));
             ui->visibleGrid->item(i,j)->setBackgroundColor(QColor(150,150,150));
-            ui->visibleGrid->item(i,j)->setSizeHint(QSize(TILE_SIZE,TILE_SIZE));
         }
     }
+    ui->visibleGrid->setSelectionMode(QAbstractItemView::SingleSelection);
 
     // reset game info box
     ui->flag_counter->setText("0/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
@@ -175,6 +179,21 @@ void GameGUI::on_show_leaderboard_button_clicked()
 
 void GameGUI::on_noMinesSpinBox_valueChanged(int arg1)
 {
+
+}
+
+void GameGUI::resizeEvent(QResizeEvent *event)
+{
+    if(this->resized){
+//        QRect geometry =  ui->centralWidget->geometry();
+//        if(geometry.width() != geometry.height()){
+//            geometry.setWidth(geometry.height());
+//        }
+//        ui->centralWidget->setGeometry(geometry);
+    }
+    else{
+        this->resized = true;
+    }
 
 }
 
