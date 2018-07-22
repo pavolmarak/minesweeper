@@ -37,11 +37,16 @@ public:
     void resetGui();
     void setLeaderboardTypes(QVector<Difficulty> difficulties);
     void showUserResultBox(bool on_off, quint64 time);
-    void redrawLeaderboard();
+    void redrawLeaderboard(int row_index = -1);
     void setCurrentDifficulty(int index);
+    void highlightRow(int index, QColor background_color, QColor text_color);
+    QMultiMap<quint64, UserResult>::iterator addToLeaderboard(quint64 key, UserResult value);
 
     quint64 getLast_time() const;
     void setLast_time(const quint64 &value);
+
+    LeaderBoard& getLb();
+    void setLb(const LeaderBoard &value);
 
 private slots:
     void on_submit_result_button_clicked();
@@ -50,8 +55,8 @@ private slots:
 private:
     Ui::LeaderBoardGUI *ui;
     LeaderBoard lb;
-    void closeEvent (QCloseEvent *event);
     quint64 last_time;
+    void closeEvent (QCloseEvent *event);
 
 signals:
     void leaderboardClosedSignal();

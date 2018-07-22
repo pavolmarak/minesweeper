@@ -153,7 +153,7 @@ void GameGUI::on_pause_time_button_clicked(bool checked)
         this->game.timer.stop();
         ui->visibleGrid->setVisible(false);
         ui->time->setStyleSheet("color:red;");
-        ui->statusBar->showMessage("Game paused.", 3000);
+        ui->statusBar->showMessage("Game paused.");
     }
     else{
         ui->visibleGrid->setVisible(true);

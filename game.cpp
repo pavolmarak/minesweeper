@@ -166,7 +166,18 @@ bool Game::userRightClick(int row, int col)
 void Game::showLeaderboard(bool resultBoxOn, int difficultyIndex)
 {
     this->lb_gui.setCurrentDifficulty(difficultyIndex);
-    this->lb_gui.redrawLeaderboard();
+    if(resultBoxOn == true){
+        auto iter = this->lb_gui.addToLeaderboard(this->player.getTime(),{
+                                                      "_?_result-ready",
+                                                      this->difficulties[this->current_difficulty].name.split(",").at(0),
+                                                      QDateTime::currentDateTime().toString("d.M.yyyy,hh:mm:ss")}
+                                                  );
+        this->lb_gui.redrawLeaderboard(std::distance(this->lb_gui.getLb().getLeader_board().begin(),iter));
+    }
+    else{
+      this->lb_gui.redrawLeaderboard();
+    }
+
     this->lb_gui.showUserResultBox(resultBoxOn,this->player.getTime());
     this->lb_gui.show();
 }

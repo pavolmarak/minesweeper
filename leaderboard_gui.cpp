@@ -68,25 +68,43 @@ void LeaderBoardGUI::showUserResultBox(bool on_off, quint64 time)
     ui->your_time->setText(QString::number(this->last_time) + " ms");
 }
 
-void LeaderBoardGUI::redrawLeaderboard()
+void LeaderBoardGUI::redrawLeaderboard(int row_index)
 {
     this->resetGui();
 
-    // hint
-    QString hint = "-highlight";
+    // hint for newly added time
+    QString hint_new = "-highlight";
+    // hint for ready-to-insert time
+    QString hint_ready = "-ready";
+
     QMultiMap<quint64,UserResult>::iterator iter = this->lb.getLeader_board().begin();
     while (iter != this->lb.getLeader_board().end()) {
         if(iter.value().difficulty != ui->leaderboard_selection_combobox->currentText().split(",").at(0)){
             ++iter;
             continue;
         }
+        if(iter.value().name.endsWith(hint_ready)){
+            ui->leader_table->insertRow(ui->leader_table->rowCount());
+            ui->leader_table->setItem(ui->leader_table->rowCount()-1, 0, new QTableWidgetItem("Your result"));
+            ui->leader_table->setItem(ui->leader_table->rowCount()-1, 1, new QTableWidgetItem(QString::number(iter.key())));
+            ui->leader_table->setItem(ui->leader_table->rowCount()-1, 2, new QTableWidgetItem(iter.value().difficulty));
+            ui->leader_table->setItem(ui->leader_table->rowCount()-1, 3, new QTableWidgetItem(iter.value().date));
+            ui->leader_table->item(ui->leader_table->rowCount()-1,0)->setWhatsThis("to-remove");
+            ui->leader_table->item(ui->leader_table->rowCount()-1,0)->setBackgroundColor(QColor(255, 180, 180));
+            ui->leader_table->item(ui->leader_table->rowCount()-1,1)->setBackgroundColor(QColor(255, 180, 180));
+            ui->leader_table->item(ui->leader_table->rowCount()-1,2)->setBackgroundColor(QColor(255, 180, 180));
+            ui->leader_table->item(ui->leader_table->rowCount()-1,3)->setBackgroundColor(QColor(255, 180, 180));
+            ++iter;
+            continue;
+        }
+
         ui->leader_table->insertRow(ui->leader_table->rowCount());
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 0, new QTableWidgetItem(iter.value().name));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 1, new QTableWidgetItem(QString::number(iter.key())));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 2, new QTableWidgetItem(iter.value().difficulty));
         ui->leader_table->setItem(ui->leader_table->rowCount()-1, 3, new QTableWidgetItem(iter.value().date));
-        if(iter.value().name.endsWith(hint)){
-            iter.value().name = iter.value().name.chopped(hint.length()); // remove the hint
+        if(iter.value().name.endsWith(hint_new)){
+            iter.value().name = iter.value().name.chopped(hint_new.length()); // remove the hint
             ui->leader_table->item(ui->leader_table->rowCount()-1,0)->setText(iter.value().name);
             ui->leader_table->item(ui->leader_table->rowCount()-1,0)->setBackgroundColor(QColor(0, 204, 102));
             ui->leader_table->item(ui->leader_table->rowCount()-1,1)->setBackgroundColor(QColor(0, 204, 102));
@@ -95,13 +113,31 @@ void LeaderBoardGUI::redrawLeaderboard()
         }
         ++iter;
     }
-    ui->leader_table->scrollToTop();
+
+    // scroll to currently added item
+    if(row_index == -1){
+        ui->leader_table->scrollToTop();
+    }else{
+        ui->leader_table->scrollToItem(ui->leader_table->item(row_index,0),QAbstractItemView::PositionAtCenter);
+    }
+
     qApp->processEvents();
 }
 
 void LeaderBoardGUI::setCurrentDifficulty(int index)
 {
     ui->leaderboard_selection_combobox->setCurrentIndex(index);
+}
+
+void LeaderBoardGUI::highlightRow(int index, QColor background_color, QColor text_color)
+{
+    // TODO
+}
+
+QMultiMap<quint64, UserResult>::iterator LeaderBoardGUI::addToLeaderboard(quint64 key, UserResult value)
+{
+    // insert new result to the leaderboard map
+    return this->lb.getLeader_board().insert(key, value);
 }
 
 void LeaderBoardGUI::on_submit_result_button_clicked()
@@ -117,20 +153,22 @@ void LeaderBoardGUI::on_submit_result_button_clicked()
         return;
     }
 
-    // insert new result to the leaderboard map
-    QMultiMap<quint64, UserResult>::iterator iter = this->lb.getLeader_board().insert(
-                this->last_time,
-                {
-                    ui->username->text()+"-highlight",
-                    ui->leaderboard_selection_combobox->currentText().split(",").at(0),
-                    QDateTime::currentDateTime().toString("d.M.yyyy") + "," + QTime::currentTime().toString()
-                });
-    this->redrawLeaderboard();
-
-    // scroll to currently added item
-    //    qDebug() << "Scroll to: " << std::distance(this->lb.getLeader_board().begin(),iter);
-    //    qDebug() << ui->leader_table->item(std::distance(this->lb.getLeader_board().begin(),iter),0)->text();
-    ui->leader_table->scrollToItem(ui->leader_table->item(std::distance(this->lb.getLeader_board().begin(),iter),0),QAbstractItemView::PositionAtCenter);
+    for(int i=0; i < ui->leader_table->rowCount();i++){
+        for(int j=0; j < ui->leader_table->columnCount(); j++ ){
+            if(ui->leader_table->item(i,j)->whatsThis() == "to-remove"){
+                ui->leader_table->item(i,j)->setWhatsThis("");
+                QMultiMap<quint64,UserResult>::iterator iter = this->lb.getLeader_board().begin();
+                while (iter != this->lb.getLeader_board().end()) {
+                    if(iter.value().name == "_?_result-ready"){
+                        iter.value().name = ui->username->text() + "-highlight";
+                        break;
+                    }
+                    ++iter;
+                }
+                this->redrawLeaderboard(ui->leader_table->item(i,j)->row());
+            }
+        }
+    }
 
     ui->leaderboard_result_box->setVisible(true);
 
@@ -176,7 +214,14 @@ void LeaderBoardGUI::on_submit_result_button_clicked()
 void LeaderBoardGUI::closeEvent(QCloseEvent *event)
 {
     event->accept();
-    //    this->redraw();
+    QMultiMap<quint64,UserResult>::iterator iter = this->lb.getLeader_board().begin();
+    while (iter != this->lb.getLeader_board().end()) {
+        if(iter.value().name == "_?_result-ready"){
+            this->lb.getLeader_board().erase(iter);
+            break;
+        }
+        ++iter;
+    }
     emit leaderboardClosedSignal();
 }
 
@@ -194,4 +239,14 @@ void LeaderBoardGUI::on_leaderboard_selection_combobox_activated(int index)
 {
     this->redrawLeaderboard();
     ui->leaderboard_result_box->setVisible(true);
+}
+
+LeaderBoard &LeaderBoardGUI::getLb()
+{
+    return lb;
+}
+
+void LeaderBoardGUI::setLb(const LeaderBoard &value)
+{
+    lb = value;
 }
