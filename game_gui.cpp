@@ -185,11 +185,11 @@ void GameGUI::on_noMinesSpinBox_valueChanged(int arg1)
 void GameGUI::resizeEvent(QResizeEvent *event)
 {
 //    if(this->resized){
-        QRect geometry =  this->geometry();
-        if(geometry.width() != geometry.height()){
-            geometry.setWidth(geometry.height());
-        }
-        this->setGeometry(geometry);
+//        QRect geometry =  this->geometry();
+//        if(geometry.width() != geometry.height()){
+//            geometry.setWidth(geometry.height());
+//        }
+//        this->setGeometry(geometry);
 //    }
 //    else{
 //        this->resized = true;
