@@ -80,6 +80,7 @@ void GameGUI::resetGui()
     ui->pause_time_button->setChecked(false);
     ui->time->setText("0 ms");
     ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+    ui->time->setStyleSheet("color:auto;");
 
     // reset game configuration box
     ui->gridsize_selector->setEnabled(true);
