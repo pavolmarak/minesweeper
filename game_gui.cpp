@@ -48,16 +48,21 @@ GameGUI::~GameGUI()
 
 void GameGUI::resetGui()
 {
+    ui->visibleGrid->clearContents();
+    ui->visibleGrid->setVisible(true);
+    ui->visibleGrid->setEnabled(false);
+
+    // resize minefield
     ui->visibleGrid->setMinimumSize(QSize(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width*TILE_SIZE,this->game.difficulties[this->game.getCurrent_difficulty()].grid_height*TILE_SIZE));
+    ui->visibleGrid->setMaximumSize(QSize(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width*TILE_SIZE,this->game.difficulties[this->game.getCurrent_difficulty()].grid_height*TILE_SIZE));
     ui->visibleGrid->resize(QSize(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width*TILE_SIZE,this->game.difficulties[this->game.getCurrent_difficulty()].grid_height*TILE_SIZE));
+
+    ui->visibleGrid->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     // reset leaderboard button
     ui->show_leaderboard_button->setEnabled(true);
 
     // reset visible grid
-    ui->visibleGrid->clearContents();
-    ui->visibleGrid->setEnabled(false);
-    ui->visibleGrid->setVisible(true);
     ui->visibleGrid->setFocusPolicy(Qt::NoFocus);
 
     ui->visibleGrid->setRowCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
@@ -121,11 +126,13 @@ void GameGUI::addCustomizeGridControls(int width, int height, int mine_count)
     hl->addWidget(new QLabel("Width:"));
     this->custom_grid_width_spinbox = new QSpinBox();
     custom_grid_width_spinbox->setMinimum(1);
+    custom_grid_width_spinbox->setMaximum(50);
     custom_grid_width_spinbox->setValue(width);
     hl->addWidget(custom_grid_width_spinbox);
     hl->addWidget(new QLabel("Height:"));
     this->custom_grid_height_spinbox = new QSpinBox();
     custom_grid_height_spinbox->setMinimum(1);
+    custom_grid_height_spinbox->setMaximum(50);
     custom_grid_height_spinbox->setValue(height);
     hl->addWidget(custom_grid_height_spinbox);
     hl->addWidget(new QLabel("Number of mines:"));
@@ -231,11 +238,11 @@ void GameGUI::on_show_leaderboard_button_clicked()
 
 void GameGUI::resizeEvent(QResizeEvent *event)
 {
-    QRect geometry =  ui->visibleGrid->geometry();
-    if(geometry.width() != geometry.height()){
-        geometry.setHeight(geometry.width());
-    }
-    ui->visibleGrid->setGeometry(geometry.x(), geometry.y(), geometry.width(), geometry.height());
+//    QRect geometry =  ui->visibleGrid->geometry();
+//    if(geometry.width() != geometry.height()){
+//        geometry.setHeight(geometry.width());
+//    }
+//    ui->visibleGrid->setGeometry(geometry.x(), geometry.y(), geometry.width(), geometry.height());
 }
 
 void GameGUI::timeoutSlot()

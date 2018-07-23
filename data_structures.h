@@ -5,7 +5,7 @@
 #ifndef HELPER_H
 #define HELPER_H
 
-#define TILE_SIZE 30
+#define TILE_SIZE 40
 #define MINE 999
 #define LEADERBOARD_FILE "leaderboard.txt"
 #define LEADERBOARD_ICON_FILE "leaderboard_icon.png"
