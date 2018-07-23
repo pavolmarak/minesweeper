@@ -7,7 +7,11 @@ GameGUI::GameGUI(QWidget *parent) :
     ui(new Ui::GameGUI)
 {
     this->resized = false;
+
     ui->setupUi(this);
+
+    // create box for defining a custom game grid
+    this->addCustomizeGridControls(10,10,10);
 
     // reset gui
     this->resetGui();
@@ -15,7 +19,7 @@ GameGUI::GameGUI(QWidget *parent) :
     // set game switch
     this->switch_on_off = new MySwitch();
     this->switch_on_off->setObjectName("switch-off");
-    ui->horizontalLayout_9->insertWidget(2,this->switch_on_off);
+    //ui->horizontalLayout_9->insertWidget(2,this->switch_on_off);
 
     // set custom status bar message widget
     this->statusbar_message = new QLabel();
@@ -30,6 +34,9 @@ GameGUI::GameGUI(QWidget *parent) :
     QObject::connect(ui->visibleGrid, SIGNAL(rightClickSignal(QTableWidgetItem*)), this, SLOT(rightClickSlot(QTableWidgetItem*)));
     QObject::connect(ui->visibleGrid, SIGNAL(leftClickSignal(QTableWidgetItem*)), this, SLOT(leftClickSlot(QTableWidgetItem*)));
     QObject::connect(&(this->game.getLb()), SIGNAL(leaderboardClosedSignal()), this, SLOT(leaderboardClosedSlot()));
+    QObject::connect(this->custom_grid_width_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onCustomGridWidthSpinboxChanged(int)));
+    QObject::connect(this->custom_grid_height_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onCustomGridHeightSpinboxChanged(int)));
+
     qApp->processEvents();
 }
 
@@ -41,8 +48,8 @@ GameGUI::~GameGUI()
 
 void GameGUI::resetGui()
 {
-
-    ui->visibleGrid->setMinimumSize(QSize(500,500));
+    ui->visibleGrid->setMinimumSize(QSize(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width*TILE_SIZE,this->game.difficulties[this->game.getCurrent_difficulty()].grid_height*TILE_SIZE));
+    ui->visibleGrid->resize(QSize(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width*TILE_SIZE,this->game.difficulties[this->game.getCurrent_difficulty()].grid_height*TILE_SIZE));
 
     // reset leaderboard button
     ui->show_leaderboard_button->setEnabled(true);
@@ -55,8 +62,7 @@ void GameGUI::resetGui()
 
     ui->visibleGrid->setRowCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
     ui->visibleGrid->setColumnCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_width);
-    //    this->setGeometry(0,0, this->game.difficulties[this->game.getCurrent_difficulty()].grid_width,this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
-    //    this->setm
+
     for(int i=0; i< ui->visibleGrid->rowCount();i++){
         ui->visibleGrid->setRowHeight(i,TILE_SIZE);
     }
@@ -65,9 +71,9 @@ void GameGUI::resetGui()
     }
     ui->visibleGrid->horizontalHeader()->setDefaultSectionSize(TILE_SIZE);
     ui->visibleGrid->verticalHeader()->setDefaultSectionSize(TILE_SIZE);
-    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->visibleGrid->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->visibleGrid->horizontalHeader()->setStretchLastSection(false);
-    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->visibleGrid->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     ui->visibleGrid->verticalHeader()->setStretchLastSection(false);
 
     for(int i=0; i< ui->visibleGrid->rowCount();i++){
@@ -90,15 +96,14 @@ void GameGUI::resetGui()
     ui->gridsize_selector->setEnabled(true);
     ui->gridsize_selector->clear();
     foreach (Difficulty d, this->game.difficulties) {
-        ui->gridsize_selector->addItem(d.name + ", " + QString::number(d.grid_height) + "x" + QString::number(d.grid_width) + ", " + QString::number(d.number_of_mines) + " mines");
+        if(d.name == "Custom"){
+            ui->gridsize_selector->addItem(d.name);
+        }
+        else{
+            ui->gridsize_selector->addItem(d.name + ", " + QString::number(d.grid_height) + "x" + QString::number(d.grid_width) + ", " + QString::number(d.number_of_mines) + " mines");
+        }
     }
     ui->gridsize_selector->setCurrentIndex(this->game.getCurrent_difficulty());
-
-    // set the number of mines for the given game difficulty
-    ui->noMinesSpinBox->setValue(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines);
-    if(this->game.difficulties[this->game.getCurrent_difficulty()].name != "Custom"){
-        ui->noMinesSpinBox->setEnabled(false);
-    }
 
     // reset cell status
     ui->visibleGrid->setItClicked(nullptr);
@@ -108,16 +113,45 @@ void GameGUI::resetGui()
     ui->start_game_button->setFocus();
 }
 
-
-
-// function to start the game
-void GameGUI::on_start_game_button_clicked()
+void GameGUI::addCustomizeGridControls(int width, int height, int mine_count)
 {
+    this->customizeGridBox = new QGroupBox("Make your own grid");
+    QHBoxLayout* hl = new QHBoxLayout();
+    hl->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    hl->addWidget(new QLabel("Width:"));
+    this->custom_grid_width_spinbox = new QSpinBox();
+    custom_grid_width_spinbox->setMinimum(1);
+    custom_grid_width_spinbox->setValue(width);
+    hl->addWidget(custom_grid_width_spinbox);
+    hl->addWidget(new QLabel("Height:"));
+    this->custom_grid_height_spinbox = new QSpinBox();
+    custom_grid_height_spinbox->setMinimum(1);
+    custom_grid_height_spinbox->setValue(height);
+    hl->addWidget(custom_grid_height_spinbox);
+    hl->addWidget(new QLabel("Number of mines:"));
+    this->custom_mine_count_spinbox = new QSpinBox();
+    custom_mine_count_spinbox->setMinimum(0);
+    custom_mine_count_spinbox->setMaximum(width*height);
+    custom_mine_count_spinbox->setValue(mine_count);
+    hl->addWidget(custom_mine_count_spinbox);
+    hl->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    this->customizeGridBox->setLayout(hl);
+    this->customizeGridBox->setVisible(false);
+    ui->config_groupbox->layout()->addWidget(this->customizeGridBox);
+}
 
+void GameGUI::startGame()
+{
     this->switch_on_off->setPixmap(QPixmap(QDir::currentPath() + QDir::separator() + "switch-on.png"));
 
     // apply the currently selected difficulty
     this->game.setCurrent_difficulty(ui->gridsize_selector->currentIndex());
+
+    if(ui->gridsize_selector->currentText() == "Custom"){
+        this->game.difficulties[this->game.getCurrent_difficulty()].grid_width = this->custom_grid_width_spinbox->value();
+        this->game.difficulties[this->game.getCurrent_difficulty()].grid_height = this->custom_grid_height_spinbox->value();
+        this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines = this->custom_mine_count_spinbox->value();
+    }
 
     // reset invisible grid
     this->game.createInvisibleGrid(
@@ -149,6 +183,24 @@ void GameGUI::on_start_game_button_clicked()
     qApp->processEvents();
 }
 
+void GameGUI::onCustomGridWidthSpinboxChanged(int v)
+{
+    this->custom_mine_count_spinbox->setMaximum(v*this->custom_grid_height_spinbox->value());
+}
+
+void GameGUI::onCustomGridHeightSpinboxChanged(int v)
+{
+    this->custom_mine_count_spinbox->setMaximum(v*this->custom_grid_width_spinbox->value());
+}
+
+
+
+// function to start the game
+void GameGUI::on_start_game_button_clicked()
+{
+    this->startGame();
+}
+
 
 void GameGUI::on_pause_time_button_clicked(bool checked)
 {
@@ -177,24 +229,13 @@ void GameGUI::on_show_leaderboard_button_clicked()
     this->game.showLeaderboard(false,ui->gridsize_selector->currentIndex());
 }
 
-void GameGUI::on_noMinesSpinBox_valueChanged(int arg1)
-{
-
-}
-
 void GameGUI::resizeEvent(QResizeEvent *event)
 {
-//    if(this->resized){
-//        QRect geometry =  this->geometry();
-//        if(geometry.width() != geometry.height()){
-//            geometry.setWidth(geometry.height());
-//        }
-//        this->setGeometry(geometry);
-//    }
-//    else{
-//        this->resized = true;
-//    }
-
+    QRect geometry =  ui->visibleGrid->geometry();
+    if(geometry.width() != geometry.height()){
+        geometry.setHeight(geometry.width());
+    }
+    ui->visibleGrid->setGeometry(geometry.x(), geometry.y(), geometry.width(), geometry.height());
 }
 
 void GameGUI::timeoutSlot()
@@ -316,4 +357,19 @@ void GameGUI::rightClickSlot(QTableWidgetItem* item)
         ui->time->setText(QString::number(this->game.getPlayer().getTime()) + " ms");
         qDebug() << "Game accomplished.";
     }
+}
+
+void GameGUI::on_gridsize_selector_activated(int index)
+{
+    if(this->game.difficulties[index].name == "Custom"){
+        this->customizeGridBox->setVisible(true);
+    }
+    else{
+        this->customizeGridBox->setVisible(false);
+    }
+}
+
+void GameGUI::on_stop_game_button_clicked()
+{
+    ui->statusBar->showMessage("This button is missing functionality at the moment.", 3000);
 }

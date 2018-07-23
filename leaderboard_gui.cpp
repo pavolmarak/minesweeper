@@ -55,7 +55,12 @@ void LeaderBoardGUI::setLeaderboardTypes(QVector<Difficulty> difficulties)
 {
     ui->leaderboard_selection_combobox->clear();
     foreach (Difficulty d, difficulties) {
-        ui->leaderboard_selection_combobox->addItem(d.name + ", " + QString::number(d.grid_height) + "x" + QString::number(d.grid_width) + ", " + QString::number(d.number_of_mines) + " mines");
+        if(d.name == "Custom"){
+            ui->leaderboard_selection_combobox->addItem(d.name);
+        }
+        else{
+            ui->leaderboard_selection_combobox->addItem(d.name + ", " + QString::number(d.grid_height) + "x" + QString::number(d.grid_width) + ", " + QString::number(d.number_of_mines) + " mines");
+        }
     }
 }
 

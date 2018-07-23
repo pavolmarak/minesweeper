@@ -20,6 +20,7 @@ Game::Game()
     this->difficulties.push_back(Difficulty(10,10,10,"Easy"));
     this->difficulties.push_back(Difficulty(15,15,25,"Medium"));
     this->difficulties.push_back(Difficulty(20,20,50,"Hard"));
+    this->difficulties.push_back(Difficulty(10,10,10,"Custom"));
 
     // set current game difficulty
     this->current_difficulty = 0;
