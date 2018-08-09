@@ -10,11 +10,13 @@ GameGUI::GameGUI(QWidget *parent) :
 
     ui->setupUi(this);
 
-    // create box for defining a custom game grid
-    this->addCustomizeGridControls(10,10,10);
-
     // reset gui
     this->resetGui();
+
+    // create box for defining a custom game grid
+    this->addCustomizeGridControls(this->game.difficulties[0].grid_width,
+            this->game.difficulties[0].grid_height,
+            this->game.difficulties[0].number_of_mines);
 
     // set game switch
     this->switch_on_off = new MySwitch();
@@ -62,7 +64,7 @@ void GameGUI::resetGui()
     // reset leaderboard button
     ui->show_leaderboard_button->setEnabled(true);
 
-    // reset visible grid
+    // set no focus
     ui->visibleGrid->setFocusPolicy(Qt::NoFocus);
 
     ui->visibleGrid->setRowCount(this->game.difficulties[this->game.getCurrent_difficulty()].grid_height);
@@ -91,11 +93,18 @@ void GameGUI::resetGui()
 
     // reset game info box
     ui->flag_counter->setText("0/" + QString::number(this->game.difficulties[this->game.getCurrent_difficulty()].number_of_mines));
+    ui->flag_counter->setAlignment(Qt::AlignCenter);
     ui->pause_time_button->setEnabled(false);
     ui->pause_time_button->setChecked(false);
     ui->time->setText("0 ms");
-    ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+    ui->time->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
     ui->time->setStyleSheet("color:auto;");
+
+    // reset flag progress bar
+    ui->flagProgress->setValue(0);
+    ui->flagProgress->setAlignment(Qt::AlignCenter);
+    ui->flagProgress->setTextVisible(false);
+    ui->flagProgress->setFixedWidth(ui->visibleGrid->width());
 
     // reset game configuration box
     ui->gridsize_selector->setEnabled(true);
@@ -218,6 +227,7 @@ void GameGUI::on_pause_time_button_clicked(bool checked)
         ui->visibleGrid->setVisible(false);
         ui->time->setStyleSheet("color:red;");
         ui->statusBar->showMessage("Game paused.");
+        ui->pause_time_button->setText("Resume");
     }
     else{
         ui->visibleGrid->setVisible(true);
@@ -225,6 +235,7 @@ void GameGUI::on_pause_time_button_clicked(bool checked)
         this->game.elap_timer.restart();
         ui->time->setStyleSheet("color:auto;");
         ui->statusBar->showMessage("Game resumed.", 3000);
+        ui->pause_time_button->setText("Pause");
     }
     this->game.setPlayer(p);
 }
